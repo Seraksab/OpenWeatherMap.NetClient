@@ -1,4 +1,6 @@
 ﻿using System.Text.Json.Serialization;
+using OpenWeatherMap.Net.Converters;
+using UnitsNet;
 
 namespace OpenWeatherMap.Net.Models;
 
@@ -12,11 +14,13 @@ public class ApiWeatherResponse
   [JsonPropertyName("rain")] public PrecipitationResponse? Rain { get; set; } = null!;
   [JsonPropertyName("snow")] public PrecipitationResponse? Snow { get; set; } = null!;
 
-  [JsonPropertyName("dt")] public long DataTimeStamp { get; set; }
+  [JsonPropertyName("dt"), JsonConverter(typeof(DateTimeConverter))]
+  public DateTime DataTimeStamp { get; set; }
 
   [JsonPropertyName("sys")] public SysResponse Sys { get; set; } = null!;
 
-  [JsonPropertyName("timezone")] public long TimeZoneOffset { get; set; }
+  [JsonPropertyName("timezone"), JsonConverter(typeof(TimeSpanConverter))]
+  public TimeSpan TimeZoneOffset { get; set; }
 
   [JsonPropertyName("id")] public long CityId { get; set; }
   [JsonPropertyName("name")] public string CityName { get; set; } = null!;
@@ -38,44 +42,57 @@ public class ApiWeatherResponse
 
   public class MainResponse
   {
-    [JsonPropertyName("temp")] public double Temperature { get; set; }
+    [JsonPropertyName("temp"), JsonConverter(typeof(TemperatureConverter))]
+    public Temperature Temperature { get; set; }
 
-    [JsonPropertyName("feels_like")] public double TemperatureFeel { get; set; }
+    [JsonPropertyName("feels_like"), JsonConverter(typeof(TemperatureConverter))]
+    public Temperature TemperatureFeel { get; set; }
 
-    [JsonPropertyName("temp_min")] public double TemperatureMin { get; set; }
+    [JsonPropertyName("temp_min"), JsonConverter(typeof(TemperatureConverter))]
+    public Temperature TemperatureMin { get; set; }
 
-    [JsonPropertyName("temp_max")] public double TemperatureMax { get; set; }
+    [JsonPropertyName("temp_max"), JsonConverter(typeof(TemperatureConverter))]
+    public Temperature TemperatureMax { get; set; }
 
-    [JsonPropertyName("pressure")] public double Pressure { get; set; }
+    [JsonPropertyName("pressure"), JsonConverter(typeof(PressureConverter))]
+    public Pressure Pressure { get; set; }
 
-    [JsonPropertyName("humidity")] public double Humidity { get; set; }
+    [JsonPropertyName("humidity"), JsonConverter(typeof(HumidityConverter))]
+    public RelativeHumidity Humidity { get; set; }
   }
 
   public class WindResponse
   {
-    [JsonPropertyName("speed")] public double Speed { get; set; }
+    [JsonPropertyName("speed"), JsonConverter(typeof(SpeedConverter))]
+    public Speed Speed { get; set; }
 
-    [JsonPropertyName("deg")] public double Degree { get; set; }
+    [JsonPropertyName("deg"), JsonConverter(typeof(AngleConverter))]
+    public Angle Degree { get; set; }
   }
 
   public class CloudsResponse
   {
-    [JsonPropertyName("all")] public double All { get; set; }
+    [JsonPropertyName("all"), JsonConverter(typeof(RatioConverter))]
+    public Ratio All { get; set; }
   }
 
   public class PrecipitationResponse
   {
-    [JsonPropertyName("1h")] public double OneHour { get; set; }
+    [JsonPropertyName("1h"), JsonConverter(typeof(LengthConverter))]
+    public Length OneHour { get; set; }
 
-    [JsonPropertyName("3h")] public double ThreeHours { get; set; }
+    [JsonPropertyName("3h"), JsonConverter(typeof(LengthConverter))]
+    public Length ThreeHours { get; set; }
   }
 
   public class SysResponse
   {
     [JsonPropertyName("country")] public string Country { get; set; } = null!;
 
-    [JsonPropertyName("sunrise")] public long Sunrise { get; set; }
+    [JsonPropertyName("sunrise"), JsonConverter(typeof(DateTimeConverter))]
+    public DateTime Sunrise { get; set; }
 
-    [JsonPropertyName("sunset")] public long Sunset { get; set; }
+    [JsonPropertyName("sunset"), JsonConverter(typeof(DateTimeConverter))]
+    public DateTime Sunset { get; set; }
   }
 }
