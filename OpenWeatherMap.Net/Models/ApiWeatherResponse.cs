@@ -4,11 +4,15 @@ using UnitsNet;
 
 namespace OpenWeatherMap.Net.Models;
 
-public class ApiWeatherResponse
+internal sealed class ApiWeatherResponse
 {
   [JsonPropertyName("coord")] public CoordinatesResponse Coordinates { get; set; } = null!;
   [JsonPropertyName("weather")] public IEnumerable<WeatherResponse> Weather { get; set; } = null!;
   [JsonPropertyName("main")] public MainResponse Main { get; set; } = null!;
+
+  [JsonPropertyName("visibility"), JsonConverter(typeof(LengthMeterConverter))]
+  public Length Visibility { get; set; }
+
   [JsonPropertyName("wind")] public WindResponse Wind { get; set; } = null!;
   [JsonPropertyName("clouds")] public CloudsResponse Clouds { get; set; } = null!;
   [JsonPropertyName("rain")] public PrecipitationResponse? Rain { get; set; } = null!;
@@ -26,13 +30,13 @@ public class ApiWeatherResponse
   [JsonPropertyName("name")] public string CityName { get; set; } = null!;
 
 
-  public class CoordinatesResponse
+  internal sealed class CoordinatesResponse
   {
     [JsonPropertyName("lon")] public double Longitude { get; set; }
     [JsonPropertyName("lat")] public double Latitude { get; set; }
   }
 
-  public class WeatherResponse
+  internal sealed class WeatherResponse
   {
     [JsonPropertyName("id")] public int Id { get; set; }
     [JsonPropertyName("main")] public string Main { get; set; } = null!;
@@ -40,13 +44,13 @@ public class ApiWeatherResponse
     [JsonPropertyName("icon")] public string Icon { get; set; } = null!;
   }
 
-  public class MainResponse
+  internal sealed class MainResponse
   {
     [JsonPropertyName("temp"), JsonConverter(typeof(TemperatureConverter))]
     public Temperature Temperature { get; set; }
 
     [JsonPropertyName("feels_like"), JsonConverter(typeof(TemperatureConverter))]
-    public Temperature TemperatureFeel { get; set; }
+    public Temperature TemperatureFeelsLike { get; set; }
 
     [JsonPropertyName("temp_min"), JsonConverter(typeof(TemperatureConverter))]
     public Temperature TemperatureMin { get; set; }
@@ -61,31 +65,31 @@ public class ApiWeatherResponse
     public RelativeHumidity Humidity { get; set; }
   }
 
-  public class WindResponse
+  internal sealed class WindResponse
   {
     [JsonPropertyName("speed"), JsonConverter(typeof(SpeedConverter))]
     public Speed Speed { get; set; }
 
     [JsonPropertyName("deg"), JsonConverter(typeof(AngleConverter))]
-    public Angle Degree { get; set; }
+    public Angle Direction { get; set; }
   }
 
-  public class CloudsResponse
+  internal sealed class CloudsResponse
   {
     [JsonPropertyName("all"), JsonConverter(typeof(RatioConverter))]
     public Ratio All { get; set; }
   }
 
-  public class PrecipitationResponse
+  internal class PrecipitationResponse
   {
-    [JsonPropertyName("1h"), JsonConverter(typeof(LengthConverter))]
+    [JsonPropertyName("1h"), JsonConverter(typeof(LengthMilliMeterConverter))]
     public Length OneHour { get; set; }
 
-    [JsonPropertyName("3h"), JsonConverter(typeof(LengthConverter))]
+    [JsonPropertyName("3h"), JsonConverter(typeof(LengthMilliMeterConverter))]
     public Length ThreeHours { get; set; }
   }
 
-  public class SysResponse
+  internal class SysResponse
   {
     [JsonPropertyName("country")] public string Country { get; set; } = null!;
 

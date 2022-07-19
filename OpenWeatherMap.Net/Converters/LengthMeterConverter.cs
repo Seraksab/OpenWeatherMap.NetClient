@@ -4,12 +4,12 @@ using UnitsNet;
 
 namespace OpenWeatherMap.Net.Converters;
 
-internal class LengthConverter : JsonConverter<Length>
+internal class LengthMeterConverter : JsonConverter<Length>
 {
   public override Length Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
   {
     if (!reader.TryGetDouble(out var val)) throw new JsonException();
-    return Length.FromMillimeters(val);
+    return Length.FromMeters(val);
   }
 
   public override void Write(Utf8JsonWriter writer, Length value, JsonSerializerOptions options)

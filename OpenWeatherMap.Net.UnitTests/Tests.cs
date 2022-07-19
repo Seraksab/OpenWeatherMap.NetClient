@@ -34,7 +34,7 @@ public class Tests
     var result = await client.CurrentWeatherByName("Linz,AT");
     Assert.NotNull(result);
     Assert.Equal("Linz", result?.CityName);
-    Assert.Equal("AT", result?.Sys.Country);
+    Assert.Equal("AT", result?.Country);
   }
 
   [Fact]
@@ -57,7 +57,7 @@ public class Tests
     var client = new OpenWeatherMap(ApiKey);
     var result = await client.CurrentWeatherByZip("4020,AT");
     Assert.Equal("Linz", result?.CityName);
-    Assert.Equal("AT", result?.Sys.Country);
+    Assert.Equal("AT", result?.Country);
   }
   
   [Fact]
@@ -66,6 +66,6 @@ public class Tests
     var client = new OpenWeatherMap(ApiKey);
     var result = await client.CurrentWeatherByCoordinates(48.3059D, 14.2862D);
     Assert.Equal("Linz", result?.CityName);
-    Assert.Equal("AT", result?.Sys.Country);
+    Assert.Equal("AT", result?.Country);
   }
 }
