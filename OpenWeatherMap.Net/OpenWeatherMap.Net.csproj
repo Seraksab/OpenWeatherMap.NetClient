@@ -11,9 +11,13 @@
         <PackageLicenseUrl>https://licenses.nuget.org/MIT</PackageLicenseUrl>
         <IsPackable>true</IsPackable>
         <TargetFrameworks>net6.0;netstandard2.0;netstandard2.1</TargetFrameworks>
-        <LangVersion>11</LangVersion>
+        <LangVersion>10</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Refit" Version="6.3.2" />
+    </ItemGroup>
 
 </Project>

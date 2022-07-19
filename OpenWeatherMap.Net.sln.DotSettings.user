@@ -1,0 +1,18 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=671e49bb_002Decf5_002D44b3_002D8875_002D6a35bceb4a5f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TestInvalidApiKey #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::A1C3E8DB-F8C9-43CF-9443-0D869B47B635::net6.0::OpenWeatherMap.Net.UnitTests.Tests.TestInvalidApiKey&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::A1C3E8DB-F8C9-43CF-9443-0D869B47B635::net6.0::OpenWeatherMap.Net.UnitTests.Tests.TestCityName&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::A1C3E8DB-F8C9-43CF-9443-0D869B47B635::net6.0::OpenWeatherMap.Net.UnitTests.Tests.TestCityNameNotFound&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::A1C3E8DB-F8C9-43CF-9443-0D869B47B635::net6.0::OpenWeatherMap.Net.UnitTests.Tests.TestInvalidCountryCode&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::A1C3E8DB-F8C9-43CF-9443-0D869B47B635::net6.0::OpenWeatherMap.Net.UnitTests.Tests.TestInvalidZipCode&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::A1C3E8DB-F8C9-43CF-9443-0D869B47B635::net6.0::OpenWeatherMap.Net.UnitTests.Tests.TestZipCode&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::A1C3E8DB-F8C9-43CF-9443-0D869B47B635::net6.0::OpenWeatherMap.Net.UnitTests.Tests.TesCoordinates&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8158e8d1_002Dc779_002D4255_002Dbb27_002Dbb10cc680b3c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestInvalidApiKey" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::A1C3E8DB-F8C9-43CF-9443-0D869B47B635::net6.0::OpenWeatherMap.Net.UnitTests.Tests.TestInvalidApiKey&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::A1C3E8DB-F8C9-43CF-9443-0D869B47B635::net6.0::OpenWeatherMap.Net.UnitTests.Tests.TestCityName&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
