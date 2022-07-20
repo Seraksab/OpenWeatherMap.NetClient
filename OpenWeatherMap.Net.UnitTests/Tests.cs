@@ -5,7 +5,7 @@ namespace OpenWeatherMap.Net.UnitTests;
 
 public class Tests
 {
-  private const string ApiKey = "e9e6e24f16a94f0353ad8b4ddcde8123";
+  private const string ApiKey = "[API-KEY]";
 
   [Fact]
   public async Task TestInvalidApiKey()
@@ -35,6 +35,9 @@ public class Tests
     Assert.NotNull(result);
     Assert.Equal("Linz", result?.CityName);
     Assert.Equal("AT", result?.Country);
+
+    var cachedResult = await client.CurrentWeatherByName("Linz,AT");
+    Assert.True(result == cachedResult);
   }
 
   [Fact]
@@ -58,14 +61,20 @@ public class Tests
     var result = await client.CurrentWeatherByZip("4020,AT");
     Assert.Equal("Linz", result?.CityName);
     Assert.Equal("AT", result?.Country);
+
+    var cachedResult = await client.CurrentWeatherByZip("4020,AT");
+    Assert.True(result == cachedResult);
   }
-  
+
   [Fact]
-  public async Task TesCoordinates()
+  public async Task TestCoordinates()
   {
     var client = new OpenWeatherMap(ApiKey);
     var result = await client.CurrentWeatherByCoordinates(48.3059D, 14.2862D);
     Assert.Equal("Linz", result?.CityName);
     Assert.Equal("AT", result?.Country);
+
+    var cachedResult = await client.CurrentWeatherByCoordinates(48.3059D, 14.2862D);
+    Assert.True(result == cachedResult);
   }
 }

@@ -17,7 +17,7 @@ public interface IOpenWeatherMap
   Task<CurrentWeather?> CurrentWeatherByZip(string zip);
 
   /// <summary>
-  /// Query current weather data by graphical coordinates (latitude, longitude)
+  /// Query current weather data by geographical coordinates (latitude, longitude)
   /// </summary>
   /// <param name="lat">Latitude</param>
   /// <param name="lon">Longitude</param>

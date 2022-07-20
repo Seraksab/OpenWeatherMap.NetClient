@@ -17,6 +17,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="LazyCache" Version="2.4.0" />
       <PackageReference Include="Refit" Version="6.3.2" />
       <PackageReference Include="UnitsNet" Version="4.137.0" />
     </ItemGroup>
