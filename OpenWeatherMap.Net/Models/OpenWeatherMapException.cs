@@ -1,21 +1,23 @@
 ﻿using System.Net;
-using Refit;
 
 namespace OpenWeatherMap.Net.Models;
 
 public sealed class OpenWeatherMapException : Exception
 {
-  public HttpStatusCode? StatusCode { get; }
+  /// <summary>
+  /// HTTP response status code.
+  /// </summary>
+  public HttpStatusCode StatusCode { get; }
+
+  /// <summary>
+  /// The reason phrase which typically is sent by the server together with the status code.
+  /// </summary>
   public string? ReasonPhrase { get; }
 
-  internal OpenWeatherMapException(string? message) : base(message)
+  internal OpenWeatherMapException(HttpStatusCode statusCode, string? reasonPhrase, Exception? inner)
+    : base($"Error on API request", inner)
   {
-  }
-
-  internal OpenWeatherMapException(IApiResponse response)
-    : base($"Error on API call. Reason: {response.ReasonPhrase}", response.Error)
-  {
-    StatusCode = response.StatusCode;
-    ReasonPhrase = response.ReasonPhrase;
+    StatusCode = statusCode;
+    ReasonPhrase = reasonPhrase;
   }
 }

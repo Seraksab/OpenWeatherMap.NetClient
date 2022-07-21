@@ -10,10 +10,10 @@ public class OpenWeatherMapOptions
   /// <summary>
   /// Language to get textual outputs in
   /// </summary>
-  public CultureInfo? Culture { get; set; } = DefaultCulture;
+  public CultureInfo Culture { get; set; } = DefaultCulture;
 
   /// <summary>
   /// Duration the API responses will be cached
   /// </summary>
-  public TimeSpan? CacheDuration { get; set; } = DefaultCacheDuration;
+  public TimeSpan CacheDuration { get; set; } = DefaultCacheDuration;
 }

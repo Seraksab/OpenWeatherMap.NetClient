@@ -7,7 +7,7 @@ using Refit;
 
 namespace OpenWeatherMap.Net;
 
-public class OpenWeatherMap : IOpenWeatherMap
+public class OpenWeatherMapClient : IOpenWeatherMapClient
 {
   private static readonly Regex ApiKeyRegex = new(@"^[0-9a-f]{32}$");
 
@@ -19,7 +19,7 @@ public class OpenWeatherMap : IOpenWeatherMap
   private readonly IOpenWeatherMapApi _apiClient;
   private readonly IAppCache _cache;
 
-  public OpenWeatherMap(string apiKey, OpenWeatherMapOptions? options = null)
+  public OpenWeatherMapClient(string apiKey, OpenWeatherMapOptions? options = null)
   {
     if (apiKey == null) throw new ArgumentNullException(nameof(apiKey));
     if (!ApiKeyRegex.IsMatch(apiKey)) throw new ArgumentException($"'{apiKey}' is not a valid API key");
@@ -32,37 +32,39 @@ public class OpenWeatherMap : IOpenWeatherMap
     _cache = new CachingService();
   }
 
-  public async Task<CurrentWeather?> CurrentWeatherByName(string name)
+  public async Task<Response<CurrentWeather>> CurrentWeatherByName(string name)
   {
     if (name == null) throw new ArgumentNullException(nameof(name));
 
     return await _cache.GetOrAddAsync(
       $"ByName_{name}", async () =>
       {
-        var result = await Request(() => _apiClient.CoordinatesByLocationName(_apiKey, 1, name));
-        if (result == null || result.Length == 0) return null;
-        return await WeatherRequest(result[0].Latitude, result[0].Longitude);
+        var result = await _apiClient.CoordinatesByLocationName(_apiKey, 1, name);
+        return result.IsSuccessStatusCode && result.Content is { Length: > 0 }
+          ? await WeatherRequest(result.Content[0].Latitude, result.Content[0].Longitude)
+          : new Response<CurrentWeather>(result.StatusCode, result.ReasonPhrase, null, result.Error);
       },
       _cacheDuration
     );
   }
 
-  public async Task<CurrentWeather?> CurrentWeatherByZip(string zip)
+  public async Task<Response<CurrentWeather>> CurrentWeatherByZip(string zip)
   {
     if (zip == null) throw new ArgumentNullException(nameof(zip));
 
     return await _cache.GetOrAddAsync(
       $"ByZip_{zip}", async () =>
       {
-        var result = await Request(() => _apiClient.CoordinatesByZipCode(_apiKey, zip));
-        if (result == null) return null;
-        return await WeatherRequest(result.Latitude, result.Longitude);
+        var result = await _apiClient.CoordinatesByZipCode(_apiKey, zip);
+        return result.IsSuccessStatusCode && result.Content != null
+          ? await WeatherRequest(result.Content.Latitude, result.Content.Longitude)
+          : new Response<CurrentWeather>(result.StatusCode, result.ReasonPhrase, null, result.Error);
       },
       _cacheDuration
     );
   }
 
-  public async Task<CurrentWeather?> CurrentWeatherByCoordinates(double lat, double lon)
+  public async Task<Response<CurrentWeather>> CurrentWeatherByCoordinates(double lat, double lon)
   {
     return await _cache.GetOrAddAsync(
       $"ByCoordinates_{lat}_{lon}",
@@ -71,20 +73,9 @@ public class OpenWeatherMap : IOpenWeatherMap
     );
   }
 
-  private async Task<CurrentWeather?> WeatherRequest(double lat, double lon)
+  private async Task<Response<CurrentWeather>> WeatherRequest(double lat, double lon)
   {
-    var result = await Request(() => _apiClient.CurrentWeather(_apiKey, _lang, lat, lon));
-    return result?.ToWeather();
-  }
-
-  private static async Task<T?> Request<T>(Func<Task<ApiResponse<T>>> apiFunc)
-  {
-    var response = await apiFunc();
-    if (!response.IsSuccessStatusCode || response.Error != null)
-    {
-      throw new OpenWeatherMapException(response);
-    }
-
-    return response.Content;
+    var response = await _apiClient.CurrentWeather(_apiKey, _lang, lat, lon);
+    return new Response<CurrentWeather>(response.StatusCode, response.ReasonPhrase, response.Content?.ToWeather(), response.Error);
   }
 }
