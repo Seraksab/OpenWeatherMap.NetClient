@@ -2,18 +2,16 @@
 
 namespace OpenWeatherMap.Net.Models;
 
-public class OpenWeatherMapOptions
+public sealed class OpenWeatherMapOptions : IOpenWeatherMapOptions
 {
-  internal static readonly CultureInfo DefaultCulture = new("en");
-  internal static readonly TimeSpan DefaultCacheDuration = TimeSpan.FromMinutes(10);
+  public static class Defaults
+  {
+    public static readonly CultureInfo Culture = new("en");
+    public static readonly TimeSpan CacheDuration = TimeSpan.FromMinutes(10);
+    public static readonly bool CacheEnabled = true;
+  }
 
-  /// <summary>
-  /// Language to get textual outputs in
-  /// </summary>
-  public CultureInfo Culture { get; set; } = DefaultCulture;
-
-  /// <summary>
-  /// Duration the API responses will be cached
-  /// </summary>
-  public TimeSpan CacheDuration { get; set; } = DefaultCacheDuration;
+  public CultureInfo? Culture { get; set; }
+  public bool? CacheEnabled { get; set; }
+  public TimeSpan? CacheDuration { get; set; }
 }
