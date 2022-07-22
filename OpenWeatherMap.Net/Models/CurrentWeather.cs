@@ -68,6 +68,11 @@ public sealed class CurrentWeather
   /// Weather condition within the group
   /// </summary>
   public string WeatherDescription { get; internal set; } = null!;
+  
+  /// <summary>
+  /// Weather icon id
+  /// </summary>
+  public string WeatherIcon { get; internal set; } = null!;
 
   /// <summary>
   /// Visibility. The maximum value of the visibility is 10km

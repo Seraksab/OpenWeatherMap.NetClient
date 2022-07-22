@@ -22,6 +22,7 @@ internal static class ApiWeatherResponseExtensions
       WeatherConditionId = weather.Id,
       WeatherCondition = weather.Main,
       WeatherDescription = weather.Description,
+      WeatherIcon = weather.Icon,
       Visibility = response.Visibility,
       Temperature = response.Main.Temperature,
       TemperatureFeelsLike = response.Main.TemperatureFeelsLike,
