@@ -32,7 +32,7 @@ public class OpenWeatherMapClient : IOpenWeatherMapClient
     _cache = new CachingService();
   }
 
-  public async Task<Response<CurrentWeather>> CurrentWeatherByName(string name)
+  public async Task<IResponse<CurrentWeather>> CurrentWeatherByName(string name)
   {
     if (name == null) throw new ArgumentNullException(nameof(name));
 
@@ -48,7 +48,7 @@ public class OpenWeatherMapClient : IOpenWeatherMapClient
     );
   }
 
-  public async Task<Response<CurrentWeather>> CurrentWeatherByZip(string zip)
+  public async Task<IResponse<CurrentWeather>> CurrentWeatherByZip(string zip)
   {
     if (zip == null) throw new ArgumentNullException(nameof(zip));
 
@@ -64,7 +64,7 @@ public class OpenWeatherMapClient : IOpenWeatherMapClient
     );
   }
 
-  public async Task<Response<CurrentWeather>> CurrentWeatherByCoordinates(double lat, double lon)
+  public async Task<IResponse<CurrentWeather>> CurrentWeatherByCoordinates(double lat, double lon)
   {
     return await _cache.GetOrAddAsync(
       $"ByCoordinates_{lat}_{lon}",
@@ -73,7 +73,7 @@ public class OpenWeatherMapClient : IOpenWeatherMapClient
     );
   }
 
-  private async Task<Response<CurrentWeather>> WeatherRequest(double lat, double lon)
+  private async Task<IResponse<CurrentWeather>> WeatherRequest(double lat, double lon)
   {
     var response = await _apiClient.CurrentWeather(_apiKey, _lang, lat, lon);
     return new Response<CurrentWeather>(response.StatusCode, response.ReasonPhrase, response.Content?.ToWeather(), response.Error);
