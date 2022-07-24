@@ -72,4 +72,15 @@ public class Tests
     Assert.Equal(48.3059, result.Content!.First().Latitude, 3);
     Assert.Equal(14.2862, result.Content!.First().Longitude, 3);
   }
+
+  [Fact]
+  public async Task TestGeoCodeReverse()
+  {
+    var client = new OpenWeatherMapClient(ApiKey);
+    var result = await client.QueryGeoCodeReverseAsync(48.3059, 14.2862);
+    Assert.NotNull(result.Content);
+    Assert.NotEmpty(result.Content!);
+    Assert.Equal("AT", result.Content!.First().Country);
+    Assert.Equal("Linz", result.Content!.First().Name);
+  }
 }

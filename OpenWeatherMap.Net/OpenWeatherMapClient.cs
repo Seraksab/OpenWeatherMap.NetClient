@@ -42,7 +42,7 @@ public class OpenWeatherMapClient : IOpenWeatherMapClient
 
     return await CacheRequest($"WeatherByName_{query}", async () =>
     {
-      var geoCode = await GeoCodeRequest(query, 1);
+      var geoCode = MapGeoCodes(await _apiClient.GeoCodeByLocationName(_apiKey, query, 1));
       return geoCode.IsSuccess && geoCode.Content != null && geoCode.Content.Any()
         ? await WeatherRequest(geoCode.Content.First().Latitude, geoCode.Content.First().Longitude)
         : new Models.ApiResponse<CurrentWeather>(geoCode.StatusCode, geoCode.ReasonPhrase, null, geoCode.Error);
@@ -54,9 +54,19 @@ public class OpenWeatherMapClient : IOpenWeatherMapClient
     return await CacheRequest($"WeatherByCoordinates_{lat}_{lon}", () => WeatherRequest(lat, lon));
   }
 
-  public async Task<Models.IApiResponse<IEnumerable<GeoCode>>> QueryGeoCodeAsync(string query)
+  public async Task<Models.IApiResponse<IEnumerable<GeoCode>>> QueryGeoCodeAsync(string query, int limit = int.MaxValue)
   {
-    return await CacheRequest($"GeoCode_{query}", () => GeoCodeRequest(query, 5));
+    return await CacheRequest($"GeoCode_{query}_{limit}", async () =>
+      MapGeoCodes(await _apiClient.GeoCodeByLocationName(_apiKey, query, limit))
+    );
+  }
+
+  public async Task<Models.IApiResponse<IEnumerable<GeoCode>>> QueryGeoCodeReverseAsync(double lat, double lon,
+    int limit = int.MaxValue)
+  {
+    return await CacheRequest($"GeoCodeReverse_{lat}_{lon}_{limit}",
+      async () => MapGeoCodes(await _apiClient.GeoCodeReverse(_apiKey, lat, lon, limit))
+    );
   }
 
   private async Task<Models.IApiResponse<CurrentWeather>> WeatherRequest(double lat, double lon)
@@ -70,9 +80,18 @@ public class OpenWeatherMapClient : IOpenWeatherMapClient
     );
   }
 
-  private async Task<Models.IApiResponse<IEnumerable<GeoCode>>> GeoCodeRequest(string query, int limit)
+  private async Task<Models.IApiResponse<T>> CacheRequest<T>(string cacheKey,
+    Func<Task<Models.IApiResponse<T>>> itemFactory)
+    where T : class
   {
-    var response = await _apiClient.GeoCodeByLocationName(_apiKey, limit, query);
+    return _cache == null
+      ? await itemFactory()
+      : await _cache.GetOrAddAsync(cacheKey, itemFactory, _cacheDuration);
+  }
+
+  private static Models.IApiResponse<IEnumerable<GeoCode>> MapGeoCodes(
+    Refit.IApiResponse<ApiGeoCodeResponse[]> response)
+  {
     var mappedResponse = response.Content == null
       ? Enumerable.Empty<GeoCode>()
       : response.Content.Select(gc => gc.ToGeoCode());
@@ -82,14 +101,5 @@ public class OpenWeatherMapClient : IOpenWeatherMapClient
       mappedResponse,
       response.Error
     );
-  }
-
-  private async Task<Models.IApiResponse<T>> CacheRequest<T>(string cacheKey,
-    Func<Task<Models.IApiResponse<T>>> itemFactory)
-    where T : class
-  {
-    return _cache == null
-      ? await itemFactory()
-      : await _cache.GetOrAddAsync(cacheKey, itemFactory, _cacheDuration);
   }
 }
