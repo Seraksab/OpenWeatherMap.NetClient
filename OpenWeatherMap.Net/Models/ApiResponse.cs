@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using OpenWeatherMap.Net.Exceptions;
 
 namespace OpenWeatherMap.Net.Models;
 

@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace OpenWeatherMap.Net.Models;
+namespace OpenWeatherMap.Net.Exceptions;
 
 public sealed class OpenWeatherMapException : Exception
 {

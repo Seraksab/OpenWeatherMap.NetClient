@@ -15,7 +15,7 @@ public class Tests
 
     // invalid api key => unauthorized
     var client = new OpenWeatherMapClient("00000000000000000000000000000000");
-    var response = await client.QueryWeatherAsync("Linz,AT");
+    var response = await client.CurrentWeather.QueryAsync("Linz,AT");
     Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
   }
 
@@ -23,7 +23,7 @@ public class Tests
   public async Task TestCityNameNotFound()
   {
     var client = new OpenWeatherMapClient(ApiKey);
-    var result = await client.QueryWeatherAsync("foobar");
+    var result = await client.CurrentWeather.QueryAsync("foobar");
     Assert.Null(result.Content);
   }
 
@@ -31,12 +31,12 @@ public class Tests
   public async Task TestCityName()
   {
     var client = new OpenWeatherMapClient(ApiKey);
-    var result = await client.QueryWeatherAsync("Linz,AT");
+    var result = await client.CurrentWeather.QueryAsync("Linz,AT");
     Assert.NotNull(result.Content);
     Assert.Equal("Linz", result.Content?.CityName);
     Assert.Equal("AT", result.Content?.Country);
 
-    var cachedResult = await client.QueryWeatherAsync("Linz,AT");
+    var cachedResult = await client.CurrentWeather.QueryAsync("Linz,AT");
     Assert.True(result == cachedResult);
   }
 
@@ -44,19 +44,19 @@ public class Tests
   public async Task TestNullCityName()
   {
     var client = new OpenWeatherMapClient(ApiKey);
-    await Assert.ThrowsAsync<ArgumentNullException>(() => client.QueryWeatherAsync(null));
+    await Assert.ThrowsAsync<ArgumentNullException>(() => client.CurrentWeather.QueryAsync(null));
   }
 
   [Fact]
   public async Task TestCoordinates()
   {
     var client = new OpenWeatherMapClient(ApiKey);
-    var result = await client.QueryWeatherAsync(48.3059D, 14.2862D);
+    var result = await client.CurrentWeather.QueryAsync(48.3059D, 14.2862D);
     Assert.NotNull(result.Content);
     Assert.Equal("Linz", result.Content?.CityName);
     Assert.Equal("AT", result.Content?.Country);
 
-    var cachedResult = await client.QueryWeatherAsync(48.3059D, 14.2862D);
+    var cachedResult = await client.CurrentWeather.QueryAsync(48.3059D, 14.2862D);
     Assert.True(result == cachedResult);
   }
 
@@ -64,7 +64,7 @@ public class Tests
   public async Task TestGeoCode()
   {
     var client = new OpenWeatherMapClient(ApiKey);
-    var result = await client.QueryGeoCodeAsync("Linz,AT");
+    var result = await client.Geocoding.QueryAsync("Linz,AT");
     Assert.NotNull(result.Content);
     Assert.NotEmpty(result.Content!);
     Assert.Equal("AT", result.Content!.First().Country);
@@ -77,7 +77,7 @@ public class Tests
   public async Task TestGeoCodeReverse()
   {
     var client = new OpenWeatherMapClient(ApiKey);
-    var result = await client.QueryGeoCodeReverseAsync(48.3059, 14.2862);
+    var result = await client.Geocoding.QueryReverseAsync(48.3059, 14.2862);
     Assert.NotNull(result.Content);
     Assert.NotEmpty(result.Content!);
     Assert.Equal("AT", result.Content!.First().Country);

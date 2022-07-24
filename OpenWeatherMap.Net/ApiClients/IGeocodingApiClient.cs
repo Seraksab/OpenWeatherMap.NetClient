@@ -1,22 +1,12 @@
 using Refit;
-using ApiGeoCodeResponse = OpenWeatherMap.Net.Models.ApiGeoCodeResponse;
-using ApiWeatherResponse = OpenWeatherMap.Net.Models.ApiWeatherResponse;
+using ApiGeoCodeResponse = OpenWeatherMap.Net.Models.ApiResponses.ApiGeoCodeResponse;
 
-namespace OpenWeatherMap.Net.Api;
+namespace OpenWeatherMap.Net.ApiClients;
 
 [Headers("Accept: application/json")]
-internal interface IOpenWeatherMapApi
-{
-  /// <summary>
-  /// Get the current weather data for geographical coordinates
-  /// </summary>
-  /// <param name="appid">API key</param>
-  /// <param name="lang">Language to get textual output in (en, de, ...)</param>
-  /// <param name="lat">Geographical coordinates (latitude)</param>
-  /// <param name="lon">Geographical coordinates (longitude)</param>
-  [Get("/data/2.5/weather")]
-  Task<ApiResponse<ApiWeatherResponse>> CurrentWeather(string appid, string lang, double lat, double lon);
+internal interface IGeocodingApiClient
 
+{
   /// <summary>
   /// Get geographical coordinates for a location name
   /// </summary>

@@ -1,4 +1,5 @@
 ﻿using OpenWeatherMap.Net.Models;
+using OpenWeatherMap.Net.Models.ApiResponses;
 
 namespace OpenWeatherMap.Net.Extensions;
 

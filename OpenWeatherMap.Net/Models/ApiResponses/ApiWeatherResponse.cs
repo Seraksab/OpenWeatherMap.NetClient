@@ -2,7 +2,7 @@
 using OpenWeatherMap.Net.Converters;
 using UnitsNet;
 
-namespace OpenWeatherMap.Net.Models;
+namespace OpenWeatherMap.Net.Models.ApiResponses;
 
 internal sealed class ApiWeatherResponse
 {
