@@ -2,7 +2,7 @@
 
 namespace OpenWeatherMap.Net.Models;
 
-public interface IResponse<out T> where T : class
+public interface IApiResponse<out T> where T : class
 {
   /// <summary>
   /// HTTP response status code.

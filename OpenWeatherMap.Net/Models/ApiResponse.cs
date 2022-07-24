@@ -2,9 +2,9 @@
 
 namespace OpenWeatherMap.Net.Models;
 
-public sealed class Response<T> : IResponse<T> where T : class
+public sealed class ApiResponse<T> : IApiResponse<T> where T : class
 {
-  internal Response(HttpStatusCode statusCode, string? reasonPhrase, T? content, Exception? error)
+  internal ApiResponse(HttpStatusCode statusCode, string? reasonPhrase, T? content, Exception? error)
   {
     StatusCode = statusCode;
     ReasonPhrase = reasonPhrase;

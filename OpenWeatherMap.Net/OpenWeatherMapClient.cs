@@ -36,45 +36,56 @@ public class OpenWeatherMapClient : IOpenWeatherMapClient
     }
   }
 
-  public async Task<IResponse<CurrentWeather>> CurrentWeatherByName(string name)
+  public async Task<Models.IApiResponse<CurrentWeather>> QueryWeatherAsync(string query)
   {
-    if (name == null) throw new ArgumentNullException(nameof(name));
+    if (query == null) throw new ArgumentNullException(nameof(query));
 
-    return await CacheRequest($"ByName_{name}", async () =>
+    return await CacheRequest($"WeatherByName_{query}", async () =>
     {
-      var result = await _apiClient.CoordinatesByLocationName(_apiKey, 1, name);
-      return result.IsSuccessStatusCode && result.Content is { Length: > 0 }
-        ? await WeatherRequest(result.Content[0].Latitude, result.Content[0].Longitude)
-        : new Response<CurrentWeather>(result.StatusCode, result.ReasonPhrase, null, result.Error);
+      var geoCode = await GeoCodeRequest(query, 1);
+      return geoCode.IsSuccess && geoCode.Content != null && geoCode.Content.Any()
+        ? await WeatherRequest(geoCode.Content.First().Latitude, geoCode.Content.First().Longitude)
+        : new Models.ApiResponse<CurrentWeather>(geoCode.StatusCode, geoCode.ReasonPhrase, null, geoCode.Error);
     });
   }
 
-  public async Task<IResponse<CurrentWeather>> CurrentWeatherByZip(string zip)
+  public async Task<Models.IApiResponse<CurrentWeather>> QueryWeatherAsync(double lat, double lon)
   {
-    if (zip == null) throw new ArgumentNullException(nameof(zip));
-
-    return await CacheRequest($"ByZip_{zip}", async () =>
-    {
-      var result = await _apiClient.CoordinatesByZipCode(_apiKey, zip);
-      return result.IsSuccessStatusCode && result.Content != null
-        ? await WeatherRequest(result.Content.Latitude, result.Content.Longitude)
-        : new Response<CurrentWeather>(result.StatusCode, result.ReasonPhrase, null, result.Error);
-    });
+    return await CacheRequest($"WeatherByCoordinates_{lat}_{lon}", () => WeatherRequest(lat, lon));
   }
 
-  public async Task<IResponse<CurrentWeather>> CurrentWeatherByCoordinates(double lat, double lon)
+  public async Task<Models.IApiResponse<IEnumerable<GeoCode>>> QueryGeoCodeAsync(string query)
   {
-    return await CacheRequest($"ByCoordinates_{lat}_{lon}", () => WeatherRequest(lat, lon));
+    return await CacheRequest($"GeoCode_{query}", () => GeoCodeRequest(query, 5));
   }
 
-  private async Task<IResponse<CurrentWeather>> WeatherRequest(double lat, double lon)
+  private async Task<Models.IApiResponse<CurrentWeather>> WeatherRequest(double lat, double lon)
   {
     var response = await _apiClient.CurrentWeather(_apiKey, _lang, lat, lon);
-    return new Response<CurrentWeather>(response.StatusCode, response.ReasonPhrase, response.Content?.ToWeather(),
-      response.Error);
+    return new Models.ApiResponse<CurrentWeather>(
+      response.StatusCode,
+      response.ReasonPhrase,
+      response.Content?.ToWeather(),
+      response.Error
+    );
   }
 
-  private async Task<IResponse<T>> CacheRequest<T>(string cacheKey, Func<Task<IResponse<T>>> itemFactory)
+  private async Task<Models.IApiResponse<IEnumerable<GeoCode>>> GeoCodeRequest(string query, int limit)
+  {
+    var response = await _apiClient.GeoCodeByLocationName(_apiKey, limit, query);
+    var mappedResponse = response.Content == null
+      ? Enumerable.Empty<GeoCode>()
+      : response.Content.Select(gc => gc.ToGeoCode());
+    return new Models.ApiResponse<IEnumerable<GeoCode>>(
+      response.StatusCode,
+      response.ReasonPhrase,
+      mappedResponse,
+      response.Error
+    );
+  }
+
+  private async Task<Models.IApiResponse<T>> CacheRequest<T>(string cacheKey,
+    Func<Task<Models.IApiResponse<T>>> itemFactory)
     where T : class
   {
     return _cache == null

@@ -1,5 +1,6 @@
-using OpenWeatherMap.Net.Models;
 using Refit;
+using ApiGeoCodeResponse = OpenWeatherMap.Net.Models.ApiGeoCodeResponse;
+using ApiWeatherResponse = OpenWeatherMap.Net.Models.ApiWeatherResponse;
 
 namespace OpenWeatherMap.Net.Api;
 
@@ -23,7 +24,7 @@ internal interface IOpenWeatherMapApi
   /// <param name="limit">Number of the locations in the API response (up to 5)</param>
   /// <param name="q">City name, state code (only for the US) and country code divided by comma (ISO 3166 country codes)</param>
   [Get("/geo/1.0/direct")]
-  Task<ApiResponse<ApiGeoCodeResponse[]>> CoordinatesByLocationName(string appid, int limit, string q);
+  Task<ApiResponse<ApiGeoCodeResponse[]>> GeoCodeByLocationName(string appid, int limit, string q);
 
   /// <summary>
   /// Coordinates by zip/post code
@@ -31,5 +32,5 @@ internal interface IOpenWeatherMapApi
   /// <param name="appid">API key</param>
   /// <param name="zip">Zip/post code and country code divided by comma (ISO 3166 country codes)</param>
   [Get("/geo/1.0/zip")]
-  Task<ApiResponse<ApiGeoCodeResponse?>> CoordinatesByZipCode(string appid, string zip);
+  Task<ApiResponse<ApiGeoCodeResponse?>> GeoCodeByZipCode(string appid, string zip);
 }
