@@ -3,7 +3,7 @@ using OpenWeatherMap.Net.Models.ApiResponses;
 
 namespace OpenWeatherMap.Net.Extensions;
 
-internal static class ApiGeoCodeExtensions
+internal static class ApiGeoCodeResponseExtensions
 {
   internal static GeoCode ToGeoCode(this ApiGeoCodeResponse response)
   {

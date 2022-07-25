@@ -15,4 +15,10 @@ public interface IOpenWeatherMapClient
   /// </summary>
   /// <returns>An implementation of <see cref="IGeocodingApi"/></returns>
   IGeocodingApi Geocoding { get; }
+  
+  /// <summary>
+  /// The Air Pollution API provides current, forecast and historical air pollution data for any coordinates on the globe.
+  /// </summary>
+  /// <returns>An implementation of <see cref="IAirPollutionApi"/></returns>
+  IAirPollutionApi AirPollution { get; }
 }
