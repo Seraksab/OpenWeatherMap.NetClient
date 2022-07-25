@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenWeatherMap.Net", "OpenWeatherMap.Net\OpenWeatherMap.Net.csproj", "{E71A336B-22CC-4FB1-8484-9529104E9344}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenWeatherMap.NetClient", "OpenWeatherMap.NetClient\OpenWeatherMap.NetClient.csproj", "{E71A336B-22CC-4FB1-8484-9529104E9344}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenWeatherMap.Net.UnitTests", "OpenWeatherMap.Net.UnitTests\OpenWeatherMap.Net.UnitTests.csproj", "{A1C3E8DB-F8C9-43CF-9443-0D869B47B635}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenWeatherMap.NetClient.UnitTests", "OpenWeatherMap.NetClient.UnitTests\OpenWeatherMap.NetClient.UnitTests.csproj", "{A1C3E8DB-F8C9-43CF-9443-0D869B47B635}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
