@@ -10,7 +10,7 @@ public sealed class ApiResponse<T> : IApiResponse<T> where T : class
     StatusCode = statusCode;
     ReasonPhrase = reasonPhrase;
     Content = content;
-    if (!IsSuccess)
+    if (error != null)
     {
       Error = new OpenWeatherMapException(statusCode, reasonPhrase, error);
     }
@@ -18,7 +18,7 @@ public sealed class ApiResponse<T> : IApiResponse<T> where T : class
 
   public HttpStatusCode StatusCode { get; }
   public string? ReasonPhrase { get; }
-  public bool IsSuccess => (int)StatusCode >= 200 && (int)StatusCode <= 299;
+  public bool IsSuccess => (int)StatusCode >= 200 && (int)StatusCode <= 299 && Error == null;
   public T? Content { get; }
   public bool HasContent => Content != null;
   public OpenWeatherMapException? Error { get; }

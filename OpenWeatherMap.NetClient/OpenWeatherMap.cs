@@ -5,7 +5,7 @@ using OpenWeatherMap.NetClient.Models;
 
 namespace OpenWeatherMap.NetClient;
 
-public sealed class OpenWeatherMapClient : IOpenWeatherMapClient
+public sealed class OpenWeatherMap : IOpenWeatherMap
 {
   private static readonly Regex ApiKeyRegex = new(@"^[0-9a-f]{32}$");
 
@@ -13,7 +13,7 @@ public sealed class OpenWeatherMapClient : IOpenWeatherMapClient
   private readonly Lazy<IAirPollutionApi> _airPollution;
   private readonly Lazy<ICurrentWeatherApi> _currentWeather;
 
-  public OpenWeatherMapClient(string apiKey, IOpenWeatherMapOptions? options = null)
+  public OpenWeatherMap(string apiKey, IOpenWeatherMapOptions? options = null)
   {
     if (apiKey == null) throw new ArgumentNullException(nameof(apiKey));
     if (!ApiKeyRegex.IsMatch(apiKey)) throw new ArgumentException($"'{apiKey}' is not a valid API key");

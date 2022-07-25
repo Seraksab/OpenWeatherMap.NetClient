@@ -58,6 +58,6 @@ internal class AirPollutionApiImpl : AbstractApiImplBase, IAirPollutionApi
   {
     return response.Content == null
       ? Enumerable.Empty<AirPollution>()
-      : response.Content.Elements.Select(e => e.ToAirPollution());
+      : response.Content.List.Select(e => e.ToAirPollution());
   }
 }

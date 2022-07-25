@@ -5,7 +5,7 @@ namespace OpenWeatherMap.NetClient.Extensions;
 
 internal static class ApiAirPollutionResponseExtensions
 {
-  internal static AirPollution ToAirPollution(this ApiAirPollutionResponse.Element response)
+  internal static AirPollution ToAirPollution(this ApiAirPollutionResponse.ListElementResponse response)
   {
     return new AirPollution
     {

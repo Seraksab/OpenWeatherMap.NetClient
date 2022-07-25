@@ -2,7 +2,7 @@
 
 namespace OpenWeatherMap.NetClient;
 
-public interface IOpenWeatherMapClient
+public interface IOpenWeatherMap
 {
   /// <summary>
   /// API to fetch current weather data for any location on Earth including over 200,000 cities. 

@@ -15,7 +15,7 @@ public sealed class OpenWeatherMapException : Exception
   public string? ReasonPhrase { get; }
 
   internal OpenWeatherMapException(HttpStatusCode statusCode, string? reasonPhrase, Exception? inner)
-    : base($"Error on API request", inner)
+    : base("Error on API request", inner)
   {
     StatusCode = statusCode;
     ReasonPhrase = reasonPhrase;
