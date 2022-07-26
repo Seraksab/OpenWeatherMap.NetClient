@@ -20,36 +20,57 @@ internal class AirPollutionApiImpl : AbstractApiImplBase, IAirPollutionApi
 
   public async Task<Models.IApiResponse<AirPollution>> QueryCurrentAsync(double lat, double lon)
   {
-    var response = await _airPollutionApiClient.Current(_apiKey, lat, lon);
-    return new Models.ApiResponse<AirPollution>(
-      response.StatusCode,
-      response.ReasonPhrase,
-      MapModels(response).FirstOrDefault(),
-      response.Error
+    return await CacheRequest<AirPollution>(
+      () => $"current_{lat}_{lon}",
+      async () =>
+      {
+        var response = await _airPollutionApiClient.Current(_apiKey, lat, lon);
+        return new Models.ApiResponse<AirPollution>(
+          response.StatusCode,
+          response.ReasonPhrase,
+          MapModels(response).FirstOrDefault(),
+          response.Error
+        );
+      }
     );
   }
 
   public async Task<Models.IApiResponse<IEnumerable<AirPollution>>> QueryForecastAsync(double lat, double lon)
   {
-    var response = await _airPollutionApiClient.Forecast(_apiKey, lat, lon);
-    return new Models.ApiResponse<IEnumerable<AirPollution>>(
-      response.StatusCode,
-      response.ReasonPhrase,
-      MapModels(response),
-      response.Error
+    return await CacheRequest<IEnumerable<AirPollution>>(
+      () => $"forecast_{lat}_{lon}",
+      async () =>
+      {
+        var response = await _airPollutionApiClient.Forecast(_apiKey, lat, lon);
+        return new Models.ApiResponse<IEnumerable<AirPollution>>(
+          response.StatusCode,
+          response.ReasonPhrase,
+          MapModels(response),
+          response.Error
+        );
+      }
     );
   }
 
   public async Task<Models.IApiResponse<IEnumerable<AirPollution>>> QueryHistoricalAsync(double lat, double lon,
     DateTime start, DateTime end)
   {
-    var response = await _airPollutionApiClient.Historical(_apiKey, lat, lon,
-      ((DateTimeOffset)start).ToUnixTimeSeconds(), ((DateTimeOffset)end).ToUnixTimeSeconds());
-    return new Models.ApiResponse<IEnumerable<AirPollution>>(
-      response.StatusCode,
-      response.ReasonPhrase,
-      MapModels(response),
-      response.Error
+    return await CacheRequest<IEnumerable<AirPollution>>(
+      () => $"historical_{lat}_{lon}_{start}_{end}",
+      async () =>
+      {
+        var response = await _airPollutionApiClient.Historical(
+          _apiKey, lat, lon,
+          ((DateTimeOffset)start).ToUnixTimeSeconds(),
+          ((DateTimeOffset)end).ToUnixTimeSeconds()
+        );
+        return new Models.ApiResponse<IEnumerable<AirPollution>>(
+          response.StatusCode,
+          response.ReasonPhrase,
+          MapModels(response),
+          response.Error
+        );
+      }
     );
   }
 
