@@ -1,7 +1,7 @@
 using Refit;
-using ApiGeoCodeResponse = OpenWeatherMap.NetClient.Models.ApiResponses.ApiGeoCodeResponse;
+using ApiGeoCodeResponse = OpenWeatherMap.NetClient.RestApis.Responses.ApiGeoCodeResponse;
 
-namespace OpenWeatherMap.NetClient.ApiClients;
+namespace OpenWeatherMap.NetClient.RestApis.Clients;
 
 [Headers("Accept: application/json")]
 internal interface IGeocodingApiClient

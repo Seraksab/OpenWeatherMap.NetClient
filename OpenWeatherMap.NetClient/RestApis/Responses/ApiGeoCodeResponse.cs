@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace OpenWeatherMap.NetClient.Models.ApiResponses;
+namespace OpenWeatherMap.NetClient.RestApis.Responses;
 
 internal sealed class ApiGeoCodeResponse
 {

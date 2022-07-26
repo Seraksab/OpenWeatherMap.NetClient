@@ -1,7 +1,7 @@
 ﻿using LazyCache;
 using OpenWeatherMap.NetClient.Models;
 
-namespace OpenWeatherMap.NetClient.Apis.Impl;
+namespace OpenWeatherMap.NetClient.Apis;
 
 internal abstract class AbstractApiImplBase
 {

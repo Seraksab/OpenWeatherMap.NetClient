@@ -4,7 +4,7 @@ using OpenWeatherMap.NetClient.Enums;
 using UnitsNet;
 using DateTimeConverter = OpenWeatherMap.NetClient.Converters.DateTimeConverter;
 
-namespace OpenWeatherMap.NetClient.Models.ApiResponses;
+namespace OpenWeatherMap.NetClient.RestApis.Responses;
 
 internal sealed class ApiAirPollutionResponse
 {

@@ -1,9 +1,9 @@
-﻿using OpenWeatherMap.NetClient.ApiClients;
-using OpenWeatherMap.NetClient.Extensions;
+﻿using OpenWeatherMap.NetClient.Extensions;
 using OpenWeatherMap.NetClient.Models;
+using OpenWeatherMap.NetClient.RestApis.Clients;
 using Refit;
 
-namespace OpenWeatherMap.NetClient.Apis.Impl;
+namespace OpenWeatherMap.NetClient.Apis;
 
 internal class CurrentWeatherApiImpl : AbstractApiImplBase, ICurrentWeatherApi
 {

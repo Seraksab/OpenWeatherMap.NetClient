@@ -1,6 +1,5 @@
 ﻿using System.Text.RegularExpressions;
 using OpenWeatherMap.NetClient.Apis;
-using OpenWeatherMap.NetClient.Apis.Impl;
 using OpenWeatherMap.NetClient.Models;
 
 namespace OpenWeatherMap.NetClient;

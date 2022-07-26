@@ -1,7 +1,7 @@
-using OpenWeatherMap.NetClient.Models.ApiResponses;
+using OpenWeatherMap.NetClient.RestApis.Responses;
 using Refit;
 
-namespace OpenWeatherMap.NetClient.ApiClients;
+namespace OpenWeatherMap.NetClient.RestApis.Clients;
 
 [Headers("Accept: application/json")]
 internal interface IAirPollutionApiClient

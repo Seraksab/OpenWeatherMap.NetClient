@@ -1,7 +1,7 @@
 using Refit;
-using ApiWeatherResponse = OpenWeatherMap.NetClient.Models.ApiResponses.ApiWeatherResponse;
+using ApiWeatherResponse = OpenWeatherMap.NetClient.RestApis.Responses.ApiWeatherResponse;
 
-namespace OpenWeatherMap.NetClient.ApiClients;
+namespace OpenWeatherMap.NetClient.RestApis.Clients;
 
 [Headers("Accept: application/json")]
 internal interface ICurrentWeatherApiClient
