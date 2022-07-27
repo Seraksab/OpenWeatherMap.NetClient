@@ -15,20 +15,22 @@ internal class GeocodingApiImpl : AbstractApiImplBase, IGeocodingApi
   internal GeocodingApiImpl(string apiKey, IOpenWeatherMapOptions? options) : base(options)
   {
     _apiKey = apiKey;
-    _geoCodingApiClient = RestService.For<IGeocodingApiClient>(BaseUrl);;
+    _geoCodingApiClient = RestService.For<IGeocodingApiClient>(BaseUrl);
   }
 
-  public async Task<Models.IApiResponse<IEnumerable<GeoCode>>> QueryAsync(string query, int limit = Int32.MaxValue)
+  public async Task<Models.IApiResponse<IEnumerable<GeoCode>>> QueryAsync(string query, int limit = int.MaxValue)
   {
-    return await CacheRequest($"GeoCode_{query}_{limit}", async () =>
+    if (query == null) throw new ArgumentNullException(nameof(query));
+
+    return await CacheRequest(() => $"GeoCode_{query}_{limit}", async () =>
       MapGeoCodes(await _geoCodingApiClient.GeoCodeByLocationName(_apiKey, query, limit))
     );
   }
 
   public async Task<Models.IApiResponse<IEnumerable<GeoCode>>> QueryReverseAsync(double lat, double lon,
-    int limit = Int32.MaxValue)
+    int limit = int.MaxValue)
   {
-    return await CacheRequest($"GeoCodeReverse_{lat}_{lon}_{limit}",
+    return await CacheRequest(() => $"GeoCodeReverse_{lat}_{lon}_{limit}",
       async () => MapGeoCodes(await _geoCodingApiClient.GeoCodeReverse(_apiKey, lat, lon, limit))
     );
   }

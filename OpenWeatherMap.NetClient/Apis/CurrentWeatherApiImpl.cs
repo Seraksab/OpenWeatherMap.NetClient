@@ -23,7 +23,7 @@ internal class CurrentWeatherApiImpl : AbstractApiImplBase, ICurrentWeatherApi
   {
     if (query == null) throw new ArgumentNullException(nameof(query));
 
-    return await CacheRequest($"WeatherByName_{query}", async () =>
+    return await CacheRequest(() => $"WeatherByName_{query}", async () =>
     {
       var geoCode = await _geoCodingApiClient.GeoCodeByLocationName(_apiKey, query, 1);
       return geoCode.IsSuccessStatusCode && geoCode.Content != null && geoCode.Content.Any()
@@ -34,7 +34,7 @@ internal class CurrentWeatherApiImpl : AbstractApiImplBase, ICurrentWeatherApi
 
   public async Task<Models.IApiResponse<CurrentWeather>> QueryAsync(double lat, double lon)
   {
-    return await CacheRequest($"WeatherByCoordinates_{lat}_{lon}", () => WeatherRequest(lat, lon));
+    return await CacheRequest(() => $"WeatherByCoordinates_{lat}_{lon}", () => WeatherRequest(lat, lon));
   }
 
   private async Task<Models.IApiResponse<CurrentWeather>> WeatherRequest(double lat, double lon)
