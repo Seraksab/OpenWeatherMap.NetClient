@@ -4,6 +4,9 @@ using OpenWeatherMap.NetClient.Models;
 
 namespace OpenWeatherMap.NetClient;
 
+/// <summary>
+/// Implementation of <see cref="IOpenWeatherMap"/>
+/// </summary>
 public sealed class OpenWeatherMap : IOpenWeatherMap
 {
   private static readonly Regex ApiKeyRegex = new(@"^[0-9a-f]{32}$");
@@ -12,6 +15,12 @@ public sealed class OpenWeatherMap : IOpenWeatherMap
   private readonly Lazy<IAirPollutionApi> _airPollution;
   private readonly Lazy<ICurrentWeatherApi> _currentWeather;
 
+  /// <summary>
+  /// Creates a new OpenWeatherMap instance
+  /// </summary>
+  /// <returns>An implementation of <see cref="IOpenWeatherMap"/></returns>
+  /// <param name="apiKey">Your unique API key</param>
+  /// <param name="options">Optional client configuration</param>
   public OpenWeatherMap(string apiKey, IOpenWeatherMapOptions? options = null)
   {
     if (apiKey == null) throw new ArgumentNullException(nameof(apiKey));
@@ -22,9 +31,12 @@ public sealed class OpenWeatherMap : IOpenWeatherMap
     _currentWeather = new Lazy<ICurrentWeatherApi>(() => new CurrentWeatherApiImpl(apiKey, options));
   }
 
+  /// <inheritdoc />
   public ICurrentWeatherApi CurrentWeather => _currentWeather.Value;
 
+  /// <inheritdoc />
   public IGeocodingApi Geocoding => _geoCoding.Value;
 
+  /// <inheritdoc />
   public IAirPollutionApi AirPollution => _airPollution.Value;
 }

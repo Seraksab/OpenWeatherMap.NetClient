@@ -13,7 +13,7 @@ internal static class ApiGeoCodeResponseExtensions
       LocalNames = response.LocalNames,
       Latitude = response.Latitude,
       Longitude = response.Longitude,
-      Country = response.Country,
+      Country = response.Country
     };
   }
 }

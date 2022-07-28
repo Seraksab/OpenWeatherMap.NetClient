@@ -3,7 +3,7 @@ using OpenWeatherMap.NetClient.Models;
 
 namespace OpenWeatherMap.NetClient.Apis;
 
-internal abstract class AbstractApiImplBase
+public abstract class AbstractApiImplBase
 {
   private protected const string BaseUrl = "https://api.openweathermap.org";
 

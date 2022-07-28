@@ -2,6 +2,9 @@
 
 namespace OpenWeatherMap.NetClient.Models;
 
+/// <summary>
+/// Current weather data
+/// </summary>
 public sealed class CurrentWeather
 {
   /// <summary>

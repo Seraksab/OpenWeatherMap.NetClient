@@ -6,7 +6,10 @@ using Refit;
 
 namespace OpenWeatherMap.NetClient.Apis;
 
-internal class AirPollutionApiImpl : AbstractApiImplBase, IAirPollutionApi
+/// <summary>
+/// Implementation of <see cref="IAirPollutionApi"/>
+/// </summary>
+public sealed class AirPollutionApiImpl : AbstractApiImplBase, IAirPollutionApi
 {
   private readonly string _apiKey;
 
@@ -18,6 +21,7 @@ internal class AirPollutionApiImpl : AbstractApiImplBase, IAirPollutionApi
     _airPollutionApiClient = RestService.For<IAirPollutionApiClient>(BaseUrl);
   }
 
+  /// <inheritdoc />
   public async Task<Models.IApiResponse<AirPollution>> QueryCurrentAsync(double lat, double lon)
   {
     return await CacheRequest<AirPollution>(
@@ -35,6 +39,7 @@ internal class AirPollutionApiImpl : AbstractApiImplBase, IAirPollutionApi
     );
   }
 
+  /// <inheritdoc />
   public async Task<Models.IApiResponse<IEnumerable<AirPollution>>> QueryForecastAsync(double lat, double lon)
   {
     return await CacheRequest<IEnumerable<AirPollution>>(
@@ -52,6 +57,7 @@ internal class AirPollutionApiImpl : AbstractApiImplBase, IAirPollutionApi
     );
   }
 
+  /// <inheritdoc />
   public async Task<Models.IApiResponse<IEnumerable<AirPollution>>> QueryHistoricalAsync(double lat, double lon,
     DateTime start, DateTime end)
   {

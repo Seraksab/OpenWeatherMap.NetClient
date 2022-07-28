@@ -3,6 +3,9 @@ using OpenWeatherMap.NetClient.Exceptions;
 
 namespace OpenWeatherMap.NetClient.Models;
 
+/// <summary>
+/// The response of an API call
+/// </summary>
 public interface IApiResponse<out T> where T : class
 {
   /// <summary>

@@ -3,6 +3,9 @@ using UnitsNet;
 
 namespace OpenWeatherMap.NetClient.Models;
 
+/// <summary>
+/// Air pollution data
+/// </summary>
 public sealed class AirPollution
 {
   /// <summary>

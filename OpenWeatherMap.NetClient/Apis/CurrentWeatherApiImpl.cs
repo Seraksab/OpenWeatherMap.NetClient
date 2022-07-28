@@ -5,7 +5,10 @@ using Refit;
 
 namespace OpenWeatherMap.NetClient.Apis;
 
-internal class CurrentWeatherApiImpl : AbstractApiImplBase, ICurrentWeatherApi
+/// <summary>
+/// Implementation of <see cref="ICurrentWeatherApi"/>
+/// </summary>
+public sealed class CurrentWeatherApiImpl : AbstractApiImplBase, ICurrentWeatherApi
 {
   private readonly string _apiKey;
 
@@ -19,6 +22,7 @@ internal class CurrentWeatherApiImpl : AbstractApiImplBase, ICurrentWeatherApi
     _geoCodingApiClient = RestService.For<IGeocodingApiClient>(BaseUrl);
   }
 
+  /// <inheritdoc />
   public async Task<Models.IApiResponse<CurrentWeather>> QueryAsync(string query)
   {
     if (query == null) throw new ArgumentNullException(nameof(query));
@@ -32,6 +36,7 @@ internal class CurrentWeatherApiImpl : AbstractApiImplBase, ICurrentWeatherApi
     });
   }
 
+  /// <inheritdoc />
   public async Task<Models.IApiResponse<CurrentWeather>> QueryAsync(double lat, double lon)
   {
     return await CacheRequest(() => $"WeatherByCoordinates_{lat}_{lon}", () => WeatherRequest(lat, lon));

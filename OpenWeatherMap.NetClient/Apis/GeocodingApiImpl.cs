@@ -6,7 +6,10 @@ using Refit;
 
 namespace OpenWeatherMap.NetClient.Apis;
 
-internal class GeocodingApiImpl : AbstractApiImplBase, IGeocodingApi
+/// <summary>
+/// Implementation of <see cref="IGeocodingApi"/>
+/// </summary>
+public sealed class GeocodingApiImpl : AbstractApiImplBase, IGeocodingApi
 {
   private readonly string _apiKey;
 
@@ -18,6 +21,7 @@ internal class GeocodingApiImpl : AbstractApiImplBase, IGeocodingApi
     _geoCodingApiClient = RestService.For<IGeocodingApiClient>(BaseUrl);
   }
 
+  /// <inheritdoc />
   public async Task<Models.IApiResponse<IEnumerable<GeoCode>>> QueryAsync(string query, int limit = int.MaxValue)
   {
     if (query == null) throw new ArgumentNullException(nameof(query));
@@ -27,8 +31,8 @@ internal class GeocodingApiImpl : AbstractApiImplBase, IGeocodingApi
     );
   }
 
-  public async Task<Models.IApiResponse<IEnumerable<GeoCode>>> QueryReverseAsync(double lat, double lon,
-    int limit = int.MaxValue)
+  /// <inheritdoc />
+  public async Task<Models.IApiResponse<IEnumerable<GeoCode>>> QueryReverseAsync(double lat, double lon, int limit = int.MaxValue)
   {
     return await CacheRequest(() => $"GeoCodeReverse_{lat}_{lon}_{limit}",
       async () => MapGeoCodes(await _geoCodingApiClient.GeoCodeReverse(_apiKey, lat, lon, limit))

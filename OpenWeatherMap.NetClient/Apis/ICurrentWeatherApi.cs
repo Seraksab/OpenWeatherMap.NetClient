@@ -2,6 +2,14 @@
 
 namespace OpenWeatherMap.NetClient.Apis;
 
+/// <summary>
+/// Access to the 'Current Weather Data API'
+/// </summary>
+/// <remarks>
+/// The 'Current Weather Data API' provides current weather data for any location on Earth including over 200,000 cities.
+/// Data is collected and processed from different sources such as global and local weather models, satellites, radars and
+/// a vast network of weather stations.
+/// </remarks>
 public interface ICurrentWeatherApi
 {
   /// <summary>

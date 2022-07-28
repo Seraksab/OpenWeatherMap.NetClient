@@ -1,5 +1,8 @@
 namespace OpenWeatherMap.NetClient.Models;
 
+/// <summary>
+/// Geocoding data of a location
+/// </summary>
 public sealed class GeoCode
 {
   /// <summary>
@@ -8,8 +11,11 @@ public sealed class GeoCode
   public string Name { get; internal set; } = null!;
 
   /// <summary>
-  /// Name of the found location in differen tlanguages. The list of names can be different for different locations
+  /// Name of the found location in different languages
   /// </summary>
+  /// <remarks>
+  /// The list of names can be different for different locations
+  /// </remarks>
   public IDictionary<string, string> LocalNames { get; internal set; } = null!;
 
   /// <summary>
