@@ -1,7 +1,14 @@
-# OpenWeatherMap.NetClient
+# ![OpenWeatherMap.Cache](./logo32.png) OpenWeatherMap.NetClient
+
+[![Nuget](https://img.shields.io/nuget/v/OpenWeatherMap.NetClient?style=flat-square)](https://www.nuget.org/packages/OpenWeatherMap.NetClient)
+[![Nuget](https://img.shields.io/nuget/dt/OpenWeatherMap.NetClient?style=flat-square)](https://www.nuget.org/packages/OpenWeatherMap.NetClient)
 
 A simple, asynchronous .NET client to fetch weather information from
-the [OpenWeatherMap](https://openweathermap.org/) APIs
+the [OpenWeatherMap](https://openweathermap.org/) APIs.
+
+Support for response caching is built in.  
+Numerical values are parsed to and returned as units from [Units.NET](https://github.com/angularsen/UnitsNet)
+(where applicable) to ease the conversion between different measurement systems and avoid unit confusion.
 
 Currently supported APIs:
 
@@ -14,9 +21,7 @@ Currently supported APIs:
 
 ## Installation
 
-This is still work in progress. Once finished, the client will be published on NuGet.
-
-TODO
+OpenWeatherMap.NetClient is available from [NuGet](https://www.nuget.org/packages/OpenWeatherMap.NetClient)
 
 ## Usage
 
@@ -45,6 +50,8 @@ if (airPollutionResponse.IsSuccess)
 
 ### Client configuration
 
+The cache is enabled per default with a cache duration of 10 minutes. The culture is set to 'en'.
+
 You can modify the default configuration of the client by additionally passing _IOpenWeatherMapOptions_
 
 ```csharp
@@ -58,7 +65,6 @@ var client = new OpenWeatherMapClient("[API_KEY]", new OpenWeatherMapOptions
 
 ## Dependencies
 
-* [Refit](https://github.com/reactiveui/refit) - used to handle REST requests
+* [Refit](https://github.com/reactiveui/refit) - REST request handling
 * [LazyCache](https://github.com/alastairtree/LazyCache) - caching support
-* [Units.NET](https://github.com/angularsen/UnitsNet) - where applicable, numerical values are parsed to and returned as
-  units from this library to ease the conversion between different measurement systems and avoid unit confusion
+* [Units.NET](https://github.com/angularsen/UnitsNet) - units for numerical weather values
