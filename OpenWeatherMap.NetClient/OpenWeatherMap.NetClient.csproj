@@ -17,12 +17,24 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageTags>Weather,OpenWeather,OpenWeatherMap</PackageTags>
         <RootNamespace>OpenWeatherMap.NetClient</RootNamespace>
+        <PackageIcon>logo128.png</PackageIcon>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="LazyCache" Version="2.4.0" />
       <PackageReference Include="Refit" Version="6.3.2" />
       <PackageReference Include="UnitsNet" Version="4.140.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="..\logo*.png">
+            <Pack>True</Pack>
+            <PackagePath>/</PackagePath>
+        </None>
+        <None Include="..\LICENSE">
+            <Pack>True</Pack>
+            <PackagePath>/</PackagePath>
+        </None>
     </ItemGroup>
 
 </Project>
