@@ -59,6 +59,17 @@ public class Tests
   }
 
   [Fact]
+  public async Task TestCityId()
+  {
+    var client = new OpenWeatherMap(ApiKey);
+    var result = await client.CurrentWeather.QueryAsync(2772400);
+    Assert.True(result.IsSuccess);
+    Assert.NotNull(result.Content);
+    Assert.Equal("Linz", result.Content?.CityName);
+    Assert.Equal("AT", result.Content?.Country);
+  }
+
+  [Fact]
   public async Task TestGeoCode()
   {
     var client = new OpenWeatherMap(ApiKey);

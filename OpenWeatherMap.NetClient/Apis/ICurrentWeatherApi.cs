@@ -30,4 +30,10 @@ public interface ICurrentWeatherApi
   /// <param name="lon">Longitude</param>
   /// <returns>An <see cref="IApiResponse{T}"/> containing the current weather data</returns>
   Task<IApiResponse<CurrentWeather>> QueryAsync(double lat, double lon);
+
+  /// <summary>
+  /// Get the current weather data by city ID
+  /// </summary>
+  /// <param name="cityId">City ID</param>
+  Task<IApiResponse<CurrentWeather>> QueryAsync(int cityId);
 }

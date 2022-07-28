@@ -1,6 +1,7 @@
 ﻿using OpenWeatherMap.NetClient.Extensions;
 using OpenWeatherMap.NetClient.Models;
 using OpenWeatherMap.NetClient.RestApis.Clients;
+using OpenWeatherMap.NetClient.RestApis.Responses;
 using Refit;
 
 namespace OpenWeatherMap.NetClient.Apis;
@@ -12,14 +13,14 @@ public sealed class CurrentWeatherApiImpl : AbstractApiImplBase, ICurrentWeather
 {
   private readonly string _apiKey;
 
-  private readonly ICurrentWeatherApiClient _currentWeatherApiClient;
-  private readonly IGeocodingApiClient _geoCodingApiClient;
+  private readonly ICurrentWeatherApiClient _weatherApi;
+  private readonly IGeocodingApiClient _geoApi;
 
   public CurrentWeatherApiImpl(string apiKey, IOpenWeatherMapOptions? options) : base(options)
   {
     _apiKey = apiKey;
-    _currentWeatherApiClient = RestService.For<ICurrentWeatherApiClient>(BaseUrl);
-    _geoCodingApiClient = RestService.For<IGeocodingApiClient>(BaseUrl);
+    _weatherApi = RestService.For<ICurrentWeatherApiClient>(BaseUrl);
+    _geoApi = RestService.For<IGeocodingApiClient>(BaseUrl);
   }
 
   /// <inheritdoc />
@@ -29,22 +30,39 @@ public sealed class CurrentWeatherApiImpl : AbstractApiImplBase, ICurrentWeather
 
     return await CacheRequest(() => $"WeatherByName_{query}", async () =>
     {
-      var geoCode = await _geoCodingApiClient.GeoCodeByLocationName(_apiKey, query, 1);
-      return geoCode.IsSuccessStatusCode && geoCode.Content != null && geoCode.Content.Any()
-        ? await WeatherRequest(geoCode.Content.First().Latitude, geoCode.Content.First().Longitude)
-        : new Models.ApiResponse<CurrentWeather>(geoCode.StatusCode, geoCode.ReasonPhrase, null, geoCode.Error);
+      var response = await _geoApi.GeoCodeByLocationName(_apiKey, query, 1);
+      if (!response.IsSuccessStatusCode || response.Content == null || !response.Content.Any())
+      {
+        return new Models.ApiResponse<CurrentWeather>(response.StatusCode, response.ReasonPhrase, null, response.Error);
+      }
+
+      var geoCode = response.Content.First();
+      return MapResponse(
+        await _weatherApi.CurrentWeather(_apiKey, Language, geoCode.Latitude, geoCode.Longitude)
+      );
     });
   }
 
   /// <inheritdoc />
   public async Task<Models.IApiResponse<CurrentWeather>> QueryAsync(double lat, double lon)
   {
-    return await CacheRequest(() => $"WeatherByCoordinates_{lat}_{lon}", () => WeatherRequest(lat, lon));
+    return await CacheRequest(
+      () => $"WeatherByCoordinates_{lat}_{lon}",
+      async () => MapResponse(await _weatherApi.CurrentWeather(_apiKey, Language, lat, lon))
+    );
   }
 
-  private async Task<Models.IApiResponse<CurrentWeather>> WeatherRequest(double lat, double lon)
+  /// <inheritdoc />
+  public async Task<Models.IApiResponse<CurrentWeather>> QueryAsync(int cityId)
   {
-    var response = await _currentWeatherApiClient.CurrentWeather(_apiKey, Language, lat, lon);
+    return await CacheRequest(
+      () => $"WeatherByCityId_{cityId}",
+      async () => MapResponse(await _weatherApi.CurrentWeather(_apiKey, Language, cityId))
+    );
+  }
+
+  private Models.IApiResponse<CurrentWeather> MapResponse(Refit.IApiResponse<ApiWeatherResponse> response)
+  {
     return new Models.ApiResponse<CurrentWeather>(
       response.StatusCode,
       response.ReasonPhrase,
