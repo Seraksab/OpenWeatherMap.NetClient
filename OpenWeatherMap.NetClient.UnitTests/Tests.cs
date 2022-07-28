@@ -1,4 +1,5 @@
 using System.Net;
+using OpenWeatherMap.NetClient.Models;
 
 namespace OpenWeatherMap.NetClient.UnitTests;
 
@@ -37,9 +38,6 @@ public class Tests
     Assert.NotNull(result.Content);
     Assert.Equal("Linz", result.Content?.CityName);
     Assert.Equal("AT", result.Content?.Country);
-
-    var cachedResult = await client.CurrentWeather.QueryAsync("Linz,AT");
-    Assert.True(result == cachedResult);
   }
 
   [Fact]
@@ -58,9 +56,6 @@ public class Tests
     Assert.NotNull(result.Content);
     Assert.Equal("Linz", result.Content?.CityName);
     Assert.Equal("AT", result.Content?.Country);
-
-    var cachedResult = await client.CurrentWeather.QueryAsync(48.3059D, 14.2862D);
-    Assert.True(result == cachedResult);
   }
 
   [Fact]
@@ -119,5 +114,29 @@ public class Tests
     Assert.NotNull(result.Content);
     Assert.NotEmpty(result.Content!);
     Assert.All(result.Content!, ap => Assert.InRange(ap.TimeStamp, from, to));
+  }
+
+  [Fact]
+  public async Task TestCache()
+  {
+    var cachedClient = new OpenWeatherMap(ApiKey, new OpenWeatherMapOptions
+    {
+      CacheEnabled = true
+    });
+    var firstResult = cachedClient.CurrentWeather.QueryAsync(48.3059D, 14.2862D);
+    var secondResult = cachedClient.CurrentWeather.QueryAsync(48.3059D, 14.2862D);
+    Assert.True(await firstResult == await secondResult);
+  }
+
+  [Fact]
+  public async Task TestCacheDisabled()
+  {
+    var client = new OpenWeatherMap(ApiKey, new OpenWeatherMapOptions
+    {
+      CacheEnabled = false
+    });
+    var firstResult = client.CurrentWeather.QueryAsync(48.3059D, 14.2862D);
+    var secondResult = client.CurrentWeather.QueryAsync(48.3059D, 14.2862D);
+    Assert.True(await firstResult != await secondResult);
   }
 }
