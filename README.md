@@ -1,4 +1,4 @@
-# ![OpenWeatherMap.Cache](./logo32.png) OpenWeatherMap.NetClient
+# ![](./logo32.png) OpenWeatherMap.NetClient
 
 [![Nuget](https://img.shields.io/nuget/v/OpenWeatherMap.NetClient?style=flat-square)](https://www.nuget.org/packages/OpenWeatherMap.NetClient)
 [![Nuget](https://img.shields.io/nuget/dt/OpenWeatherMap.NetClient?style=flat-square)](https://www.nuget.org/packages/OpenWeatherMap.NetClient)
