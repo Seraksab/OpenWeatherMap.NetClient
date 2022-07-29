@@ -19,7 +19,7 @@ public interface IOpenWeatherMap
   ICurrentWeatherApi CurrentWeather { get; }
 
   /// <summary>
-  /// Access to the 'Air Pollution API'
+  /// Access to the 'Geocoding API'
   /// </summary>
   /// <remarks>
   /// The 'Geocoding API' is a simple tool developed to ease the search for locations while working with geographic
@@ -29,7 +29,7 @@ public interface IOpenWeatherMap
   IGeocodingApi Geocoding { get; }
 
   /// <summary>
-  /// Access to the 'Geocoding API'
+  /// Access to the 'Air Pollution API'
   /// </summary>
   /// <remarks>
   /// The 'Air Pollution API' provides current, forecast and historical air pollution data for any coordinates on the globe.
