@@ -15,7 +15,7 @@ public sealed class AirPollutionApiImpl : AbstractApiImplBase, IAirPollutionApi
 
   private readonly IAirPollutionApiClient _airPollutionApiClient;
 
-  public AirPollutionApiImpl(string apiKey, IOpenWeatherMapOptions? options) : base(options)
+  internal AirPollutionApiImpl(string apiKey, IOpenWeatherMapOptions? options) : base(options)
   {
     _apiKey = apiKey;
     _airPollutionApiClient = RestService.For<IAirPollutionApiClient>(BaseUrl);
@@ -24,7 +24,7 @@ public sealed class AirPollutionApiImpl : AbstractApiImplBase, IAirPollutionApi
   /// <inheritdoc />
   public async Task<Models.IApiResponse<AirPollution>> QueryCurrentAsync(double lat, double lon)
   {
-    return await CacheRequest<AirPollution>(
+    return await Cached<AirPollution>(
       () => $"current_{lat}_{lon}",
       async () =>
       {
@@ -42,7 +42,7 @@ public sealed class AirPollutionApiImpl : AbstractApiImplBase, IAirPollutionApi
   /// <inheritdoc />
   public async Task<Models.IApiResponse<IEnumerable<AirPollution>>> QueryForecastAsync(double lat, double lon)
   {
-    return await CacheRequest<IEnumerable<AirPollution>>(
+    return await Cached<IEnumerable<AirPollution>>(
       () => $"forecast_{lat}_{lon}",
       async () =>
       {
@@ -61,7 +61,7 @@ public sealed class AirPollutionApiImpl : AbstractApiImplBase, IAirPollutionApi
   public async Task<Models.IApiResponse<IEnumerable<AirPollution>>> QueryHistoricalAsync(double lat, double lon,
     DateTime start, DateTime end)
   {
-    return await CacheRequest<IEnumerable<AirPollution>>(
+    return await Cached<IEnumerable<AirPollution>>(
       () => $"historical_{lat}_{lon}_{start}_{end}",
       async () =>
       {

@@ -16,7 +16,7 @@ public sealed class CurrentWeatherApiImpl : AbstractApiImplBase, ICurrentWeather
   private readonly ICurrentWeatherApiClient _weatherApi;
   private readonly IGeocodingApiClient _geoApi;
 
-  public CurrentWeatherApiImpl(string apiKey, IOpenWeatherMapOptions? options) : base(options)
+  internal CurrentWeatherApiImpl(string apiKey, IOpenWeatherMapOptions? options) : base(options)
   {
     _apiKey = apiKey;
     _weatherApi = RestService.For<ICurrentWeatherApiClient>(BaseUrl);
@@ -28,7 +28,7 @@ public sealed class CurrentWeatherApiImpl : AbstractApiImplBase, ICurrentWeather
   {
     if (query == null) throw new ArgumentNullException(nameof(query));
 
-    return await CacheRequest(() => $"WeatherByName_{query}", async () =>
+    return await Cached(() => $"WeatherByName_{query}", async () =>
     {
       var response = await _geoApi.GeoCodeByLocationName(_apiKey, query, 1);
       if (!response.IsSuccessStatusCode || response.Content == null || !response.Content.Any())
@@ -46,7 +46,7 @@ public sealed class CurrentWeatherApiImpl : AbstractApiImplBase, ICurrentWeather
   /// <inheritdoc />
   public async Task<Models.IApiResponse<CurrentWeather>> QueryAsync(double lat, double lon)
   {
-    return await CacheRequest(
+    return await Cached(
       () => $"WeatherByCoordinates_{lat}_{lon}",
       async () => MapResponse(await _weatherApi.CurrentWeather(_apiKey, Language, lat, lon))
     );
@@ -55,7 +55,7 @@ public sealed class CurrentWeatherApiImpl : AbstractApiImplBase, ICurrentWeather
   /// <inheritdoc />
   public async Task<Models.IApiResponse<CurrentWeather>> QueryAsync(int cityId)
   {
-    return await CacheRequest(
+    return await Cached(
       () => $"WeatherByCityId_{cityId}",
       async () => MapResponse(await _weatherApi.CurrentWeather(_apiKey, Language, cityId))
     );

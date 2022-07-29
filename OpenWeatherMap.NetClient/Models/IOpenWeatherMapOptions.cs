@@ -2,6 +2,9 @@
 
 namespace OpenWeatherMap.NetClient.Models;
 
+/// <summary>
+/// OpenWeatherMap client configuration
+/// </summary>
 public interface IOpenWeatherMapOptions
 {
   /// <summary>

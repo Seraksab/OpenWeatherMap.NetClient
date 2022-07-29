@@ -3,6 +3,9 @@ using OpenWeatherMap.NetClient.Models;
 
 namespace OpenWeatherMap.NetClient.Apis;
 
+/// <summary>
+/// Abstract base class for API implementations that handles response caching
+/// </summary>
 public abstract class AbstractApiImplBase
 {
   private protected const string BaseUrl = "https://api.openweathermap.org";
@@ -22,7 +25,7 @@ public abstract class AbstractApiImplBase
 
   private protected string Language { get; }
 
-  private protected async Task<IApiResponse<T>> CacheRequest<T>(
+  private protected async Task<IApiResponse<T>> Cached<T>(
     Func<string> keyFunction,
     Func<Task<IApiResponse<T>>> itemFactory
   ) where T : class

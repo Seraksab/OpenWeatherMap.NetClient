@@ -14,7 +14,7 @@ public sealed class AirPollution
   public DateTime TimeStamp { get; set; }
 
   /// <summary>
-  /// Air Quality Index
+  /// Air Quality Index (AQI)
   /// </summary>
   public AirQualityIndex AirQualityIndex { get; internal set; }
 

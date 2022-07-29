@@ -26,7 +26,7 @@ public sealed class GeocodingApiImpl : AbstractApiImplBase, IGeocodingApi
   {
     if (query == null) throw new ArgumentNullException(nameof(query));
 
-    return await CacheRequest(() => $"GeoCode_{query}_{limit}", async () =>
+    return await Cached(() => $"GeoCode_{query}_{limit}", async () =>
       MapGeoCodes(await _geoCodingApiClient.GeoCodeByLocationName(_apiKey, query, limit))
     );
   }
@@ -34,7 +34,7 @@ public sealed class GeocodingApiImpl : AbstractApiImplBase, IGeocodingApi
   /// <inheritdoc />
   public async Task<Models.IApiResponse<IEnumerable<GeoCode>>> QueryReverseAsync(double lat, double lon, int limit = int.MaxValue)
   {
-    return await CacheRequest(() => $"GeoCodeReverse_{lat}_{lon}_{limit}",
+    return await Cached(() => $"GeoCodeReverse_{lat}_{lon}_{limit}",
       async () => MapGeoCodes(await _geoCodingApiClient.GeoCodeReverse(_apiKey, lat, lon, limit))
     );
   }

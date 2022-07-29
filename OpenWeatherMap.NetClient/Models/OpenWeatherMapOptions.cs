@@ -2,6 +2,9 @@
 
 namespace OpenWeatherMap.NetClient.Models;
 
+/// <summary>
+/// Implementation of <see cref="IOpenWeatherMapOptions"/>
+/// </summary>
 public sealed class OpenWeatherMapOptions : IOpenWeatherMapOptions
 {
   /// <summary>
