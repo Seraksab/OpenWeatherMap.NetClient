@@ -65,6 +65,22 @@ var client = new OpenWeatherMapClient("[API_KEY]", new OpenWeatherMapOptions
 });
 ```
 
+### ASP.NET
+
+Simply call the provided extension method to register the service in your Startup.cs
+
+```csharp
+// with default configuration
+services.AddOpenWeatherMap("[API KEY]");
+
+// or with custom client configuration
+services.AddOpenWeatherMap("[API KEY]", new OpenWeatherMapOptions
+{
+  CacheEnabled = true,
+  CacheDuration = TimeSpan.FromMinutes(5)
+});
+```
+
 ## Dependencies
 
 * [Refit](https://github.com/reactiveui/refit) - REST request handling
