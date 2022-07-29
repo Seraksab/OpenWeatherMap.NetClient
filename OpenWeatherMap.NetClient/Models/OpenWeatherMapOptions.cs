@@ -25,7 +25,7 @@ public sealed class OpenWeatherMapOptions : IOpenWeatherMapOptions
     /// <summary>
     /// Whether caching is enabled by default or not
     /// </summary>
-    public static readonly bool CacheEnabled = true;
+    public static readonly bool CacheEnabled = false;
   }
 
   /// <inheritdoc />

@@ -50,7 +50,9 @@ if (airPollutionResponse.IsSuccess)
 
 ### Client configuration
 
-The cache is enabled per default with a cache duration of 10 minutes. The culture is set to 'en'.
+Caching is disabled by default.  
+The default cache duration is set to 10 minutes (if cache is enabled).  
+The default  culture is set to 'en'.
 
 You can modify the default configuration of the client by additionally passing _IOpenWeatherMapOptions_
 
