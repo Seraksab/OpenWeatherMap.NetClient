@@ -5,9 +5,9 @@ using OpenWeatherMap.NetClient.Models;
 namespace OpenWeatherMap.NetClient;
 
 /// <summary>
-/// Implementation of <see cref="IOpenWeatherMap"/>
+/// Client providing access to the OpenWeatherMap APIs. Implements <see cref="IOpenWeatherMap"/>
 /// </summary>
-public sealed class OpenWeatherMap : IOpenWeatherMap
+public sealed class OpenWeatherMapClient : IOpenWeatherMap
 {
   private static readonly Regex ApiKeyRegex = new(@"^[0-9a-f]{32}$");
 
@@ -21,7 +21,7 @@ public sealed class OpenWeatherMap : IOpenWeatherMap
   /// <returns>An implementation of <see cref="IOpenWeatherMap"/></returns>
   /// <param name="apiKey">Your unique API key</param>
   /// <param name="options">Optional client configuration</param>
-  public OpenWeatherMap(string apiKey, IOpenWeatherMapOptions? options = null)
+  public OpenWeatherMapClient(string apiKey, IOpenWeatherMapOptions? options = null)
   {
     if (apiKey == null) throw new ArgumentNullException(nameof(apiKey));
     if (!ApiKeyRegex.IsMatch(apiKey)) throw new ArgumentException($"'{apiKey}' is not a valid API key");

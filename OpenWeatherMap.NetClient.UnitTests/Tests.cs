@@ -11,10 +11,10 @@ public class Tests
   public async Task TestInvalidApiKey()
   {
     // illegal api key format
-    Assert.Throws<ArgumentException>(() => new OpenWeatherMap("foo"));
+    Assert.Throws<ArgumentException>(() => new OpenWeatherMapClient("foo"));
 
     // invalid api key => unauthorized
-    var client = new OpenWeatherMap("00000000000000000000000000000000");
+    var client = new OpenWeatherMapClient("00000000000000000000000000000000");
     var response = await client.CurrentWeather.QueryAsync("Linz,AT");
     Assert.False(response.IsSuccess);
     Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
@@ -23,7 +23,7 @@ public class Tests
   [Fact]
   public async Task TestCityNameNotFound()
   {
-    var client = new OpenWeatherMap(ApiKey);
+    var client = new OpenWeatherMapClient(ApiKey);
     var result = await client.CurrentWeather.QueryAsync("foobar");
     Assert.True(result.IsSuccess);
     Assert.Null(result.Content);
@@ -32,7 +32,7 @@ public class Tests
   [Fact]
   public async Task TestCityName()
   {
-    var client = new OpenWeatherMap(ApiKey);
+    var client = new OpenWeatherMapClient(ApiKey);
     var result = await client.CurrentWeather.QueryAsync("Linz,AT");
     Assert.True(result.IsSuccess);
     Assert.NotNull(result.Content);
@@ -43,14 +43,14 @@ public class Tests
   [Fact]
   public async Task TestNullCityName()
   {
-    var client = new OpenWeatherMap(ApiKey);
+    var client = new OpenWeatherMapClient(ApiKey);
     await Assert.ThrowsAsync<ArgumentNullException>(() => client.CurrentWeather.QueryAsync(null));
   }
 
   [Fact]
   public async Task TestCoordinates()
   {
-    var client = new OpenWeatherMap(ApiKey);
+    var client = new OpenWeatherMapClient(ApiKey);
     var result = await client.CurrentWeather.QueryAsync(48.3059D, 14.2862D);
     Assert.True(result.IsSuccess);
     Assert.NotNull(result.Content);
@@ -61,7 +61,7 @@ public class Tests
   [Fact]
   public async Task TestCityId()
   {
-    var client = new OpenWeatherMap(ApiKey);
+    var client = new OpenWeatherMapClient(ApiKey);
     var result = await client.CurrentWeather.QueryAsync(2772400);
     Assert.True(result.IsSuccess);
     Assert.NotNull(result.Content);
@@ -72,7 +72,7 @@ public class Tests
   [Fact]
   public async Task TestGeoCode()
   {
-    var client = new OpenWeatherMap(ApiKey);
+    var client = new OpenWeatherMapClient(ApiKey);
     var result = await client.Geocoding.QueryAsync("Linz,AT");
     Assert.True(result.IsSuccess);
     Assert.NotNull(result.Content);
@@ -86,7 +86,7 @@ public class Tests
   [Fact]
   public async Task TestGeoCodeReverse()
   {
-    var client = new OpenWeatherMap(ApiKey);
+    var client = new OpenWeatherMapClient(ApiKey);
     var result = await client.Geocoding.QueryReverseAsync(48.3059, 14.2862);
     Assert.True(result.IsSuccess);
     Assert.NotNull(result.Content);
@@ -98,7 +98,7 @@ public class Tests
   [Fact]
   public async Task TestAirPollutionCurrent()
   {
-    var client = new OpenWeatherMap(ApiKey);
+    var client = new OpenWeatherMapClient(ApiKey);
     var result = await client.AirPollution.QueryCurrentAsync(48.3059, 14.2862);
     Assert.True(result.IsSuccess);
     Assert.NotNull(result.Content);
@@ -107,7 +107,7 @@ public class Tests
   [Fact]
   public async Task TestAirPollutionForecast()
   {
-    var client = new OpenWeatherMap(ApiKey);
+    var client = new OpenWeatherMapClient(ApiKey);
     var result = await client.AirPollution.QueryForecastAsync(48.3059, 14.2862);
     Assert.True(result.IsSuccess);
     Assert.NotNull(result.Content);
@@ -117,7 +117,7 @@ public class Tests
   [Fact]
   public async Task TestAirPollutionHistory()
   {
-    var client = new OpenWeatherMap(ApiKey);
+    var client = new OpenWeatherMapClient(ApiKey);
     var to = DateTime.UtcNow;
     var from = to - TimeSpan.FromDays(1);
     var result = await client.AirPollution.QueryHistoricalAsync(48.3059, 14.2862, from, to);
@@ -130,7 +130,7 @@ public class Tests
   [Fact]
   public async Task TestCache()
   {
-    var cachedClient = new OpenWeatherMap(ApiKey, new OpenWeatherMapOptions
+    var cachedClient = new OpenWeatherMapClient(ApiKey, new OpenWeatherMapOptions
     {
       CacheEnabled = true
     });
@@ -142,7 +142,7 @@ public class Tests
   [Fact]
   public async Task TestCacheDisabled()
   {
-    var client = new OpenWeatherMap(ApiKey, new OpenWeatherMapOptions
+    var client = new OpenWeatherMapClient(ApiKey, new OpenWeatherMapOptions
     {
       CacheEnabled = false
     });

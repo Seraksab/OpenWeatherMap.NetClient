@@ -28,7 +28,7 @@ OpenWeatherMap.NetClient is available from [NuGet](https://www.nuget.org/package
 Creating a client is as simple as just passing in your Api Key to the constructor.
 
 ```csharp
-var client = new OpenWeatherMap("[API_KEY]");
+var client = new OpenWeatherMapClient("[API_KEY]");
 
 // querying the current weather for a location based on name
 var weatherResponse = await client.CurrentWeather.QueryAsync("Linz,AT");
