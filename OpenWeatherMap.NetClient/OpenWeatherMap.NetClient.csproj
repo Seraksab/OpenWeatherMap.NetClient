@@ -5,7 +5,7 @@
         <Description>A simple asynchronous .NET client to fetch weather information from the OpenWeatherMap APIs</Description>
         <Authors>Manfred Graf</Authors>
         <Copyright>© 2022 Manfred Graf</Copyright>
-        <Version>1.0.0</Version>
+        <Version>1.0.1</Version>
         <RepositoryUrl>https://github.com/Seraksab/OpenWeatherMap.NetClient</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -18,6 +18,7 @@
         <PackageTags>Weather,OpenWeather,OpenWeatherMap</PackageTags>
         <RootNamespace>OpenWeatherMap.NetClient</RootNamespace>
         <PackageIcon>logo128.png</PackageIcon>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
