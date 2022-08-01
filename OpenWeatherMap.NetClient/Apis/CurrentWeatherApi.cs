@@ -9,14 +9,14 @@ namespace OpenWeatherMap.NetClient.Apis;
 /// <summary>
 /// Implementation of <see cref="ICurrentWeatherApi"/>
 /// </summary>
-public sealed class CurrentWeatherApiImpl : AbstractApiImplBase, ICurrentWeatherApi
+public sealed class CurrentWeatherApi : AbstractApiImplBase, ICurrentWeatherApi
 {
   private readonly string _apiKey;
 
   private readonly ICurrentWeatherApiClient _weatherApi;
   private readonly IGeocodingApiClient _geoApi;
 
-  internal CurrentWeatherApiImpl(string apiKey, IOpenWeatherMapOptions? options) : base(options)
+  internal CurrentWeatherApi(string apiKey, IOpenWeatherMapOptions? options) : base(options)
   {
     _apiKey = apiKey;
     _weatherApi = RestService.For<ICurrentWeatherApiClient>(BaseUrl);

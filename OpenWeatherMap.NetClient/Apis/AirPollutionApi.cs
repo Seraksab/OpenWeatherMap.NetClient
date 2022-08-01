@@ -9,13 +9,13 @@ namespace OpenWeatherMap.NetClient.Apis;
 /// <summary>
 /// Implementation of <see cref="IAirPollutionApi"/>
 /// </summary>
-public sealed class AirPollutionApiImpl : AbstractApiImplBase, IAirPollutionApi
+public sealed class AirPollutionApi : AbstractApiImplBase, IAirPollutionApi
 {
   private readonly string _apiKey;
 
   private readonly IAirPollutionApiClient _airPollutionApiClient;
 
-  internal AirPollutionApiImpl(string apiKey, IOpenWeatherMapOptions? options) : base(options)
+  internal AirPollutionApi(string apiKey, IOpenWeatherMapOptions? options) : base(options)
   {
     _apiKey = apiKey;
     _airPollutionApiClient = RestService.For<IAirPollutionApiClient>(BaseUrl);

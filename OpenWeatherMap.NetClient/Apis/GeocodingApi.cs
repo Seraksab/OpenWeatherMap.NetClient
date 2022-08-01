@@ -9,13 +9,13 @@ namespace OpenWeatherMap.NetClient.Apis;
 /// <summary>
 /// Implementation of <see cref="IGeocodingApi"/>
 /// </summary>
-public sealed class GeocodingApiImpl : AbstractApiImplBase, IGeocodingApi
+public sealed class GeocodingApi : AbstractApiImplBase, IGeocodingApi
 {
   private readonly string _apiKey;
 
   private readonly IGeocodingApiClient _geoCodingApiClient;
 
-  internal GeocodingApiImpl(string apiKey, IOpenWeatherMapOptions? options) : base(options)
+  internal GeocodingApi(string apiKey, IOpenWeatherMapOptions? options) : base(options)
   {
     _apiKey = apiKey;
     _geoCodingApiClient = RestService.For<IGeocodingApiClient>(BaseUrl);

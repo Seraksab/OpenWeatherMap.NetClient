@@ -26,9 +26,9 @@ public sealed class OpenWeatherMapClient : IOpenWeatherMap
     if (apiKey == null) throw new ArgumentNullException(nameof(apiKey));
     if (!ApiKeyRegex.IsMatch(apiKey)) throw new ArgumentException($"'{apiKey}' is not a valid API key");
 
-    _geoCoding = new Lazy<IGeocodingApi>(() => new GeocodingApiImpl(apiKey, options));
-    _airPollution = new Lazy<IAirPollutionApi>(() => new AirPollutionApiImpl(apiKey, options));
-    _currentWeather = new Lazy<ICurrentWeatherApi>(() => new CurrentWeatherApiImpl(apiKey, options));
+    _geoCoding = new Lazy<IGeocodingApi>(() => new GeocodingApi(apiKey, options));
+    _airPollution = new Lazy<IAirPollutionApi>(() => new AirPollutionApi(apiKey, options));
+    _currentWeather = new Lazy<ICurrentWeatherApi>(() => new CurrentWeatherApi(apiKey, options));
   }
 
   /// <inheritdoc />
