@@ -17,6 +17,12 @@ public sealed class ApiException : Exception
   /// </summary>
   public string? ReasonPhrase { get; }
 
+  internal ApiException(HttpStatusCode statusCode, string? reasonPhrase) : base("Error on API request")
+  {
+    StatusCode = statusCode;
+    ReasonPhrase = reasonPhrase;
+  }
+
   internal ApiException(HttpStatusCode statusCode, string? reasonPhrase, Exception? inner)
     : base("Error on API request", inner)
   {

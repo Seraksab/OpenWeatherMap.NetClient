@@ -3,12 +3,9 @@
 namespace OpenWeatherMap.NetClient.Apis;
 
 /// <summary>
-/// Access to the 'Geocoding API'
+/// Access to the 'Geocoding' API.
+/// A simple tool developed to ease the search for locations while working with geographic names and coordinates.
 /// </summary>
-/// <remarks>
-/// The 'Geocoding API' is a simple tool developed to ease the search for locations while working with geographic
-/// names and coordinates.
-/// </remarks>
 public interface IGeocodingApi
 {
   /// <summary>

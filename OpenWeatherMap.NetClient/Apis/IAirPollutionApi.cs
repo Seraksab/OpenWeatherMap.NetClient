@@ -3,11 +3,9 @@
 namespace OpenWeatherMap.NetClient.Apis;
 
 /// <summary>
-/// Access to the 'Air Pollution API'
+/// Access to the 'Air Pollution' API.
+/// Provides current, forecast and historical air pollution data for any coordinates on the globe.
 /// </summary>
-/// <remarks>
-/// The 'Air Pollution API' provides current, forecast and historical air pollution data for any coordinates on the globe.
-/// </remarks>
 public interface IAirPollutionApi
 {
   /// <summary>

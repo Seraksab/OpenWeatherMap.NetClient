@@ -1,5 +1,4 @@
-﻿using OpenWeatherMap.NetClient.Exceptions;
-using OpenWeatherMap.NetClient.Extensions;
+﻿using OpenWeatherMap.NetClient.Extensions;
 using OpenWeatherMap.NetClient.Models;
 using OpenWeatherMap.NetClient.RestApis.Clients;
 using OpenWeatherMap.NetClient.RestApis.Responses;

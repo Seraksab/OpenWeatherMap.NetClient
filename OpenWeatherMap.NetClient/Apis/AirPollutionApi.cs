@@ -1,5 +1,4 @@
-﻿using OpenWeatherMap.NetClient.Exceptions;
-using OpenWeatherMap.NetClient.Extensions;
+﻿using OpenWeatherMap.NetClient.Extensions;
 using OpenWeatherMap.NetClient.Models;
 using OpenWeatherMap.NetClient.RestApis.Clients;
 using OpenWeatherMap.NetClient.RestApis.Responses;
@@ -26,7 +25,7 @@ public sealed class AirPollutionApi : AbstractApiImplBase, IAirPollutionApi
   /// <inheritdoc />
   public async Task<AirPollution?> QueryCurrentAsync(double lat, double lon)
   {
-    return await Cached<AirPollution?>(
+    return await Cached(
       () => $"current_{lat}_{lon}",
       async () =>
       {
@@ -44,7 +43,7 @@ public sealed class AirPollutionApi : AbstractApiImplBase, IAirPollutionApi
   /// <inheritdoc />
   public async Task<IEnumerable<AirPollution>> QueryForecastAsync(double lat, double lon)
   {
-    return await Cached<IEnumerable<AirPollution>>(
+    return await Cached(
       () => $"forecast_{lat}_{lon}",
       async () =>
       {
@@ -63,7 +62,7 @@ public sealed class AirPollutionApi : AbstractApiImplBase, IAirPollutionApi
   public async Task<IEnumerable<AirPollution>> QueryHistoricalAsync(double lat, double lon,
     DateTime start, DateTime end)
   {
-    return await Cached<IEnumerable<AirPollution>>(
+    return await Cached(
       () => $"historical_{lat}_{lon}_{start}_{end}",
       async () =>
       {

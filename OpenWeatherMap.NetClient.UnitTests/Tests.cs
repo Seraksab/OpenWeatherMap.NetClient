@@ -145,4 +145,13 @@ public class Tests
     var secondResult = client.CurrentWeather.QueryAsync(48.3059D, 14.2862D);
     Assert.True(await firstResult != await secondResult);
   }
+
+  [Fact]
+  public async Task TestWeatherMaps()
+  {
+    var client = new OpenWeatherMapClient(ApiKey);
+    var map = await client.WeatherMaps.GetMapAsync("clouds_new", 0, 0, 0);
+    Assert.NotEmpty(map);
+    Assert.True(map.Length > 1000);
+  }
 }

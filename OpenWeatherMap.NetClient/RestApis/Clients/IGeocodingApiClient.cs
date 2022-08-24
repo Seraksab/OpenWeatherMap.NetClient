@@ -5,7 +5,6 @@ namespace OpenWeatherMap.NetClient.RestApis.Clients;
 
 [Headers("Accept: application/json")]
 internal interface IGeocodingApiClient
-
 {
   /// <summary>
   /// Get geographical coordinates for a location name

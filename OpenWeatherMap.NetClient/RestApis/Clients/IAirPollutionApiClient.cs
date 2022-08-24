@@ -5,7 +5,6 @@ namespace OpenWeatherMap.NetClient.RestApis.Clients;
 
 [Headers("Accept: application/json")]
 internal interface IAirPollutionApiClient
-
 {
   /// <summary>
   /// Get the current air pollution data
