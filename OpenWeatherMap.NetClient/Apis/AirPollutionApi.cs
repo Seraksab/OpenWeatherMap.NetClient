@@ -1,8 +1,10 @@
-﻿using OpenWeatherMap.NetClient.Extensions;
+﻿using OpenWeatherMap.NetClient.Exceptions;
+using OpenWeatherMap.NetClient.Extensions;
 using OpenWeatherMap.NetClient.Models;
 using OpenWeatherMap.NetClient.RestApis.Clients;
 using OpenWeatherMap.NetClient.RestApis.Responses;
 using Refit;
+using ApiException = OpenWeatherMap.NetClient.Exceptions.ApiException;
 
 namespace OpenWeatherMap.NetClient.Apis;
 
@@ -22,43 +24,43 @@ public sealed class AirPollutionApi : AbstractApiImplBase, IAirPollutionApi
   }
 
   /// <inheritdoc />
-  public async Task<Models.IApiResponse<AirPollution>> QueryCurrentAsync(double lat, double lon)
+  public async Task<AirPollution?> QueryCurrentAsync(double lat, double lon)
   {
-    return await Cached<AirPollution>(
+    return await Cached<AirPollution?>(
       () => $"current_{lat}_{lon}",
       async () =>
       {
         var response = await _airPollutionApiClient.Current(_apiKey, lat, lon);
-        return new Models.ApiResponse<AirPollution>(
-          response.StatusCode,
-          response.ReasonPhrase,
-          MapModels(response).FirstOrDefault(),
-          response.Error
-        );
+        if (!response.IsSuccessStatusCode)
+        {
+          throw new ApiException(response.StatusCode, response.ReasonPhrase, response.Error);
+        }
+
+        return response.Content == null ? null : MapModels(response).FirstOrDefault();
       }
     );
   }
 
   /// <inheritdoc />
-  public async Task<Models.IApiResponse<IEnumerable<AirPollution>>> QueryForecastAsync(double lat, double lon)
+  public async Task<IEnumerable<AirPollution>> QueryForecastAsync(double lat, double lon)
   {
     return await Cached<IEnumerable<AirPollution>>(
       () => $"forecast_{lat}_{lon}",
       async () =>
       {
         var response = await _airPollutionApiClient.Forecast(_apiKey, lat, lon);
-        return new Models.ApiResponse<IEnumerable<AirPollution>>(
-          response.StatusCode,
-          response.ReasonPhrase,
-          MapModels(response),
-          response.Error
-        );
+        if (!response.IsSuccessStatusCode)
+        {
+          throw new ApiException(response.StatusCode, response.ReasonPhrase, response.Error);
+        }
+
+        return MapModels(response);
       }
     );
   }
 
   /// <inheritdoc />
-  public async Task<Models.IApiResponse<IEnumerable<AirPollution>>> QueryHistoricalAsync(double lat, double lon,
+  public async Task<IEnumerable<AirPollution>> QueryHistoricalAsync(double lat, double lon,
     DateTime start, DateTime end)
   {
     return await Cached<IEnumerable<AirPollution>>(
@@ -70,18 +72,18 @@ public sealed class AirPollutionApi : AbstractApiImplBase, IAirPollutionApi
           ((DateTimeOffset)start).ToUnixTimeSeconds(),
           ((DateTimeOffset)end).ToUnixTimeSeconds()
         );
-        return new Models.ApiResponse<IEnumerable<AirPollution>>(
-          response.StatusCode,
-          response.ReasonPhrase,
-          MapModels(response),
-          response.Error
-        );
+
+        if (!response.IsSuccessStatusCode)
+        {
+          throw new ApiException(response.StatusCode, response.ReasonPhrase, response.Error);
+        }
+
+        return MapModels(response);
       }
     );
   }
 
-  private static IEnumerable<AirPollution> MapModels(
-    Refit.IApiResponse<ApiAirPollutionResponse> response)
+  private static IEnumerable<AirPollution> MapModels(IApiResponse<ApiAirPollutionResponse> response)
   {
     return response.Content == null
       ? Enumerable.Empty<AirPollution>()

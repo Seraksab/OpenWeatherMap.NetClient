@@ -5,7 +5,7 @@ namespace OpenWeatherMap.NetClient.Exceptions;
 /// <summary>
 /// Error that occured while sending an API request
 /// </summary>
-public sealed class OpenWeatherMapException : Exception
+public sealed class ApiException : Exception
 {
   /// <summary>
   /// HTTP response status code.
@@ -13,11 +13,11 @@ public sealed class OpenWeatherMapException : Exception
   public HttpStatusCode StatusCode { get; }
 
   /// <summary>
-  /// The reason phrase which typically is sent by the server
+  /// The reason phrase which typically is sent by the server together with the status code.
   /// </summary>
   public string? ReasonPhrase { get; }
 
-  internal OpenWeatherMapException(HttpStatusCode statusCode, string? reasonPhrase, Exception? inner)
+  internal ApiException(HttpStatusCode statusCode, string? reasonPhrase, Exception? inner)
     : base("Error on API request", inner)
   {
     StatusCode = statusCode;

@@ -1,8 +1,10 @@
-﻿using OpenWeatherMap.NetClient.Extensions;
+﻿using OpenWeatherMap.NetClient.Exceptions;
+using OpenWeatherMap.NetClient.Extensions;
 using OpenWeatherMap.NetClient.Models;
 using OpenWeatherMap.NetClient.RestApis.Clients;
 using OpenWeatherMap.NetClient.RestApis.Responses;
 using Refit;
+using ApiException = OpenWeatherMap.NetClient.Exceptions.ApiException;
 
 namespace OpenWeatherMap.NetClient.Apis;
 
@@ -22,7 +24,7 @@ public sealed class GeocodingApi : AbstractApiImplBase, IGeocodingApi
   }
 
   /// <inheritdoc />
-  public async Task<Models.IApiResponse<IEnumerable<GeoCode>>> QueryAsync(string query, int limit = int.MaxValue)
+  public async Task<IEnumerable<GeoCode>> QueryAsync(string query, int limit = int.MaxValue)
   {
     if (query == null) throw new ArgumentNullException(nameof(query));
 
@@ -32,24 +34,23 @@ public sealed class GeocodingApi : AbstractApiImplBase, IGeocodingApi
   }
 
   /// <inheritdoc />
-  public async Task<Models.IApiResponse<IEnumerable<GeoCode>>> QueryReverseAsync(double lat, double lon, int limit = int.MaxValue)
+  public async Task<IEnumerable<GeoCode>> QueryReverseAsync(double lat, double lon,
+    int limit = int.MaxValue)
   {
     return await Cached(() => $"GeoCodeReverse_{lat}_{lon}_{limit}",
       async () => MapGeoCodes(await _geoCodingApiClient.GeoCodeReverse(_apiKey, lat, lon, limit))
     );
   }
 
-  private static Models.IApiResponse<IEnumerable<GeoCode>> MapGeoCodes(
-    Refit.IApiResponse<ApiGeoCodeResponse[]> response)
+  private static IEnumerable<GeoCode> MapGeoCodes(IApiResponse<ApiGeoCodeResponse[]> response)
   {
-    var mappedResponse = response.Content == null
+    if (!response.IsSuccessStatusCode)
+    {
+      throw new ApiException(response.StatusCode, response.ReasonPhrase, response.Error);
+    }
+
+    return response.Content == null
       ? Enumerable.Empty<GeoCode>()
       : response.Content.Select(gc => gc.ToGeoCode());
-    return new Models.ApiResponse<IEnumerable<GeoCode>>(
-      response.StatusCode,
-      response.ReasonPhrase,
-      mappedResponse,
-      response.Error
-    );
   }
 }

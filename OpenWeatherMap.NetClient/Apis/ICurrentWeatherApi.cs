@@ -20,20 +20,21 @@ public interface ICurrentWeatherApi
   /// of the first location in the result set to call <see cref="QueryAsync(double,double)"/>
   /// </remarks>
   /// <param name="query">City name, state code (only for the US) and country code divided by comma (ISO 3166 country codes)</param>
-  /// <returns>An <see cref="IApiResponse{T}"/> containing the current weather data</returns>
-  Task<IApiResponse<CurrentWeather>> QueryAsync(string query);
+  /// <returns>The current weather data</returns>
+  Task<CurrentWeather?> QueryAsync(string query);
 
   /// <summary>
   /// Query current weather data by geographical coordinates (latitude, longitude)
   /// </summary>
   /// <param name="lat">Latitude</param>
   /// <param name="lon">Longitude</param>
-  /// <returns>An <see cref="IApiResponse{T}"/> containing the current weather data</returns>
-  Task<IApiResponse<CurrentWeather>> QueryAsync(double lat, double lon);
+  /// <returns>The current weather data</returns>
+  Task<CurrentWeather?> QueryAsync(double lat, double lon);
 
   /// <summary>
   /// Get the current weather data by city ID
   /// </summary>
   /// <param name="cityId">City ID</param>
-  Task<IApiResponse<CurrentWeather>> QueryAsync(int cityId);
+  /// <returns>The current weather data</returns>
+  Task<CurrentWeather?> QueryAsync(int cityId);
 }

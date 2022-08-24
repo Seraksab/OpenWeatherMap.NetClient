@@ -1,4 +1,5 @@
 using System.Net;
+using OpenWeatherMap.NetClient.Exceptions;
 using OpenWeatherMap.NetClient.Models;
 
 namespace OpenWeatherMap.NetClient.UnitTests;
@@ -15,9 +16,9 @@ public class Tests
 
     // invalid api key => unauthorized
     var client = new OpenWeatherMapClient("00000000000000000000000000000000");
-    var response = await client.CurrentWeather.QueryAsync("Linz,AT");
-    Assert.False(response.IsSuccess);
-    Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+    var exception =
+      await Assert.ThrowsAsync<ApiException>(() => client.CurrentWeather.QueryAsync("Linz,AT"));
+    Assert.Equal(HttpStatusCode.Unauthorized, exception.StatusCode);
   }
 
   [Fact]
@@ -25,8 +26,7 @@ public class Tests
   {
     var client = new OpenWeatherMapClient(ApiKey);
     var result = await client.CurrentWeather.QueryAsync("foobar");
-    Assert.True(result.IsSuccess);
-    Assert.Null(result.Content);
+    Assert.Null(result);
   }
 
   [Fact]
@@ -34,10 +34,9 @@ public class Tests
   {
     var client = new OpenWeatherMapClient(ApiKey);
     var result = await client.CurrentWeather.QueryAsync("Linz,AT");
-    Assert.True(result.IsSuccess);
-    Assert.NotNull(result.Content);
-    Assert.Equal("Linz", result.Content?.CityName);
-    Assert.Equal("AT", result.Content?.Country);
+    Assert.NotNull(result);
+    Assert.Equal("Linz", result?.CityName);
+    Assert.Equal("AT", result?.Country);
   }
 
   [Fact]
@@ -52,10 +51,9 @@ public class Tests
   {
     var client = new OpenWeatherMapClient(ApiKey);
     var result = await client.CurrentWeather.QueryAsync(48.3059D, 14.2862D);
-    Assert.True(result.IsSuccess);
-    Assert.NotNull(result.Content);
-    Assert.Equal("Linz", result.Content?.CityName);
-    Assert.Equal("AT", result.Content?.Country);
+    Assert.NotNull(result);
+    Assert.Equal("Linz", result?.CityName);
+    Assert.Equal("AT", result?.Country);
   }
 
   [Fact]
@@ -63,10 +61,9 @@ public class Tests
   {
     var client = new OpenWeatherMapClient(ApiKey);
     var result = await client.CurrentWeather.QueryAsync(2772400);
-    Assert.True(result.IsSuccess);
-    Assert.NotNull(result.Content);
-    Assert.Equal("Linz", result.Content?.CityName);
-    Assert.Equal("AT", result.Content?.Country);
+    Assert.NotNull(result);
+    Assert.Equal("Linz", result?.CityName);
+    Assert.Equal("AT", result?.Country);
   }
 
   [Fact]
@@ -74,13 +71,13 @@ public class Tests
   {
     var client = new OpenWeatherMapClient(ApiKey);
     var result = await client.Geocoding.QueryAsync("Linz,AT");
-    Assert.True(result.IsSuccess);
-    Assert.NotNull(result.Content);
-    Assert.NotEmpty(result.Content!);
-    Assert.Equal("AT", result.Content!.First().Country);
-    Assert.Equal("Linz", result.Content!.First().Name);
-    Assert.Equal(48.3059, result.Content!.First().Latitude, 3);
-    Assert.Equal(14.2862, result.Content!.First().Longitude, 3);
+    Assert.NotNull(result);
+    var geoCodes = result as GeoCode[] ?? result.ToArray();
+    Assert.NotEmpty(geoCodes);
+    Assert.Equal("AT", geoCodes.First().Country);
+    Assert.Equal("Linz", geoCodes.First().Name);
+    Assert.Equal(48.3059, geoCodes.First().Latitude, 3);
+    Assert.Equal(14.2862, geoCodes.First().Longitude, 3);
   }
 
   [Fact]
@@ -88,11 +85,11 @@ public class Tests
   {
     var client = new OpenWeatherMapClient(ApiKey);
     var result = await client.Geocoding.QueryReverseAsync(48.3059, 14.2862);
-    Assert.True(result.IsSuccess);
-    Assert.NotNull(result.Content);
-    Assert.NotEmpty(result.Content!);
-    Assert.Equal("AT", result.Content!.First().Country);
-    Assert.Equal("Linz", result.Content!.First().Name);
+    Assert.NotNull(result);
+    var geoCodes = result as GeoCode[] ?? result.ToArray();
+    Assert.NotEmpty(geoCodes);
+    Assert.Equal("AT", geoCodes.First().Country);
+    Assert.Equal("Linz", geoCodes.First().Name);
   }
 
   [Fact]
@@ -100,8 +97,7 @@ public class Tests
   {
     var client = new OpenWeatherMapClient(ApiKey);
     var result = await client.AirPollution.QueryCurrentAsync(48.3059, 14.2862);
-    Assert.True(result.IsSuccess);
-    Assert.NotNull(result.Content);
+    Assert.NotNull(result);
   }
 
   [Fact]
@@ -109,9 +105,8 @@ public class Tests
   {
     var client = new OpenWeatherMapClient(ApiKey);
     var result = await client.AirPollution.QueryForecastAsync(48.3059, 14.2862);
-    Assert.True(result.IsSuccess);
-    Assert.NotNull(result.Content);
-    Assert.NotEmpty(result.Content!);
+    Assert.NotNull(result);
+    Assert.NotEmpty(result);
   }
 
   [Fact]
@@ -121,10 +116,10 @@ public class Tests
     var to = DateTime.UtcNow;
     var from = to - TimeSpan.FromDays(1);
     var result = await client.AirPollution.QueryHistoricalAsync(48.3059, 14.2862, from, to);
-    Assert.True(result.IsSuccess);
-    Assert.NotNull(result.Content);
-    Assert.NotEmpty(result.Content!);
-    Assert.All(result.Content!, ap => Assert.InRange(ap.TimeStamp, from, to));
+    Assert.NotNull(result);
+    var airPollutions = result as AirPollution[] ?? result.ToArray();
+    Assert.NotEmpty(airPollutions);
+    Assert.All(airPollutions, ap => Assert.InRange(ap.TimeStamp, from, to));
   }
 
   [Fact]

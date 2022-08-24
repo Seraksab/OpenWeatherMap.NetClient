@@ -1,8 +1,10 @@
-﻿using OpenWeatherMap.NetClient.Extensions;
+﻿using OpenWeatherMap.NetClient.Exceptions;
+using OpenWeatherMap.NetClient.Extensions;
 using OpenWeatherMap.NetClient.Models;
 using OpenWeatherMap.NetClient.RestApis.Clients;
 using OpenWeatherMap.NetClient.RestApis.Responses;
 using Refit;
+using ApiException = OpenWeatherMap.NetClient.Exceptions.ApiException;
 
 namespace OpenWeatherMap.NetClient.Apis;
 
@@ -24,16 +26,21 @@ public sealed class CurrentWeatherApi : AbstractApiImplBase, ICurrentWeatherApi
   }
 
   /// <inheritdoc />
-  public async Task<Models.IApiResponse<CurrentWeather>> QueryAsync(string query)
+  public async Task<CurrentWeather?> QueryAsync(string query)
   {
     if (query == null) throw new ArgumentNullException(nameof(query));
 
     return await Cached(() => $"WeatherByName_{query}", async () =>
     {
       var response = await _geoApi.GeoCodeByLocationName(_apiKey, query, 1);
-      if (!response.IsSuccessStatusCode || response.Content == null || !response.Content.Any())
+      if (!response.IsSuccessStatusCode)
       {
-        return new Models.ApiResponse<CurrentWeather>(response.StatusCode, response.ReasonPhrase, null, response.Error);
+        throw new ApiException(response.StatusCode, response.ReasonPhrase, response.Error);
+      }
+
+      if (response.Content == null || !response.Content.Any())
+      {
+        return null;
       }
 
       var geoCode = response.Content.First();
@@ -44,7 +51,7 @@ public sealed class CurrentWeatherApi : AbstractApiImplBase, ICurrentWeatherApi
   }
 
   /// <inheritdoc />
-  public async Task<Models.IApiResponse<CurrentWeather>> QueryAsync(double lat, double lon)
+  public async Task<CurrentWeather?> QueryAsync(double lat, double lon)
   {
     return await Cached(
       () => $"WeatherByCoordinates_{lat}_{lon}",
@@ -53,7 +60,7 @@ public sealed class CurrentWeatherApi : AbstractApiImplBase, ICurrentWeatherApi
   }
 
   /// <inheritdoc />
-  public async Task<Models.IApiResponse<CurrentWeather>> QueryAsync(int cityId)
+  public async Task<CurrentWeather?> QueryAsync(int cityId)
   {
     return await Cached(
       () => $"WeatherByCityId_{cityId}",
@@ -61,13 +68,13 @@ public sealed class CurrentWeatherApi : AbstractApiImplBase, ICurrentWeatherApi
     );
   }
 
-  private Models.IApiResponse<CurrentWeather> MapResponse(Refit.IApiResponse<ApiWeatherResponse> response)
+  private static CurrentWeather? MapResponse(IApiResponse<ApiWeatherResponse> response)
   {
-    return new Models.ApiResponse<CurrentWeather>(
-      response.StatusCode,
-      response.ReasonPhrase,
-      response.Content?.ToWeather(),
-      response.Error
-    );
+    if (!response.IsSuccessStatusCode)
+    {
+      throw new ApiException(response.StatusCode, response.ReasonPhrase, response.Error);
+    }
+
+    return response.Content?.ToWeather();
   }
 }

@@ -25,10 +25,7 @@ public abstract class AbstractApiImplBase
 
   private protected string Language { get; }
 
-  private protected async Task<IApiResponse<T>> Cached<T>(
-    Func<string> keyFunction,
-    Func<Task<IApiResponse<T>>> itemFactory
-  ) where T : class
+  private protected async Task<T> Cached<T>(Func<string> keyFunction, Func<Task<T>> itemFactory) where T : class?
   {
     return _cacheEnabled
       ? await _cache.Value.GetOrAddAsync(keyFunction(), itemFactory, _cacheDuration)
