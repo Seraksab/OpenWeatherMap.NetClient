@@ -24,7 +24,7 @@
     <ItemGroup>
       <PackageReference Include="LazyCache" Version="2.4.0" />
       <PackageReference Include="Refit" Version="6.3.2" />
-      <PackageReference Include="UnitsNet" Version="4.140.0" />
+      <PackageReference Include="UnitsNet" Version="4.144.0" />
     </ItemGroup>
 
     <ItemGroup>
