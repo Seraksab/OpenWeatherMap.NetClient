@@ -150,7 +150,7 @@ public class Tests
   public async Task TestWeatherMaps()
   {
     var client = new OpenWeatherMapClient(ApiKey);
-    var map = await client.WeatherMaps.GetMapAsync("clouds_new", 0, 0, 0);
+    var map = await client.BasicWeatherMaps.GetMapAsync("clouds_new", 0, 0, 0);
     Assert.NotEmpty(map);
     Assert.True(map.Length > 1000);
   }

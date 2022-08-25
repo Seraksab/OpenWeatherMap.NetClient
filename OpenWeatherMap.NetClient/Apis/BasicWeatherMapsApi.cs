@@ -7,16 +7,16 @@ using ApiException = OpenWeatherMap.NetClient.Exceptions.ApiException;
 namespace OpenWeatherMap.NetClient.Apis;
 
 /// <summary>
-/// Implementation of <see cref="IWeatherMapsApi"/>
+/// Implementation of <see cref="IBasicWeatherMapsApi"/>
 /// </summary>
-public class WeatherMapsApi : IWeatherMapsApi
+public class BasicWeatherMapsApi : IBasicWeatherMapsApi
 {
   private const string WeatherMapBaseUrl = "https://tile.openweathermap.org";
   private readonly string _apiKey;
 
   private readonly IWeatherMapsApiClient _weatherMapsApiClient;
 
-  internal WeatherMapsApi(string apiKey, IOpenWeatherMapOptions? options)
+  internal BasicWeatherMapsApi(string apiKey, IOpenWeatherMapOptions? options)
   {
     _apiKey = apiKey;
     _weatherMapsApiClient = RestService.For<IWeatherMapsApiClient>(WeatherMapBaseUrl);

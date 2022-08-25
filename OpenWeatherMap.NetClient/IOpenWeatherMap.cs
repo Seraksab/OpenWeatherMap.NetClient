@@ -28,11 +28,11 @@ public interface IOpenWeatherMap
   IAirPollutionApi AirPollution { get; }
 
   /// <summary>
-  /// Access to 'Weather maps 1.0' API
+  /// Access to 'Basic weather maps' API
   /// Provides many kinds of weather maps including Precipitation, Clouds, Pressure, Temperature, Wind.
   /// </summary>
   /// <remarks>
   /// Caching NOT supported
   /// </remarks>
-  IWeatherMapsApi WeatherMaps { get; }
+  IBasicWeatherMapsApi BasicWeatherMaps { get; }
 }

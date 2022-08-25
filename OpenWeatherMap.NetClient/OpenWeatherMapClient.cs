@@ -14,7 +14,7 @@ public sealed class OpenWeatherMapClient : IOpenWeatherMap
   private readonly Lazy<IGeocodingApi> _geoCoding;
   private readonly Lazy<IAirPollutionApi> _airPollution;
   private readonly Lazy<ICurrentWeatherApi> _currentWeather;
-  private readonly Lazy<IWeatherMapsApi> _weatherMaps;
+  private readonly Lazy<IBasicWeatherMapsApi> _basicWeatherMaps;
 
   /// <summary>
   /// Creates a new OpenWeatherMap instance
@@ -30,7 +30,7 @@ public sealed class OpenWeatherMapClient : IOpenWeatherMap
     _geoCoding = new Lazy<IGeocodingApi>(() => new GeocodingApi(apiKey, options));
     _airPollution = new Lazy<IAirPollutionApi>(() => new AirPollutionApi(apiKey, options));
     _currentWeather = new Lazy<ICurrentWeatherApi>(() => new CurrentWeatherApi(apiKey, options));
-    _weatherMaps = new Lazy<IWeatherMapsApi>(() => new WeatherMapsApi(apiKey, options));
+    _basicWeatherMaps = new Lazy<IBasicWeatherMapsApi>(() => new BasicWeatherMapsApi(apiKey, options));
   }
 
   /// <inheritdoc />
@@ -43,5 +43,5 @@ public sealed class OpenWeatherMapClient : IOpenWeatherMap
   public IAirPollutionApi AirPollution => _airPollution.Value;
 
   /// <inheritdoc />
-  public IWeatherMapsApi WeatherMaps => _weatherMaps.Value;
+  public IBasicWeatherMapsApi BasicWeatherMaps => _basicWeatherMaps.Value;
 }

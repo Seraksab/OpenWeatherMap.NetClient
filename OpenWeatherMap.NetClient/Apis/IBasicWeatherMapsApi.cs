@@ -1,13 +1,13 @@
 ﻿namespace OpenWeatherMap.NetClient.Apis;
 
 /// <summary>
-/// Access to 'Weather maps 1.0' API.
+/// Access to 'Basic weather maps' API.
 /// Provides many kinds of weather maps including Precipitation, Clouds, Pressure, Temperature, Wind.
 /// </summary>
 /// <remarks>
 /// Caching NOT supported
 /// </remarks>
-public interface IWeatherMapsApi
+public interface IBasicWeatherMapsApi
 {
   /// <summary>
   /// Get the current weather map as .png
