@@ -154,4 +154,40 @@ public class Tests
     Assert.NotEmpty(map);
     Assert.True(map.Length > 1000);
   }
+
+  [Fact]
+  public async Task TestForecast5Days()
+  {
+    var client = new OpenWeatherMapClient(ApiKey);
+    var forecast = await client.Forecast5Days.QueryAsync("Linz,AT");
+    Assert.NotNull(forecast);
+    Assert.Equal("AT", forecast.Country);
+    Assert.Equal("Linz", forecast.CityName);
+    Assert.Equal(48.3059, forecast.Latitude, 3);
+    Assert.Equal(14.2862, forecast.Longitude, 3);
+    Assert.Equal(40, forecast.Forecast.Count()); // 5 days worth with 3 hour steps
+    
+    // test limit
+    forecast = await client.Forecast5Days.QueryAsync("Linz,AT", 2);
+    Assert.NotNull(forecast);
+    Assert.Equal(2, forecast.Forecast.Count());
+
+    // by coordinates
+    forecast = await client.Forecast5Days.QueryByCoordinatesAsync(48.3059D, 14.2862D, 10);
+    Assert.NotNull(forecast);
+    Assert.Equal("AT", forecast.Country);
+    Assert.Equal("Linz", forecast.CityName);
+    Assert.Equal(48.3059, forecast.Latitude, 3);
+    Assert.Equal(14.2862, forecast.Longitude, 3);
+    Assert.Equal(10, forecast.Forecast.Count());
+
+    // by city id
+    forecast = await client.Forecast5Days.QueryByCityIdAsync(2772400,5);
+    Assert.NotNull(forecast);
+    Assert.Equal("AT", forecast.Country);
+    Assert.Equal("Linz", forecast.CityName);
+    Assert.Equal(48.3059, forecast.Latitude, 3);
+    Assert.Equal(14.2862, forecast.Longitude, 3);
+    Assert.Equal(5, forecast.Forecast.Count());
+  }
 }

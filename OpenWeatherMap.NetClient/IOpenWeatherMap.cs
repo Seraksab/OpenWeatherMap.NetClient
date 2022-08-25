@@ -35,4 +35,10 @@ public interface IOpenWeatherMap
   /// Caching NOT supported
   /// </remarks>
   IBasicWeatherMapsApi BasicWeatherMaps { get; }
+
+  /// <summary>
+  /// Access to the '3-hour Forecast 5 days' API.
+  /// The 5 day forecast includes weather data with 3-hour steps.
+  /// </summary>
+  IForecast5DaysApi Forecast5Days { get; }
 }

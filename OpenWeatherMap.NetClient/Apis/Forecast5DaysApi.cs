@@ -8,28 +8,28 @@ using ApiException = OpenWeatherMap.NetClient.Exceptions.ApiException;
 namespace OpenWeatherMap.NetClient.Apis;
 
 /// <summary>
-/// Implementation of <see cref="ICurrentWeatherApi"/>
+/// Implementation of <see cref="IForecast5DaysApi"/>
 /// </summary>
-public sealed class CurrentWeatherApi : AbstractApiImplBase, ICurrentWeatherApi
+public sealed class Forecast5DaysApi : AbstractApiImplBase, IForecast5DaysApi
 {
   private readonly string _apiKey;
 
-  private readonly ICurrentWeatherApiClient _weatherApi;
+  private readonly IForecast5DaysApiClient _forecastApi;
   private readonly IGeocodingApiClient _geoApi;
 
-  internal CurrentWeatherApi(string apiKey, IOpenWeatherMapOptions? options) : base(options)
+  internal Forecast5DaysApi(string apiKey, IOpenWeatherMapOptions? options) : base(options)
   {
     _apiKey = apiKey;
-    _weatherApi = RestService.For<ICurrentWeatherApiClient>(BaseUrl);
+    _forecastApi = RestService.For<IForecast5DaysApiClient>(BaseUrl);
     _geoApi = RestService.For<IGeocodingApiClient>(BaseUrl);
   }
 
   /// <inheritdoc />
-  public async Task<CurrentWeather?> QueryAsync(string query)
+  public async Task<Forecast5Days?> QueryAsync(string query, int limit = int.MaxValue)
   {
     if (query == null) throw new ArgumentNullException(nameof(query));
 
-    return await Cached(() => $"CurrentWeatherByName_{query}", async () =>
+    return await Cached(() => $"Forecast5DaysByName_{query}", async () =>
     {
       var response = await _geoApi.GeoCodeByLocationName(_apiKey, query, 1);
       if (!response.IsSuccessStatusCode)
@@ -44,36 +44,36 @@ public sealed class CurrentWeatherApi : AbstractApiImplBase, ICurrentWeatherApi
 
       var geoCode = response.Content.First();
       return MapResponse(
-        await _weatherApi.CurrentWeather(_apiKey, Language, geoCode.Latitude, geoCode.Longitude)
+        await _forecastApi.Forecast(_apiKey, Language, geoCode.Latitude, geoCode.Longitude, limit)
       );
     });
   }
 
   /// <inheritdoc />
-  public async Task<CurrentWeather?> QueryAsync(double lat, double lon)
+  public async Task<Forecast5Days?> QueryByCoordinatesAsync(double lat, double lon, int limit = int.MaxValue)
   {
     return await Cached(
-      () => $"CurrentWeatherByCoordinates_{lat}_{lon}",
-      async () => MapResponse(await _weatherApi.CurrentWeather(_apiKey, Language, lat, lon))
+      () => $"Forecast5DaysByCoordinates_{lat}_{lon}",
+      async () => MapResponse(await _forecastApi.Forecast(_apiKey, Language, lat, lon, limit))
     );
   }
 
   /// <inheritdoc />
-  public async Task<CurrentWeather?> QueryAsync(int cityId)
+  public async Task<Forecast5Days?> QueryByCityIdAsync(int cityId, int limit = Int32.MaxValue)
   {
     return await Cached(
-      () => $"CurrentWeatherByCityId_{cityId}",
-      async () => MapResponse(await _weatherApi.CurrentWeather(_apiKey, Language, cityId))
+      () => $"Forecast5DaysByCityId_{cityId}",
+      async () => MapResponse(await _forecastApi.Forecast(_apiKey, Language, cityId, limit))
     );
   }
 
-  private static CurrentWeather? MapResponse(IApiResponse<ApiWeatherResponse> response)
+  private static Forecast5Days? MapResponse(IApiResponse<ApiForecast5DaysResponse> response)
   {
     if (!response.IsSuccessStatusCode)
     {
       throw new ApiException(response.StatusCode, response.ReasonPhrase, response.Error);
     }
 
-    return response.Content?.ToWeather();
+    return response.Content?.ToForecast();
   }
 }
