@@ -71,7 +71,7 @@ public sealed class CurrentWeather
   /// Weather condition within the group
   /// </summary>
   public string WeatherDescription { get; internal set; } = null!;
-  
+
   /// <summary>
   /// Weather icon id
   /// </summary>
@@ -103,9 +103,19 @@ public sealed class CurrentWeather
   public Temperature TemperatureMax { get; internal set; }
 
   /// <summary>
-  /// Atmospheric pressure
+  /// Atmospheric pressure (on the sea level, if there is no <see cref="PressureSeaLevel"/> or <see cref="PressureGroundLevel"/> data)
   /// </summary>
   public Pressure Pressure { get; internal set; }
+
+  /// <summary>
+  /// Atmospheric pressure on the sea level
+  /// </summary>
+  public Pressure PressureSeaLevel { get; internal set; }
+
+  /// <summary>
+  /// Atmospheric pressure on the ground level
+  /// </summary>
+  public Pressure PressureGroundLevel { get; internal set; }
 
   /// <summary>
   /// Humidity

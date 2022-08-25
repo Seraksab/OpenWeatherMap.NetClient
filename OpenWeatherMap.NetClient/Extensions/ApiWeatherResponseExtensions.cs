@@ -30,6 +30,8 @@ internal static class ApiWeatherResponseExtensions
       TemperatureMin = response.Main.TemperatureMin,
       TemperatureMax = response.Main.TemperatureMax,
       Pressure = response.Main.Pressure,
+      PressureSeaLevel = response.Main.PressureSeaLevel,
+      PressureGroundLevel = response.Main.PressureGroundLevel,
       Humidity = response.Main.Humidity,
       WindSpeed = response.Wind.Speed,
       WindDirection = response.Wind.Direction,

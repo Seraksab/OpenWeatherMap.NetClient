@@ -61,6 +61,12 @@ internal sealed class ApiWeatherResponse
     [JsonPropertyName("pressure"), JsonConverter(typeof(PressureConverter))]
     public Pressure Pressure { get; set; }
 
+    [JsonPropertyName("sea_level"), JsonConverter(typeof(PressureConverter))]
+    public Pressure PressureSeaLevel { get; set; }
+
+    [JsonPropertyName("grnd_level"), JsonConverter(typeof(PressureConverter))]
+    public Pressure PressureGroundLevel { get; set; }
+
     [JsonPropertyName("humidity"), JsonConverter(typeof(HumidityConverter))]
     public RelativeHumidity Humidity { get; set; }
   }
