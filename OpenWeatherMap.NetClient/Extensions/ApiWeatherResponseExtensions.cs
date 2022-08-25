@@ -35,6 +35,7 @@ internal static class ApiWeatherResponseExtensions
       Humidity = response.Main.Humidity,
       WindSpeed = response.Wind.Speed,
       WindDirection = response.Wind.Direction,
+      WindGust = response.Wind.Gust,
       Cloudiness = response.Clouds.All,
       RainLastHour = response.Rain?.OneHour,
       RainLastThreeHours = response.Rain?.ThreeHours,

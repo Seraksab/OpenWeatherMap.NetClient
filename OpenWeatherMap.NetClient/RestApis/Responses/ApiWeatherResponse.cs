@@ -78,6 +78,9 @@ internal sealed class ApiWeatherResponse
 
     [JsonPropertyName("deg"), JsonConverter(typeof(AngleConverter))]
     public Angle Direction { get; set; }
+
+    [JsonPropertyName("gust"), JsonConverter(typeof(SpeedConverter))]
+    public Speed Gust { get; set; }
   }
 
   internal sealed class CloudsResponse

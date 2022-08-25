@@ -133,6 +133,11 @@ public sealed class CurrentWeather
   public Angle WindDirection { get; internal set; }
 
   /// <summary>
+  /// Wind gust
+  /// </summary>
+  public Speed WindGust { get; internal set; }
+
+  /// <summary>
   /// Cloudiness
   /// </summary>
   public Ratio Cloudiness { get; internal set; }
