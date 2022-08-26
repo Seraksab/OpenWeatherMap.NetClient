@@ -12,8 +12,8 @@ public interface IForecast5DaysApi
   /// Query the weather forecast data by location name
   /// </summary>
   /// <remarks>
-  /// This function is the same as manually calling <see cref="IGeocodingApi.QueryAsync"/> and then using the coordinates
-  /// of the first location in the result set to call <see cref="QueryByCoordinatesAsync(double,double,int)"/>
+  /// This function is the same as manually calling <see cref="IGeocodingApi.QueryAsync"/> of the <see cref="IGeocodingApi"/>
+  /// and then using the coordinates of the first location in the result set to call <see cref="GetByCoordinatesAsync"/>
   /// </remarks>
   /// <param name="query">City name, state code (only for the US) and country code divided by comma (ISO 3166 country codes)</param>
   /// <param name="limit">Number of timestamps that will be returned</param>
@@ -27,7 +27,7 @@ public interface IForecast5DaysApi
   /// <param name="lon">Longitude</param>
   /// <param name="limit">Number of timestamps that will be returned</param>
   /// <returns>The current weather data</returns>
-  Task<Forecast5Days?> QueryByCoordinatesAsync(double lat, double lon, int limit = int.MaxValue);
+  Task<Forecast5Days?> GetByCoordinatesAsync(double lat, double lon, int limit = int.MaxValue);
 
   /// <summary>
   /// Query the weather forecast data by city ID
@@ -35,5 +35,5 @@ public interface IForecast5DaysApi
   /// <param name="cityId">City ID</param>
   /// <param name="limit">Number of timestamps that will be returned</param>
   /// <returns>The current weather data</returns>
-  Task<Forecast5Days?> QueryByCityIdAsync(int cityId, int limit = int.MaxValue);
+  Task<Forecast5Days?> GetByCityIdAsync(int cityId, int limit = int.MaxValue);
 }

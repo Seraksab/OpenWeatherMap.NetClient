@@ -43,14 +43,14 @@ public class Tests
   public async Task TestNullCityName()
   {
     var client = new OpenWeatherMapClient(ApiKey);
-    await Assert.ThrowsAsync<ArgumentNullException>(() => client.CurrentWeather.QueryAsync(null));
+    await Assert.ThrowsAsync<ArgumentNullException>(() => client.CurrentWeather.QueryAsync(null!));
   }
 
   [Fact]
   public async Task TestCoordinates()
   {
     var client = new OpenWeatherMapClient(ApiKey);
-    var result = await client.CurrentWeather.QueryAsync(48.3059D, 14.2862D);
+    var result = await client.CurrentWeather.GetByCoordinatesAsync(48.3059D, 14.2862D);
     Assert.NotNull(result);
     Assert.Equal("Linz", result?.CityName);
     Assert.Equal("AT", result?.Country);
@@ -60,7 +60,7 @@ public class Tests
   public async Task TestCityId()
   {
     var client = new OpenWeatherMapClient(ApiKey);
-    var result = await client.CurrentWeather.QueryAsync(2772400);
+    var result = await client.CurrentWeather.GetByCityIdAsync(2772400);
     Assert.NotNull(result);
     Assert.Equal("Linz", result?.CityName);
     Assert.Equal("AT", result?.Country);
@@ -96,7 +96,7 @@ public class Tests
   public async Task TestAirPollutionCurrent()
   {
     var client = new OpenWeatherMapClient(ApiKey);
-    var result = await client.AirPollution.QueryCurrentAsync(48.3059, 14.2862);
+    var result = await client.AirPollution.GetCurrentAsync(48.3059, 14.2862);
     Assert.NotNull(result);
   }
 
@@ -104,7 +104,7 @@ public class Tests
   public async Task TestAirPollutionForecast()
   {
     var client = new OpenWeatherMapClient(ApiKey);
-    var result = await client.AirPollution.QueryForecastAsync(48.3059, 14.2862);
+    var result = await client.AirPollution.GetForecastAsync(48.3059, 14.2862);
     Assert.NotNull(result);
     Assert.NotEmpty(result);
   }
@@ -115,7 +115,7 @@ public class Tests
     var client = new OpenWeatherMapClient(ApiKey);
     var to = DateTime.UtcNow;
     var from = to - TimeSpan.FromDays(1);
-    var result = await client.AirPollution.QueryHistoricalAsync(48.3059, 14.2862, from, to);
+    var result = await client.AirPollution.GetHistoricalAsync(48.3059, 14.2862, from, to);
     Assert.NotNull(result);
     var airPollutions = result as AirPollution[] ?? result.ToArray();
     Assert.NotEmpty(airPollutions);
@@ -129,8 +129,8 @@ public class Tests
     {
       CacheEnabled = true
     });
-    var firstResult = cachedClient.CurrentWeather.QueryAsync(48.3059D, 14.2862D);
-    var secondResult = cachedClient.CurrentWeather.QueryAsync(48.3059D, 14.2862D);
+    var firstResult = cachedClient.CurrentWeather.GetByCoordinatesAsync(48.3059D, 14.2862D);
+    var secondResult = cachedClient.CurrentWeather.GetByCoordinatesAsync(48.3059D, 14.2862D);
     Assert.True(await firstResult == await secondResult);
   }
 
@@ -141,8 +141,8 @@ public class Tests
     {
       CacheEnabled = false
     });
-    var firstResult = client.CurrentWeather.QueryAsync(48.3059D, 14.2862D);
-    var secondResult = client.CurrentWeather.QueryAsync(48.3059D, 14.2862D);
+    var firstResult = client.CurrentWeather.GetByCoordinatesAsync(48.3059D, 14.2862D);
+    var secondResult = client.CurrentWeather.GetByCoordinatesAsync(48.3059D, 14.2862D);
     Assert.True(await firstResult != await secondResult);
   }
 
@@ -173,7 +173,7 @@ public class Tests
     Assert.Equal(2, forecast.Forecast.Count());
 
     // by coordinates
-    forecast = await client.Forecast5Days.QueryByCoordinatesAsync(48.3059D, 14.2862D, 10);
+    forecast = await client.Forecast5Days.GetByCoordinatesAsync(48.3059D, 14.2862D, 10);
     Assert.NotNull(forecast);
     Assert.Equal("AT", forecast.Country);
     Assert.Equal("Linz", forecast.CityName);
@@ -182,7 +182,7 @@ public class Tests
     Assert.Equal(10, forecast.Forecast.Count());
 
     // by city id
-    forecast = await client.Forecast5Days.QueryByCityIdAsync(2772400,5);
+    forecast = await client.Forecast5Days.GetByCityIdAsync(2772400,5);
     Assert.NotNull(forecast);
     Assert.Equal("AT", forecast.Country);
     Assert.Equal("Linz", forecast.CityName);

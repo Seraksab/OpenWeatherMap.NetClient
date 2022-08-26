@@ -50,7 +50,7 @@ public sealed class Forecast5DaysApi : AbstractApiImplBase, IForecast5DaysApi
   }
 
   /// <inheritdoc />
-  public async Task<Forecast5Days?> QueryByCoordinatesAsync(double lat, double lon, int limit = int.MaxValue)
+  public async Task<Forecast5Days?> GetByCoordinatesAsync(double lat, double lon, int limit = int.MaxValue)
   {
     return await Cached(
       () => $"Forecast5DaysByCoordinates_{lat}_{lon}",
@@ -59,7 +59,7 @@ public sealed class Forecast5DaysApi : AbstractApiImplBase, IForecast5DaysApi
   }
 
   /// <inheritdoc />
-  public async Task<Forecast5Days?> QueryByCityIdAsync(int cityId, int limit = Int32.MaxValue)
+  public async Task<Forecast5Days?> GetByCityIdAsync(int cityId, int limit = int.MaxValue)
   {
     return await Cached(
       () => $"Forecast5DaysByCityId_{cityId}",

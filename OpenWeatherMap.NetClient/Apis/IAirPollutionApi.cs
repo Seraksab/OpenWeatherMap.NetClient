@@ -14,7 +14,7 @@ public interface IAirPollutionApi
   /// <param name="lat">Latitude</param>
   /// <param name="lon">Longitude</param>
   /// <returns>The current air pollution data</returns>
-  Task<AirPollution?> QueryCurrentAsync(double lat, double lon);
+  Task<AirPollution?> GetCurrentAsync(double lat, double lon);
 
   /// <summary>
   /// Query forecast air pollution data by geographical coordinates
@@ -22,7 +22,7 @@ public interface IAirPollutionApi
   /// <param name="lat">Latitude</param>
   /// <param name="lon">Longitude</param>
   /// <returns>The forecast air pollution data</returns>
-  Task<IEnumerable<AirPollution>> QueryForecastAsync(double lat, double lon);
+  Task<IEnumerable<AirPollution>> GetForecastAsync(double lat, double lon);
 
   /// <summary>
   /// Query historical air pollution data by geographical coordinates for a specific time range
@@ -32,5 +32,5 @@ public interface IAirPollutionApi
   /// <param name="start">Start date (UTC time zone)</param>
   /// <param name="end">End date (UTC time zone)</param>
   /// <returns>The historical air pollution data</returns>
-  Task<IEnumerable<AirPollution>> QueryHistoricalAsync(double lat, double lon, DateTime start, DateTime end);
+  Task<IEnumerable<AirPollution>> GetHistoricalAsync(double lat, double lon, DateTime start, DateTime end);
 }

@@ -23,7 +23,7 @@ public sealed class AirPollutionApi : AbstractApiImplBase, IAirPollutionApi
   }
 
   /// <inheritdoc />
-  public async Task<AirPollution?> QueryCurrentAsync(double lat, double lon)
+  public async Task<AirPollution?> GetCurrentAsync(double lat, double lon)
   {
     return await Cached(
       () => $"current_{lat}_{lon}",
@@ -41,7 +41,7 @@ public sealed class AirPollutionApi : AbstractApiImplBase, IAirPollutionApi
   }
 
   /// <inheritdoc />
-  public async Task<IEnumerable<AirPollution>> QueryForecastAsync(double lat, double lon)
+  public async Task<IEnumerable<AirPollution>> GetForecastAsync(double lat, double lon)
   {
     return await Cached(
       () => $"forecast_{lat}_{lon}",
@@ -59,7 +59,7 @@ public sealed class AirPollutionApi : AbstractApiImplBase, IAirPollutionApi
   }
 
   /// <inheritdoc />
-  public async Task<IEnumerable<AirPollution>> QueryHistoricalAsync(double lat, double lon,
+  public async Task<IEnumerable<AirPollution>> GetHistoricalAsync(double lat, double lon,
     DateTime start, DateTime end)
   {
     return await Cached(

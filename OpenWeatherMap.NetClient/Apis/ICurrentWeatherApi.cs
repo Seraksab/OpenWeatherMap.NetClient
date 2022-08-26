@@ -14,8 +14,8 @@ public interface ICurrentWeatherApi
   /// Query current weather data by location name
   /// </summary>
   /// <remarks>
-  /// This function is the same as manually calling <see cref="IGeocodingApi.QueryAsync"/> and then using the coordinates
-  /// of the first location in the result set to call <see cref="QueryAsync(double,double)"/>
+  /// This function is the same as manually calling <see cref="IGeocodingApi.QueryAsync"/> of the <see cref="IGeocodingApi"/>
+  /// and then using the coordinates of the first location in the result set to call <see cref="GetByCoordinatesAsync"/>
   /// </remarks>
   /// <param name="query">City name, state code (only for the US) and country code divided by comma (ISO 3166 country codes)</param>
   /// <returns>The current weather data</returns>
@@ -27,12 +27,12 @@ public interface ICurrentWeatherApi
   /// <param name="lat">Latitude</param>
   /// <param name="lon">Longitude</param>
   /// <returns>The current weather data</returns>
-  Task<CurrentWeather?> QueryAsync(double lat, double lon);
+  Task<CurrentWeather?> GetByCoordinatesAsync(double lat, double lon);
 
   /// <summary>
   /// Get the current weather data by city ID
   /// </summary>
   /// <param name="cityId">City ID</param>
   /// <returns>The current weather data</returns>
-  Task<CurrentWeather?> QueryAsync(int cityId);
+  Task<CurrentWeather?> GetByCityIdAsync(int cityId);
 }

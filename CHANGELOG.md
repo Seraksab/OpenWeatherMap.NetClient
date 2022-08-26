@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Changed
 
 * Instead of wrapping API results and exceptions in an ApiResponse, return or throw them directly.
+* Renamed some functions of the AirPollution and CurrentWeather API 
 
 ## 1.0.3 - 2022-07-30
 

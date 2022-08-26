@@ -50,7 +50,7 @@ public sealed class CurrentWeatherApi : AbstractApiImplBase, ICurrentWeatherApi
   }
 
   /// <inheritdoc />
-  public async Task<CurrentWeather?> QueryAsync(double lat, double lon)
+  public async Task<CurrentWeather?> GetByCoordinatesAsync(double lat, double lon)
   {
     return await Cached(
       () => $"CurrentWeatherByCoordinates_{lat}_{lon}",
@@ -59,7 +59,7 @@ public sealed class CurrentWeatherApi : AbstractApiImplBase, ICurrentWeatherApi
   }
 
   /// <inheritdoc />
-  public async Task<CurrentWeather?> QueryAsync(int cityId)
+  public async Task<CurrentWeather?> GetByCityIdAsync(int cityId)
   {
     return await Cached(
       () => $"CurrentWeatherByCityId_{cityId}",
