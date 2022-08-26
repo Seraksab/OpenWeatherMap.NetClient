@@ -3,14 +3,14 @@
 All notable changes to this project will be documented in this file.  
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
-## 1.1.0 - Unreleased
+## 1.1.0 - 2022-08-26
 
 ### Added
 
 * Support for the 'Basic weather maps' API
+* Support for the '3-hour Forecast 5 days' API
 * Missing 'ground level pressure' and 'sea level pressure' measurements to CurrentWeather
 * Missing 'wind gust' measurement to CurrentWeather
-* Support for the '3-hour Forecast 5 days' API
 
 ### Changed
 
