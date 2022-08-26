@@ -1,4 +1,6 @@
-﻿namespace OpenWeatherMap.NetClient.Apis;
+﻿using OpenWeatherMap.NetClient.Models;
+
+namespace OpenWeatherMap.NetClient.Apis;
 
 /// <summary>
 /// Access to 'Basic weather maps' API.
@@ -15,10 +17,10 @@ public interface IBasicWeatherMapsApi
   /// <remarks>
   /// Caching NOT supported
   /// </remarks>
-  /// <param name="layer">Layer name</param>
+  /// <param name="layer">The layer</param>
   /// <param name="zoom">Zoom level</param>
   /// <param name="x">X tile coordinate</param>
   /// <param name="y">Y tile coordinate</param>
   /// <returns>The current weather map as byte[]</returns>
-  Task<byte[]> GetMapAsync(string layer, int zoom, int x, int y);
+  Task<byte[]> GetMapAsync(BasicWeatherMapLayer layer, int zoom, int x, int y);
 }
