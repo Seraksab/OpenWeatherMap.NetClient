@@ -1,8 +1,5 @@
 ﻿using OpenWeatherMap.NetClient.Models;
 using OpenWeatherMap.NetClient.RestApis.Clients;
-using Refit;
-using ApiException = OpenWeatherMap.NetClient.Exceptions.ApiException;
-
 
 namespace OpenWeatherMap.NetClient.Apis;
 
@@ -11,30 +8,29 @@ namespace OpenWeatherMap.NetClient.Apis;
 /// </summary>
 public sealed class BasicWeatherMapsApi : IBasicWeatherMapsApi
 {
-  private const string WeatherMapBaseUrl = "https://tile.openweathermap.org";
+  private const string BaseUrl = "https://tile.openweathermap.org";
+
   private readonly string _apiKey;
 
-  private readonly IWeatherMapsApiClient _weatherMapsApiClient;
+  private readonly RestClient<IWeatherMapsApiClient> _client;
 
   internal BasicWeatherMapsApi(string apiKey, IOpenWeatherMapOptions? options)
   {
     _apiKey = apiKey;
-    _weatherMapsApiClient = RestService.For<IWeatherMapsApiClient>(WeatherMapBaseUrl);
+    _client = new RestClient<IWeatherMapsApiClient>(BaseUrl, options);
   }
 
   /// <inheritdoc />
   public async Task<byte[]> GetMapAsync(BasicWeatherMapLayer layer, int zoom, int x, int y)
   {
-    var response = await _weatherMapsApiClient.GetWeatherMap(_apiKey, LayerToApiKey(layer), zoom, x, y);
-    if (!response.IsSuccessStatusCode)
+    return await _client.Call(async api =>
     {
-      throw new ApiException(response.StatusCode, response.ReasonPhrase);
-    }
-
-    return await response.Content.ReadAsByteArrayAsync();
+      var response = await api.GetWeatherMap(_apiKey, LayerToKey(layer), zoom, x, y);
+      return await response.Content.ReadAsByteArrayAsync();
+    });
   }
 
-  private static string LayerToApiKey(BasicWeatherMapLayer layer)
+  private static string LayerToKey(BasicWeatherMapLayer layer)
   {
     return layer switch
     {

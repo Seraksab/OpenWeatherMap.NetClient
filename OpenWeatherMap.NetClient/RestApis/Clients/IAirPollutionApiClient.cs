@@ -13,7 +13,7 @@ internal interface IAirPollutionApiClient
   /// <param name="lat">Geographical coordinates (latitude)</param>
   /// <param name="lon">Geographical coordinates (longitude)</param>
   [Get("/data/2.5/air_pollution")]
-  Task<ApiResponse<ApiAirPollutionResponse>> Current(string appid, double lat, double lon);
+  Task<ApiAirPollutionResponse> Current(string appid, double lat, double lon);
 
   /// <summary>
   /// Get the forecast air pollution data
@@ -22,7 +22,7 @@ internal interface IAirPollutionApiClient
   /// <param name="lat">Geographical coordinates (latitude)</param>
   /// <param name="lon">Geographical coordinates (longitude)</param>
   [Get("/data/2.5/air_pollution/forecast")]
-  Task<ApiResponse<ApiAirPollutionResponse>> Forecast(string appid, double lat, double lon);
+  Task<ApiAirPollutionResponse> Forecast(string appid, double lat, double lon);
 
   /// <summary>
   /// Get the historical air pollution data
@@ -33,5 +33,5 @@ internal interface IAirPollutionApiClient
   /// <param name="start">Start date (unix time, UTC time zone), e.g. start=1606488670</param>
   /// <param name="end">End date (unix time, UTC time zone), e.g. end=1606747870</param>
   [Get("/data/2.5/air_pollution/history")]
-  Task<ApiResponse<ApiAirPollutionResponse>> Historical(string appid, double lat, double lon, long start, long end);
+  Task<ApiAirPollutionResponse> Historical(string appid, double lat, double lon, long start, long end);
 }

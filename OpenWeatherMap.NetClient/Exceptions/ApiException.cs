@@ -17,16 +17,21 @@ public sealed class ApiException : Exception
   /// </summary>
   public string? ReasonPhrase { get; }
 
-  internal ApiException(HttpStatusCode statusCode, string? reasonPhrase) : base("Error on API request")
-  {
-    StatusCode = statusCode;
-    ReasonPhrase = reasonPhrase;
-  }
+  /// <summary>
+  /// The HTTP response content as string.
+  /// </summary>
+  public string? Content { get; }
 
-  internal ApiException(HttpStatusCode statusCode, string? reasonPhrase, Exception? inner)
-    : base("Error on API request", inner)
+  /// <summary>
+  /// Whether the response has content or not 
+  /// </summary>
+  public bool HasContent => !string.IsNullOrWhiteSpace(Content);
+
+  internal ApiException(HttpStatusCode statusCode, string? reasonPhrase, string? content)
+    : base($"API request failed with status code: {(int)statusCode} ({reasonPhrase})")
   {
     StatusCode = statusCode;
     ReasonPhrase = reasonPhrase;
+    Content = content;
   }
 }

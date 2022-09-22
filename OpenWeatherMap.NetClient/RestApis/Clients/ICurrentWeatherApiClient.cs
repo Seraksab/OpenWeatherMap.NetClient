@@ -1,5 +1,5 @@
+using OpenWeatherMap.NetClient.RestApis.Responses;
 using Refit;
-using ApiWeatherResponse = OpenWeatherMap.NetClient.RestApis.Responses.ApiWeatherResponse;
 
 namespace OpenWeatherMap.NetClient.RestApis.Clients;
 
@@ -14,7 +14,7 @@ internal interface ICurrentWeatherApiClient
   /// <param name="lat">Geographical coordinates (latitude)</param>
   /// <param name="lon">Geographical coordinates (longitude)</param>
   [Get("/data/2.5/weather")]
-  Task<ApiResponse<ApiWeatherResponse>> CurrentWeather(string appid, string lang, double lat, double lon);
+  Task<ApiWeatherResponse> CurrentWeather(string appid, string lang, double lat, double lon);
 
   /// <summary>
   /// Get the current weather data by city ID
@@ -23,5 +23,5 @@ internal interface ICurrentWeatherApiClient
   /// <param name="lang">Language to get textual output in (en, de, ...)</param>
   /// <param name="id">City ID</param>
   [Get("/data/2.5/weather")]
-  Task<ApiResponse<ApiWeatherResponse>> CurrentWeather(string appid, string lang, int id);
+  Task<ApiWeatherResponse> CurrentWeather(string appid, string lang, int id);
 }

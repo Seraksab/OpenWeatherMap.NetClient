@@ -141,9 +141,10 @@ public class Tests
     {
       CacheEnabled = false
     });
-    var firstResult = client.CurrentWeather.GetByCoordinatesAsync(48.3059D, 14.2862D);
-    var secondResult = client.CurrentWeather.GetByCoordinatesAsync(48.3059D, 14.2862D);
-    Assert.True(await firstResult != await secondResult);
+    var firstResult = await client.CurrentWeather.GetByCoordinatesAsync(48.3059D, 14.2862D);
+    var secondResult = await client.CurrentWeather.GetByCoordinatesAsync(48.3059D, 14.2862D);
+    Assert.True(firstResult != secondResult);
+    Assert.True(firstResult!.FetchedTimeStamp != secondResult!.FetchedTimeStamp);
   }
 
   [Fact]

@@ -2,90 +2,66 @@
 using OpenWeatherMap.NetClient.Models;
 using OpenWeatherMap.NetClient.RestApis.Clients;
 using OpenWeatherMap.NetClient.RestApis.Responses;
-using Refit;
-using ApiException = OpenWeatherMap.NetClient.Exceptions.ApiException;
 
 namespace OpenWeatherMap.NetClient.Apis;
 
 /// <summary>
 /// Implementation of <see cref="IAirPollutionApi"/>
 /// </summary>
-public sealed class AirPollutionApi : AbstractApiImplBase, IAirPollutionApi
+public sealed class AirPollutionApi : IAirPollutionApi
 {
+  private const string BaseUrl = "https://api.openweathermap.org";
+
   private readonly string _apiKey;
 
-  private readonly IAirPollutionApiClient _airPollutionApiClient;
+  private readonly RestClient<IAirPollutionApiClient> _client;
 
-  internal AirPollutionApi(string apiKey, IOpenWeatherMapOptions? options) : base(options)
+  internal AirPollutionApi(string apiKey, IOpenWeatherMapOptions? options)
   {
     _apiKey = apiKey;
-    _airPollutionApiClient = RestService.For<IAirPollutionApiClient>(BaseUrl);
+    _client = new RestClient<IAirPollutionApiClient>(BaseUrl, options);
   }
 
   /// <inheritdoc />
   public async Task<AirPollution?> GetCurrentAsync(double lat, double lon)
   {
-    return await Cached(
-      () => $"current_{lat}_{lon}",
-      async () =>
+    return await _client.Call(async api =>
       {
-        var response = await _airPollutionApiClient.Current(_apiKey, lat, lon);
-        if (!response.IsSuccessStatusCode)
-        {
-          throw new ApiException(response.StatusCode, response.ReasonPhrase, response.Error);
-        }
-
-        return response.Content == null ? null : MapModels(response).FirstOrDefault();
-      }
+        var result = await api.Current(_apiKey, lat, lon);
+        return MapModels(result).FirstOrDefault();
+      },
+      () => $"current_{lat}_{lon}"
     );
   }
 
   /// <inheritdoc />
   public async Task<IEnumerable<AirPollution>> GetForecastAsync(double lat, double lon)
   {
-    return await Cached(
-      () => $"forecast_{lat}_{lon}",
-      async () =>
-      {
-        var response = await _airPollutionApiClient.Forecast(_apiKey, lat, lon);
-        if (!response.IsSuccessStatusCode)
-        {
-          throw new ApiException(response.StatusCode, response.ReasonPhrase, response.Error);
-        }
-
-        return MapModels(response);
-      }
+    return await _client.Call(
+      async api => MapModels(await api.Forecast(_apiKey, lat, lon)),
+      () => $"forecast_{lat}_{lon}"
     );
   }
 
   /// <inheritdoc />
-  public async Task<IEnumerable<AirPollution>> GetHistoricalAsync(double lat, double lon,
-    DateTime start, DateTime end)
+  public async Task<IEnumerable<AirPollution>> GetHistoricalAsync(double lat, double lon, DateTime start,
+    DateTime end)
   {
-    return await Cached(
-      () => $"historical_{lat}_{lon}_{start}_{end}",
-      async () =>
+    return await _client.Call(async api =>
       {
-        var response = await _airPollutionApiClient.Historical(
+        var result = await api.Historical(
           _apiKey, lat, lon,
           ((DateTimeOffset)start).ToUnixTimeSeconds(),
           ((DateTimeOffset)end).ToUnixTimeSeconds()
         );
-
-        if (!response.IsSuccessStatusCode)
-        {
-          throw new ApiException(response.StatusCode, response.ReasonPhrase, response.Error);
-        }
-
-        return MapModels(response);
-      }
+        return MapModels(result);
+      },
+      () => $"historical_{lat}_{lon}_{start}_{end}"
     );
   }
 
-  private static IEnumerable<AirPollution> MapModels(IApiResponse<ApiAirPollutionResponse> response)
+  private static IEnumerable<AirPollution> MapModels(ApiAirPollutionResponse response)
   {
-    return response.Content == null
-      ? Enumerable.Empty<AirPollution>()
-      : response.Content.List.Select(e => e.ToAirPollution());
+    return response.List.Select(e => e.ToAirPollution());
   }
 }

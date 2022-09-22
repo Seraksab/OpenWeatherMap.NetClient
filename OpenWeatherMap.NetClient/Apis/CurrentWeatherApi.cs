@@ -1,27 +1,29 @@
 ﻿using OpenWeatherMap.NetClient.Extensions;
 using OpenWeatherMap.NetClient.Models;
 using OpenWeatherMap.NetClient.RestApis.Clients;
-using OpenWeatherMap.NetClient.RestApis.Responses;
-using Refit;
-using ApiException = OpenWeatherMap.NetClient.Exceptions.ApiException;
 
 namespace OpenWeatherMap.NetClient.Apis;
 
 /// <summary>
 /// Implementation of <see cref="ICurrentWeatherApi"/>
 /// </summary>
-public sealed class CurrentWeatherApi : AbstractApiImplBase, ICurrentWeatherApi
+public sealed class CurrentWeatherApi : ICurrentWeatherApi
 {
+  private const string BaseUrl = "https://api.openweathermap.org";
+
   private readonly string _apiKey;
+  private readonly string _language;
 
-  private readonly ICurrentWeatherApiClient _weatherApi;
-  private readonly IGeocodingApiClient _geoApi;
+  private readonly RestClient<ICurrentWeatherApiClient> _weatherApi;
+  private readonly RestClient<IGeocodingApiClient> _geoApi;
 
-  internal CurrentWeatherApi(string apiKey, IOpenWeatherMapOptions? options) : base(options)
+  internal CurrentWeatherApi(string apiKey, IOpenWeatherMapOptions? options)
   {
     _apiKey = apiKey;
-    _weatherApi = RestService.For<ICurrentWeatherApiClient>(BaseUrl);
-    _geoApi = RestService.For<IGeocodingApiClient>(BaseUrl);
+    _language = (options?.Culture ?? OpenWeatherMapOptions.Defaults.Culture).TwoLetterISOLanguageName;
+
+    _weatherApi = new RestClient<ICurrentWeatherApiClient>(BaseUrl, options);
+    _geoApi = new RestClient<IGeocodingApiClient>(BaseUrl, options);
   }
 
   /// <inheritdoc />
@@ -29,51 +31,43 @@ public sealed class CurrentWeatherApi : AbstractApiImplBase, ICurrentWeatherApi
   {
     if (query == null) throw new ArgumentNullException(nameof(query));
 
-    return await Cached(() => $"CurrentWeatherByName_{query}", async () =>
-    {
-      var response = await _geoApi.GeoCodeByLocationName(_apiKey, query, 1);
-      if (!response.IsSuccessStatusCode)
-      {
-        throw new ApiException(response.StatusCode, response.ReasonPhrase, response.Error);
-      }
+    var response = await _geoApi.Call(
+      api => api.GeoCodeByLocationName(_apiKey, query, 1),
+      () => $"GeoCodeByLocationName_{query}"
+    );
+    if (!response.Any()) return null;
 
-      if (response.Content == null || !response.Content.Any())
+    var geoCode = response.First();
+    return await _weatherApi.Call(async api =>
       {
-        return null;
-      }
-
-      var geoCode = response.Content.First();
-      return MapResponse(
-        await _weatherApi.CurrentWeather(_apiKey, Language, geoCode.Latitude, geoCode.Longitude)
-      );
-    });
+        var weather = await api.CurrentWeather(_apiKey, _language, geoCode.Latitude, geoCode.Longitude);
+        return weather.ToWeather();
+      },
+      () => $"CurrentWeatherByName_{query}"
+    );
   }
 
   /// <inheritdoc />
   public async Task<CurrentWeather?> GetByCoordinatesAsync(double lat, double lon)
   {
-    return await Cached(
-      () => $"CurrentWeatherByCoordinates_{lat}_{lon}",
-      async () => MapResponse(await _weatherApi.CurrentWeather(_apiKey, Language, lat, lon))
+    return await _weatherApi.Call(async api =>
+      {
+        var weather = await api.CurrentWeather(_apiKey, _language, lat, lon);
+        return weather.ToWeather();
+      },
+      () => $"CurrentWeatherByCoordinates_{lat}_{lon}"
     );
   }
 
   /// <inheritdoc />
   public async Task<CurrentWeather?> GetByCityIdAsync(int cityId)
   {
-    return await Cached(
-      () => $"CurrentWeatherByCityId_{cityId}",
-      async () => MapResponse(await _weatherApi.CurrentWeather(_apiKey, Language, cityId))
+    return await _weatherApi.Call(async api =>
+      {
+        var weather = await api.CurrentWeather(_apiKey, _language, cityId);
+        return weather.ToWeather();
+      },
+      () => $"CurrentWeatherByCityId_{cityId}"
     );
-  }
-
-  private static CurrentWeather? MapResponse(IApiResponse<ApiWeatherResponse> response)
-  {
-    if (!response.IsSuccessStatusCode)
-    {
-      throw new ApiException(response.StatusCode, response.ReasonPhrase, response.Error);
-    }
-
-    return response.Content?.ToWeather();
   }
 }
