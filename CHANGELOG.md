@@ -5,9 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## Unreleased
 
+### Added
+
+* Support for retries
+
 ### Changed
 
 * Internal handling of API calls
+* Utilize Polly and MemoryCache for caching instead of LazyCache
 
 ## 1.1.0 - 2022-08-26
 

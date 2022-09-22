@@ -17,10 +17,10 @@ public sealed class CurrentWeatherApi : ICurrentWeatherApi
   private readonly RestClient<ICurrentWeatherApiClient> _weatherApi;
   private readonly RestClient<IGeocodingApiClient> _geoApi;
 
-  internal CurrentWeatherApi(string apiKey, IOpenWeatherMapOptions? options)
+  internal CurrentWeatherApi(string apiKey, OpenWeatherMapOptions options)
   {
     _apiKey = apiKey;
-    _language = (options?.Culture ?? OpenWeatherMapOptions.Defaults.Culture).TwoLetterISOLanguageName;
+    _language = options.Culture.TwoLetterISOLanguageName;
 
     _weatherApi = new RestClient<ICurrentWeatherApiClient>(BaseUrl, options);
     _geoApi = new RestClient<IGeocodingApiClient>(BaseUrl, options);

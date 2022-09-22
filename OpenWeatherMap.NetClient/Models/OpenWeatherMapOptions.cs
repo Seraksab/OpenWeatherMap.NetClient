@@ -3,37 +3,34 @@
 namespace OpenWeatherMap.NetClient.Models;
 
 /// <summary>
-/// Implementation of <see cref="IOpenWeatherMapOptions"/>
+/// Defines various options for the <see cref="OpenWeatherMapClient"/>
 /// </summary>
-public sealed class OpenWeatherMapOptions : IOpenWeatherMapOptions
+public sealed class OpenWeatherMapOptions
 {
   /// <summary>
-  /// The default options that apply if no options or no value is set
+  /// Creates an instance of <see cref="OpenWeatherMapOptions"/> with the default options
   /// </summary>
-  public static class Defaults
+  public OpenWeatherMapOptions()
   {
-    /// <summary>
-    /// The default culture
-    /// </summary>
-    public static readonly CultureInfo Culture = new("en");
-
-    /// <summary>
-    /// The default cache duration
-    /// </summary>
-    public static readonly TimeSpan CacheDuration = TimeSpan.FromMinutes(10);
-
-    /// <summary>
-    /// Whether caching is enabled by default or not
-    /// </summary>
-    public static readonly bool CacheEnabled = false;
   }
 
-  /// <inheritdoc />
-  public CultureInfo? Culture { get; set; }
+  /// <summary>
+  /// Language to get textual outputs in
+  /// </summary>
+  public CultureInfo Culture { get; set; } = new("en");
 
-  /// <inheritdoc />
-  public bool? CacheEnabled { get; set; }
+  /// <summary>
+  /// Duration the responses will be cached
+  /// </summary>
+  public TimeSpan CacheDuration { get; set; } = TimeSpan.Zero;
 
-  /// <inheritdoc />
-  public TimeSpan? CacheDuration { get; set; }
+  /// <summary>
+  /// How often to retry on timeout or API error
+  /// </summary>
+  public int RetryCount { get; set; } = 1;
+
+  /// <summary>
+  /// Duration to wait between retries
+  /// </summary>
+  public Func<int, TimeSpan> RetryWaitDurationProvider { get; set; } = _ => TimeSpan.Zero;
 }

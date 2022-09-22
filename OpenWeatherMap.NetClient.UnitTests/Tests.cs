@@ -6,7 +6,8 @@ namespace OpenWeatherMap.NetClient.UnitTests;
 
 public class Tests
 {
-  private const string ApiKey = "[API-KEY]";
+  // private const string ApiKey = "[API-KEY]";
+  private const string ApiKey = "e9e6e24f16a94f0353ad8b4ddcde8123";
 
   [Fact]
   public async Task TestInvalidApiKey()
@@ -127,11 +128,11 @@ public class Tests
   {
     var cachedClient = new OpenWeatherMapClient(ApiKey, new OpenWeatherMapOptions
     {
-      CacheEnabled = true
+      CacheDuration = TimeSpan.FromMinutes(1)
     });
-    var firstResult = cachedClient.CurrentWeather.GetByCoordinatesAsync(48.3059D, 14.2862D);
-    var secondResult = cachedClient.CurrentWeather.GetByCoordinatesAsync(48.3059D, 14.2862D);
-    Assert.True(await firstResult == await secondResult);
+    var firstResult = await cachedClient.CurrentWeather.GetByCoordinatesAsync(48.3059D, 14.2862D);
+    var secondResult = await cachedClient.CurrentWeather.GetByCoordinatesAsync(48.3059D, 14.2862D);
+    Assert.True(firstResult == secondResult);
   }
 
   [Fact]
@@ -139,7 +140,7 @@ public class Tests
   {
     var client = new OpenWeatherMapClient(ApiKey, new OpenWeatherMapOptions
     {
-      CacheEnabled = false
+      CacheDuration = TimeSpan.Zero
     });
     var firstResult = await client.CurrentWeather.GetByCoordinatesAsync(48.3059D, 14.2862D);
     var secondResult = await client.CurrentWeather.GetByCoordinatesAsync(48.3059D, 14.2862D);
@@ -167,7 +168,7 @@ public class Tests
     Assert.Equal(48.3059, forecast.Latitude, 3);
     Assert.Equal(14.2862, forecast.Longitude, 3);
     Assert.Equal(40, forecast.Forecast.Count()); // 5 days worth with 3 hour steps
-    
+
     // test limit
     forecast = await client.Forecast5Days.QueryAsync("Linz,AT", 2);
     Assert.NotNull(forecast);
@@ -183,7 +184,7 @@ public class Tests
     Assert.Equal(10, forecast.Forecast.Count());
 
     // by city id
-    forecast = await client.Forecast5Days.GetByCityIdAsync(2772400,5);
+    forecast = await client.Forecast5Days.GetByCityIdAsync(2772400, 5);
     Assert.NotNull(forecast);
     Assert.Equal("AT", forecast.Country);
     Assert.Equal("Linz", forecast.CityName);

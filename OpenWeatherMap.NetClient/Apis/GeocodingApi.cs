@@ -15,7 +15,7 @@ public sealed class GeocodingApi : IGeocodingApi
 
   private readonly RestClient<IGeocodingApiClient> _geoApi;
 
-  internal GeocodingApi(string apiKey, IOpenWeatherMapOptions? options)
+  internal GeocodingApi(string apiKey, OpenWeatherMapOptions options)
   {
     _apiKey = apiKey;
     _geoApi = new RestClient<IGeocodingApiClient>(BaseUrl, options);

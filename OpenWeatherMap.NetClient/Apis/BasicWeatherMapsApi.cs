@@ -14,7 +14,7 @@ public sealed class BasicWeatherMapsApi : IBasicWeatherMapsApi
 
   private readonly RestClient<IWeatherMapsApiClient> _client;
 
-  internal BasicWeatherMapsApi(string apiKey, IOpenWeatherMapOptions? options)
+  internal BasicWeatherMapsApi(string apiKey, OpenWeatherMapOptions options)
   {
     _apiKey = apiKey;
     _client = new RestClient<IWeatherMapsApiClient>(BaseUrl, options);

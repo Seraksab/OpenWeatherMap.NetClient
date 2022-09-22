@@ -22,9 +22,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="LazyCache" Version="2.4.0" />
+      <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
+      <PackageReference Include="Polly" Version="7.2.3" />
       <PackageReference Include="Refit" Version="6.3.2" />
-      <PackageReference Include="UnitsNet" Version="4.144.0" />
+      <PackageReference Include="UnitsNet" Version="4.145.0" />
     </ItemGroup>
 
     <ItemGroup>

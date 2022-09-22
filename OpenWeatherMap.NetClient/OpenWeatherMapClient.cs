@@ -23,10 +23,12 @@ public sealed class OpenWeatherMapClient : IOpenWeatherMap
   /// <returns>An implementation of <see cref="IOpenWeatherMap"/></returns>
   /// <param name="apiKey">Your unique API key</param>
   /// <param name="options">Optional client configuration</param>
-  public OpenWeatherMapClient(string apiKey, IOpenWeatherMapOptions? options = null)
+  public OpenWeatherMapClient(string apiKey, OpenWeatherMapOptions? options = null)
   {
     if (apiKey == null) throw new ArgumentNullException(nameof(apiKey));
     if (!ApiKeyRegex.IsMatch(apiKey)) throw new ArgumentException($"'{apiKey}' is not a valid API key");
+
+    options ??= new OpenWeatherMapOptions();
 
     _geoCoding = new Lazy<IGeocodingApi>(() => new GeocodingApi(apiKey, options));
     _airPollution = new Lazy<IAirPollutionApi>(() => new AirPollutionApi(apiKey, options));

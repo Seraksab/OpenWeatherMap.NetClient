@@ -16,7 +16,7 @@ public sealed class AirPollutionApi : IAirPollutionApi
 
   private readonly RestClient<IAirPollutionApiClient> _client;
 
-  internal AirPollutionApi(string apiKey, IOpenWeatherMapOptions? options)
+  internal AirPollutionApi(string apiKey, OpenWeatherMapOptions options)
   {
     _apiKey = apiKey;
     _client = new RestClient<IAirPollutionApiClient>(BaseUrl, options);

@@ -17,10 +17,10 @@ public sealed class Forecast5DaysApi : IForecast5DaysApi
   private readonly RestClient<IForecast5DaysApiClient> _forecastApi;
   private readonly RestClient<IGeocodingApiClient> _geoApi;
 
-  internal Forecast5DaysApi(string apiKey, IOpenWeatherMapOptions? options)
+  internal Forecast5DaysApi(string apiKey, OpenWeatherMapOptions options)
   {
     _apiKey = apiKey;
-    _language = (options?.Culture ?? OpenWeatherMapOptions.Defaults.Culture).TwoLetterISOLanguageName;
+    _language = options.Culture.TwoLetterISOLanguageName;
 
     _forecastApi = new RestClient<IForecast5DaysApiClient>(BaseUrl, options);
     _geoApi = new RestClient<IGeocodingApiClient>(BaseUrl, options);

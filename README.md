@@ -6,7 +6,7 @@
 A simple, asynchronous .NET client to fetch weather information from
 the [OpenWeatherMap](https://openweathermap.org/) APIs.
 
-Support for response caching is built in.  
+Support for response caching and retries is built in.  
 Numerical values are parsed to and returned as units from [Units.NET](https://github.com/angularsen/UnitsNet)
 (where applicable) to ease the conversion between different measurement systems and avoid unit confusion.
 
@@ -54,20 +54,24 @@ Console.Out.WriteLine($"At {forecast[1].ForecastTimeStamp.ToShortTimeString()} "
                       $"the weather in Vienna will be '{forecast[1].WeatherCondition}'");
 ```
 
-### Client configuration
+## Configuration
 
-Caching is disabled by default.  
-The default cache duration is set to 10 minutes (if cache is enabled).  
-The default culture is set to 'en'.
+| Setting                   | Default value            |                                            |
+|---------------------------|--------------------------|--------------------------------------------|
+| Culture                   | ```"en"```               | Language to get textual outputs in         |
+| CacheDuration             | ```TimeSpan.Zero ```     | Duration the API responses will be cached  |
+| RetryCount                | ```1```                  | How often to retry on timeout or API error |
+| RetryWaitDurationProvider | ```_ => TimeSpan.Zero``` | Duration to wait between retries           |
 
-You can modify the default configuration of the client by additionally passing _IOpenWeatherMapOptions_
+You can modify the default configuration of the client by additionally passing _OpenWeatherMapOptions_
 
 ```csharp
 var client = new OpenWeatherMapClient("[API_KEY]", new OpenWeatherMapOptions
 {
   Culture = new CultureInfo("en"),
-  CacheEnabled = true,
-  CacheDuration = TimeSpan.FromMinutes(10)
+  CacheDuration = TimeSpan.FromMinutes(10),
+  RetryCount = 3,
+  RetryWaitDurationProvider = attempt => TimeSpan.FromSeconds(Math.Pow(2, attempt)) // exponential back-off
 });
 ```
 
@@ -82,13 +86,12 @@ services.AddOpenWeatherMap("[API KEY]");
 // or with custom client configuration
 services.AddOpenWeatherMap("[API KEY]", new OpenWeatherMapOptions
 {
-  CacheEnabled = true,
-  CacheDuration = TimeSpan.FromMinutes(5)
+  CacheDuration = TimeSpan.FromMinutes(2)
 });
 ```
 
 ## Dependencies
 
 * [Refit](https://github.com/reactiveui/refit) - REST request handling
-* [LazyCache](https://github.com/alastairtree/LazyCache) - caching support
+* [Polly](https://github.com/App-vNext/Polly) - retries and caching
 * [Units.NET](https://github.com/angularsen/UnitsNet) - units for numerical weather values

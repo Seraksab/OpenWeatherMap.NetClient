@@ -18,7 +18,7 @@ public static class ServiceCollectionExtension
   public static IServiceCollection AddOpenWeatherMap(
     this IServiceCollection services,
     string apiKey,
-    IOpenWeatherMapOptions? options = null
+    OpenWeatherMapOptions? options = null
   )
   {
     services.AddSingleton<IOpenWeatherMap>(new OpenWeatherMapClient(apiKey, options));
