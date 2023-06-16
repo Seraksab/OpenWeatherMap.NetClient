@@ -4,7 +4,6 @@ using OpenWeatherMap.NetClient.Models;
 using Polly;
 using Polly.Caching;
 using Refit;
-using ApiException = OpenWeatherMap.NetClient.Exceptions.ApiException;
 
 namespace OpenWeatherMap.NetClient.RestApis.Clients;
 
@@ -21,11 +20,7 @@ internal sealed class RestClient<T> : IAsyncCacheProvider where T : class
     _options = options;
     _cache = new MemoryCache(new MemoryCacheOptions());
     _policy = GetPolicy();
-
-    _api = RestService.For<T>(url, new RefitSettings
-    {
-      ExceptionFactory = CreateExceptionAsync
-    });
+    _api = RestService.For<T>(url);
   }
 
   public async Task<TResult> Call<TResult>(Func<T, Task<TResult>> itemFactory, Func<string>? cacheKeyFunc = null)
@@ -62,16 +57,5 @@ internal sealed class RestClient<T> : IAsyncCacheProvider where T : class
         .WaitAndRetryAsync(_options.RetryCount, _options.RetryWaitDurationProvider);
 
     return Policy.WrapAsync(cachePolicy, retryPolicy);
-  }
-
-  private static async Task<Exception?> CreateExceptionAsync(HttpResponseMessage response)
-  {
-    if (response.IsSuccessStatusCode) return null;
-
-    return new ApiException(
-      response.StatusCode,
-      response.ReasonPhrase,
-      await response.Content.ReadAsStringAsync().ConfigureAwait(false)
-    );
   }
 }

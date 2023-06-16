@@ -54,6 +54,26 @@ Console.Out.WriteLine($"At {forecast[1].ForecastTimeStamp.ToShortTimeString()} "
                       $"the weather in Vienna will be '{forecast[1].WeatherCondition}'");
 ```
 
+## Exception Handling
+
+This client uses [Refit](https://github.com/reactiveui/refit) to handle the actual HTTP requests.
+Exceptions thrown by Refit are not caught, wrapped or altered in any form.  
+
+```csharp
+// ...
+try
+{
+  var weather = await client.CurrentWeather.QueryAsync("Linz,AT");
+}
+catch (ApiException exception)
+{
+  //exception handling
+}
+```
+
+For more details refer to the [Refit documentation on handling exceptions](https://github.com/reactiveui/refit#handling-exceptions).
+
+
 ## Configuration
 
 | Setting                   | Default value            |                                            |

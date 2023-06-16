@@ -1,6 +1,6 @@
 using System.Net;
-using OpenWeatherMap.NetClient.Exceptions;
 using OpenWeatherMap.NetClient.Models;
+using Refit;
 
 namespace OpenWeatherMap.NetClient.UnitTests;
 
