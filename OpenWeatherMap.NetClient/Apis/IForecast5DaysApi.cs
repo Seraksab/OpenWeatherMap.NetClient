@@ -9,6 +9,11 @@ namespace OpenWeatherMap.NetClient.Apis;
 public interface IForecast5DaysApi
 {
   /// <summary>
+  /// The <see cref="HttpClient"/> being used to perform the HTTP requests
+  /// </summary>
+  HttpClient Client { get; }
+
+  /// <summary>
   /// Query the weather forecast data by location name
   /// </summary>
   /// <remarks>

@@ -9,6 +9,11 @@ namespace OpenWeatherMap.NetClient.Apis;
 public interface IAirPollutionApi
 {
   /// <summary>
+  /// The <see cref="HttpClient"/> being used to perform the HTTP requests
+  /// </summary>
+  HttpClient Client  { get; }
+
+  /// <summary>
   /// Query current air pollution data by geographical coordinates
   /// </summary>
   /// <param name="lat">Latitude</param>

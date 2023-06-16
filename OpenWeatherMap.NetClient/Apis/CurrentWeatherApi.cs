@@ -14,6 +14,7 @@ public sealed class CurrentWeatherApi : ICurrentWeatherApi
   private readonly string _apiKey;
   private readonly string _language;
 
+  private readonly HttpClient _httpClient;
   private readonly RestClient<ICurrentWeatherApiClient> _weatherApi;
   private readonly RestClient<IGeocodingApiClient> _geoApi;
 
@@ -22,9 +23,16 @@ public sealed class CurrentWeatherApi : ICurrentWeatherApi
     _apiKey = apiKey;
     _language = options.Culture.TwoLetterISOLanguageName;
 
-    _weatherApi = new RestClient<ICurrentWeatherApiClient>(BaseUrl, options);
-    _geoApi = new RestClient<IGeocodingApiClient>(BaseUrl, options);
+    _httpClient = new HttpClient
+    {
+      BaseAddress = new Uri(BaseUrl)
+    };
+    _weatherApi = new RestClient<ICurrentWeatherApiClient>(_httpClient, options);
+    _geoApi = new RestClient<IGeocodingApiClient>(_httpClient, options);
   }
+
+  /// <inheritdoc />
+  public HttpClient Client => _httpClient;
 
   /// <inheritdoc />
   public async Task<CurrentWeather?> QueryAsync(string query)

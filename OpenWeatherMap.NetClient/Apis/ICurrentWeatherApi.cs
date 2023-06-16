@@ -11,6 +11,11 @@ namespace OpenWeatherMap.NetClient.Apis;
 public interface ICurrentWeatherApi
 {
   /// <summary>
+  /// The <see cref="HttpClient"/> being used to perform the HTTP requests
+  /// </summary>
+  HttpClient Client { get; }
+
+  /// <summary>
   /// Query current weather data by location name
   /// </summary>
   /// <remarks>

@@ -9,6 +9,11 @@ namespace OpenWeatherMap.NetClient.Apis;
 public interface IGeocodingApi
 {
   /// <summary>
+  /// The <see cref="HttpClient"/> being used to perform the HTTP requests
+  /// </summary>
+  HttpClient Client { get; }
+
+  /// <summary>
   /// Query geographical coordinates for a location name
   /// </summary>
   /// <param name="query">City name, state code (only for the US) and country code divided by comma (ISO 3166 country codes)</param>

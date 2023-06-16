@@ -14,13 +14,21 @@ public sealed class AirPollutionApi : IAirPollutionApi
 
   private readonly string _apiKey;
 
+  private readonly HttpClient _httpClient;
   private readonly RestClient<IAirPollutionApiClient> _client;
 
   internal AirPollutionApi(string apiKey, OpenWeatherMapOptions options)
   {
     _apiKey = apiKey;
-    _client = new RestClient<IAirPollutionApiClient>(BaseUrl, options);
+    _httpClient = new HttpClient
+    {
+      BaseAddress = new Uri(BaseUrl)
+    };
+    _client = new RestClient<IAirPollutionApiClient>(Client, options);
   }
+
+  /// <inheritdoc />
+  public HttpClient Client => _httpClient;
 
   /// <inheritdoc />
   public async Task<AirPollution?> GetCurrentAsync(double lat, double lon)

@@ -6,8 +6,7 @@ namespace OpenWeatherMap.NetClient.UnitTests;
 
 public class Tests
 {
-  // private const string ApiKey = "[API-KEY]";
-  private const string ApiKey = "e9e6e24f16a94f0353ad8b4ddcde8123";
+  private const string ApiKey = "[API-KEY]";
 
   [Fact]
   public async Task TestInvalidApiKey()

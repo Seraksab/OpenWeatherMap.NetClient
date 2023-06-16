@@ -95,6 +95,18 @@ var client = new OpenWeatherMapClient("[API_KEY]", new OpenWeatherMapOptions
 });
 ```
 
+### HttpClient
+
+Each individual API exposes the `HttpClient` instance being used should you need or want to configure it.  
+```csharp
+var client = new OpenWeatherMapClient("[API_KEY]");
+var currentWeatherApi = client.CurrentWeather;
+
+// configure HttpClient
+currentWeatherApi.Client.Timeout = TimeSpan.FromSeconds(5);
+// ...
+```
+
 ### ASP.NET
 
 Simply call the provided extension method to register the service in your Startup.cs

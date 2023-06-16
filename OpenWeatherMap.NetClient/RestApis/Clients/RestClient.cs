@@ -15,12 +15,12 @@ internal sealed class RestClient<T> : IAsyncCacheProvider where T : class
   private readonly IMemoryCache _cache;
   private readonly IAsyncPolicy _policy;
 
-  internal RestClient(string url, OpenWeatherMapOptions options)
+  internal RestClient(HttpClient httpClient, OpenWeatherMapOptions options)
   {
     _options = options;
     _cache = new MemoryCache(new MemoryCacheOptions());
     _policy = GetPolicy();
-    _api = RestService.For<T>(url);
+    _api = RestService.For<T>(httpClient);
   }
 
   public async Task<TResult> Call<TResult>(Func<T, Task<TResult>> itemFactory, Func<string>? cacheKeyFunc = null)

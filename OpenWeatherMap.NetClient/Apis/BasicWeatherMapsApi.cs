@@ -12,13 +12,21 @@ public sealed class BasicWeatherMapsApi : IBasicWeatherMapsApi
 
   private readonly string _apiKey;
 
+  private readonly HttpClient _httpClient;
   private readonly RestClient<IWeatherMapsApiClient> _client;
 
   internal BasicWeatherMapsApi(string apiKey, OpenWeatherMapOptions options)
   {
     _apiKey = apiKey;
-    _client = new RestClient<IWeatherMapsApiClient>(BaseUrl, options);
+    _httpClient = new HttpClient
+    {
+      BaseAddress = new Uri(BaseUrl)
+    };
+    _client = new RestClient<IWeatherMapsApiClient>(_httpClient, options);
   }
+
+  /// <inheritdoc />
+  public HttpClient Client => _httpClient;
 
   /// <inheritdoc />
   public async Task<byte[]> GetMapAsync(BasicWeatherMapLayer layer, int zoom, int x, int y)

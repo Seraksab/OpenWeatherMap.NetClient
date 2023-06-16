@@ -12,6 +12,11 @@ namespace OpenWeatherMap.NetClient.Apis;
 public interface IBasicWeatherMapsApi
 {
   /// <summary>
+  /// The <see cref="HttpClient"/> being used to perform the HTTP requests
+  /// </summary>
+  HttpClient Client { get; }
+
+  /// <summary>
   /// Get the current weather map as .png
   /// </summary>
   /// <remarks>

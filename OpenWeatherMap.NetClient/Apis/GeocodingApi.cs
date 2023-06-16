@@ -13,13 +13,21 @@ public sealed class GeocodingApi : IGeocodingApi
 
   private readonly string _apiKey;
 
+  private readonly HttpClient _httpClient;
   private readonly RestClient<IGeocodingApiClient> _geoApi;
 
   internal GeocodingApi(string apiKey, OpenWeatherMapOptions options)
   {
     _apiKey = apiKey;
-    _geoApi = new RestClient<IGeocodingApiClient>(BaseUrl, options);
+    _httpClient = new HttpClient
+    {
+      BaseAddress = new Uri(BaseUrl)
+    };
+    _geoApi = new RestClient<IGeocodingApiClient>(_httpClient, options);
   }
+
+  /// <inheritdoc />
+  public HttpClient Client => _httpClient;
 
   /// <inheritdoc />
   public async Task<IEnumerable<GeoCode>> QueryAsync(string query, int limit = int.MaxValue)

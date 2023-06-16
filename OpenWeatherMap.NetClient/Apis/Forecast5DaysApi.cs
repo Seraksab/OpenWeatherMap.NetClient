@@ -14,6 +14,7 @@ public sealed class Forecast5DaysApi : IForecast5DaysApi
   private readonly string _apiKey;
   private readonly string _language;
 
+  private readonly HttpClient _httpClient;
   private readonly RestClient<IForecast5DaysApiClient> _forecastApi;
   private readonly RestClient<IGeocodingApiClient> _geoApi;
 
@@ -22,9 +23,16 @@ public sealed class Forecast5DaysApi : IForecast5DaysApi
     _apiKey = apiKey;
     _language = options.Culture.TwoLetterISOLanguageName;
 
-    _forecastApi = new RestClient<IForecast5DaysApiClient>(BaseUrl, options);
-    _geoApi = new RestClient<IGeocodingApiClient>(BaseUrl, options);
+    _httpClient = new HttpClient
+    {
+      BaseAddress = new Uri(BaseUrl)
+    };
+    _forecastApi = new RestClient<IForecast5DaysApiClient>(_httpClient, options);
+    _geoApi = new RestClient<IGeocodingApiClient>(_httpClient, options);
   }
+
+  /// <inheritdoc />
+  public HttpClient Client => _httpClient;
 
   /// <inheritdoc />
   public async Task<Forecast5Days?> QueryAsync(string query, int limit = int.MaxValue)
