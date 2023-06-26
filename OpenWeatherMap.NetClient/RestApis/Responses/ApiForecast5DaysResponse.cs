@@ -14,8 +14,8 @@ internal sealed class ApiForecast5DaysResponse
 
   internal sealed class ListElement
   {
-    [JsonPropertyName("dt"), JsonConverter(typeof(DateTimeConverter))]
-    public DateTime ForecastTimeStamp { get; set; }
+    [JsonPropertyName("dt"), JsonConverter(typeof(DateTimeOffsetConverter))]
+    public DateTimeOffset ForecastTimeStamp { get; set; }
 
     [JsonPropertyName("main")] public MainResponse Main { get; set; } = null!;
     [JsonPropertyName("weather")] public IEnumerable<WeatherResponse> Weather { get; set; } = null!;
@@ -105,11 +105,11 @@ internal sealed class ApiForecast5DaysResponse
     [JsonPropertyName("timezone"), JsonConverter(typeof(TimeSpanConverter))]
     public TimeSpan TimeZoneOffset { get; set; }
 
-    [JsonPropertyName("sunrise"), JsonConverter(typeof(DateTimeConverter))]
-    public DateTime Sunrise { get; set; }
+    [JsonPropertyName("sunrise"), JsonConverter(typeof(DateTimeOffsetConverter))]
+    public DateTimeOffset Sunrise { get; set; }
 
-    [JsonPropertyName("sunset"), JsonConverter(typeof(DateTimeConverter))]
-    public DateTime Sunset { get; set; }
+    [JsonPropertyName("sunset"), JsonConverter(typeof(DateTimeOffsetConverter))]
+    public DateTimeOffset Sunset { get; set; }
   }
 
   internal sealed class CoordinatesResponse

@@ -9,9 +9,9 @@ namespace OpenWeatherMap.NetClient.Models;
 public sealed class AirPollution
 {
   /// <summary>
-  /// Date and time, UTC
+  /// Date and time
   /// </summary>
-  public DateTime TimeStamp { get; set; }
+  public DateTimeOffset TimeStamp { get; set; }
 
   /// <summary>
   /// Air Quality Index (AQI)

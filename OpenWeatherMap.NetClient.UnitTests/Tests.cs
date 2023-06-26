@@ -113,7 +113,7 @@ public class Tests
   public async Task TestAirPollutionHistory()
   {
     var client = new OpenWeatherMapClient(ApiKey);
-    var to = DateTime.UtcNow;
+    var to = DateTimeOffset.UtcNow;
     var from = to - TimeSpan.FromDays(1);
     var result = await client.AirPollution.GetHistoricalAsync(48.3059, 14.2862, from, to);
     Assert.NotNull(result);

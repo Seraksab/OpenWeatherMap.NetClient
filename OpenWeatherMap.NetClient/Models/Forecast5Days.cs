@@ -50,12 +50,12 @@ public sealed class Forecast5Days
   /// <summary>
   /// Sunrise time
   /// </summary>
-  public DateTime Sunrise { get; internal set; }
+  public DateTimeOffset Sunrise { get; internal set; }
 
   /// <summary>
   /// Sunset time
   /// </summary>
-  public DateTime Sunset { get; internal set; }
+  public DateTimeOffset Sunset { get; internal set; }
 
   /// <summary>
   /// The weather forecast for a specific time
@@ -65,7 +65,7 @@ public sealed class Forecast5Days
     /// <summary>
     /// Time of data forecasted
     /// </summary>
-    public DateTime ForecastTimeStamp { get; internal set; }
+    public DateTimeOffset ForecastTimeStamp { get; internal set; }
 
     /// <summary>
     /// Temperature

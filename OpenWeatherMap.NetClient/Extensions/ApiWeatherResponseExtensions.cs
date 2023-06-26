@@ -11,7 +11,7 @@ internal static class ApiWeatherResponseExtensions
     return new CurrentWeather
     {
       MeasuredTimeStamp = response.DataTimeStamp,
-      FetchedTimeStamp = DateTime.UtcNow,
+      FetchedTimeStamp = DateTimeOffset.UtcNow,
       CityId = response.CityId,
       CityName = response.CityName,
       Country = response.Sys.Country,

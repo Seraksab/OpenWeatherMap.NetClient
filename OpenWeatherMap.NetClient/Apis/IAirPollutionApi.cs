@@ -34,8 +34,8 @@ public interface IAirPollutionApi
   /// </summary>
   /// <param name="lat">Latitude</param>
   /// <param name="lon">Longitude</param>
-  /// <param name="start">Start date (UTC time zone)</param>
-  /// <param name="end">End date (UTC time zone)</param>
+  /// <param name="start">Start date</param>
+  /// <param name="end">End date</param>
   /// <returns>The historical air pollution data</returns>
-  Task<IEnumerable<AirPollution>> GetHistoricalAsync(double lat, double lon, DateTime start, DateTime end);
+  Task<IEnumerable<AirPollution>> GetHistoricalAsync(double lat, double lon, DateTimeOffset start, DateTimeOffset end);
 }

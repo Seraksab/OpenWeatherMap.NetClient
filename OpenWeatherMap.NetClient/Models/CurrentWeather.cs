@@ -10,12 +10,12 @@ public sealed class CurrentWeather
   /// <summary>
   /// Time of data calculation
   /// </summary>
-  public DateTime MeasuredTimeStamp { get; internal set; }
+  public DateTimeOffset MeasuredTimeStamp { get; internal set; }
 
   /// <summary>
   /// Time the data was fetched from the API
   /// </summary>
-  public DateTime FetchedTimeStamp { get; internal set; }
+  public DateTimeOffset FetchedTimeStamp { get; internal set; }
 
   /// <summary>
   /// City ID
@@ -50,12 +50,12 @@ public sealed class CurrentWeather
   /// <summary>
   /// Sunrise time
   /// </summary>
-  public DateTime Sunrise { get; internal set; }
+  public DateTimeOffset Sunrise { get; internal set; }
 
   /// <summary>
   /// Sunset time
   /// </summary>
-  public DateTime Sunset { get; internal set; }
+  public DateTimeOffset Sunset { get; internal set; }
 
   /// <summary>
   /// Weather condition id

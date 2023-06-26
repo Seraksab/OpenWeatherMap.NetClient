@@ -18,8 +18,8 @@ internal sealed class ApiWeatherResponse
   [JsonPropertyName("rain")] public PrecipitationResponse? Rain { get; set; } = null!;
   [JsonPropertyName("snow")] public PrecipitationResponse? Snow { get; set; } = null!;
 
-  [JsonPropertyName("dt"), JsonConverter(typeof(DateTimeConverter))]
-  public DateTime DataTimeStamp { get; set; }
+  [JsonPropertyName("dt"), JsonConverter(typeof(DateTimeOffsetConverter))]
+  public DateTimeOffset DataTimeStamp { get; set; }
 
   [JsonPropertyName("sys")] public SysResponse Sys { get; set; } = null!;
 
@@ -102,10 +102,10 @@ internal sealed class ApiWeatherResponse
   {
     [JsonPropertyName("country")] public string Country { get; set; } = null!;
 
-    [JsonPropertyName("sunrise"), JsonConverter(typeof(DateTimeConverter))]
-    public DateTime Sunrise { get; set; }
+    [JsonPropertyName("sunrise"), JsonConverter(typeof(DateTimeOffsetConverter))]
+    public DateTimeOffset Sunrise { get; set; }
 
-    [JsonPropertyName("sunset"), JsonConverter(typeof(DateTimeConverter))]
-    public DateTime Sunset { get; set; }
+    [JsonPropertyName("sunset"), JsonConverter(typeof(DateTimeOffsetConverter))]
+    public DateTimeOffset Sunset { get; set; }
   }
 }

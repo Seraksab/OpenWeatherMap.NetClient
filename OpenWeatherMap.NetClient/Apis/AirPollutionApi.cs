@@ -52,15 +52,15 @@ public sealed class AirPollutionApi : IAirPollutionApi
   }
 
   /// <inheritdoc />
-  public async Task<IEnumerable<AirPollution>> GetHistoricalAsync(double lat, double lon, DateTime start,
-    DateTime end)
+  public async Task<IEnumerable<AirPollution>> GetHistoricalAsync(double lat, double lon, DateTimeOffset start,
+    DateTimeOffset end)
   {
     return await _client.Call(async api =>
       {
         var result = await api.Historical(
           _apiKey, lat, lon,
-          ((DateTimeOffset)start).ToUnixTimeSeconds(),
-          ((DateTimeOffset)end).ToUnixTimeSeconds()
+          start.ToUnixTimeSeconds(),
+          end.ToUnixTimeSeconds()
         );
         return MapModels(result);
       },

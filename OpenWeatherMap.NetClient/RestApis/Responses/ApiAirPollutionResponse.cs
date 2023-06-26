@@ -2,7 +2,6 @@
 using OpenWeatherMap.NetClient.Converters;
 using OpenWeatherMap.NetClient.Enums;
 using UnitsNet;
-using DateTimeConverter = OpenWeatherMap.NetClient.Converters.DateTimeConverter;
 
 namespace OpenWeatherMap.NetClient.RestApis.Responses;
 
@@ -19,8 +18,8 @@ internal sealed class ApiAirPollutionResponse
 
   internal sealed class ListElementResponse
   {
-    [JsonPropertyName("dt"), JsonConverter(typeof(DateTimeConverter))]
-    public DateTime TimeStamp { get; set; }
+    [JsonPropertyName("dt"), JsonConverter(typeof(DateTimeOffsetConverter))]
+    public DateTimeOffset TimeStamp { get; set; }
 
     [JsonPropertyName("main")] public MainResponse Main { get; set; } = null!;
     [JsonPropertyName("components")] public ComponentsResponse Components { get; set; } = null!;
