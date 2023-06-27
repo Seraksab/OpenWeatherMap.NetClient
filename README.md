@@ -2,6 +2,7 @@
 
 [![Nuget](https://img.shields.io/nuget/v/OpenWeatherMap.NetClient?style=flat-square)](https://www.nuget.org/packages/OpenWeatherMap.NetClient)
 [![Nuget](https://img.shields.io/nuget/dt/OpenWeatherMap.NetClient?style=flat-square)](https://www.nuget.org/packages/OpenWeatherMap.NetClient)
+![GitHub](https://img.shields.io/github/license/Seraksab/OpenWeatherMap.NetClient)
 
 A simple, asynchronous .NET client to fetch weather information from
 the [OpenWeatherMap](https://openweathermap.org/) APIs.
