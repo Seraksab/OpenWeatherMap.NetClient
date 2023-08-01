@@ -6,7 +6,7 @@ namespace OpenWeatherMap.NetClient.Models;
 /// Current weather, minute forecast for 1 hour, hourly forecast for 48 hours, daily forecast for 8 days and
 /// government weather alerts 
 /// </summary>
-public sealed class CurrentWeatherOneCall
+public sealed class OneCallCurrentWeather
 {
   /// <summary>
   /// Time the data was fetched from the API

@@ -5,9 +5,9 @@ namespace OpenWeatherMap.NetClient.Extensions;
 
 internal static class ApiOneCallCurrentResponseExtensions
 {
-  internal static CurrentWeatherOneCall ToWeather(this ApiOneCallCurrentResponse response)
+  internal static OneCallCurrentWeather ToWeather(this ApiOneCallCurrentResponse response)
   {
-    return new CurrentWeatherOneCall
+    return new OneCallCurrentWeather
     {
       FetchedTimeStamp = DateTimeOffset.UtcNow,
       Latitude = response.Latitude,
@@ -16,7 +16,7 @@ internal static class ApiOneCallCurrentResponseExtensions
       TimeZoneOffset = response.TimeZoneOffset,
       Current = response.Current is null
         ? null
-        : new CurrentWeatherOneCall.CurrentWeather
+        : new OneCallCurrentWeather.CurrentWeather
         {
           MeasuredTimeStamp = response.Current.DataTimeStamp,
           Sunrise = response.Current.Sunrise,
@@ -40,15 +40,15 @@ internal static class ApiOneCallCurrentResponseExtensions
           WeatherIcon = response.Current.Weather.First().Icon
         },
       Minutely = response.MinuteForecast is null
-        ? Enumerable.Empty<CurrentWeatherOneCall.MinuteForecast>()
-        : response.MinuteForecast.Select(minute => new CurrentWeatherOneCall.MinuteForecast
+        ? Enumerable.Empty<OneCallCurrentWeather.MinuteForecast>()
+        : response.MinuteForecast.Select(minute => new OneCallCurrentWeather.MinuteForecast
         {
           TimeStamp = minute.TimeStamp,
           Precipitation = minute.Precipitation
         }),
       Hourly = response.HourForecast is null
-        ? Enumerable.Empty<CurrentWeatherOneCall.HourForecast>()
-        : response.HourForecast.Select(hour => new CurrentWeatherOneCall.HourForecast
+        ? Enumerable.Empty<OneCallCurrentWeather.HourForecast>()
+        : response.HourForecast.Select(hour => new OneCallCurrentWeather.HourForecast
         {
           TimeStamp = hour.TimeStamp,
           Temperature = hour.Temperature,
@@ -69,8 +69,8 @@ internal static class ApiOneCallCurrentResponseExtensions
           WeatherIcon = hour.Weather.First().Icon
         }),
       Daily = response.DayForecast is null
-        ? Enumerable.Empty<CurrentWeatherOneCall.DayForecast>()
-        : response.DayForecast.Select(day => new CurrentWeatherOneCall.DayForecast
+        ? Enumerable.Empty<OneCallCurrentWeather.DayForecast>()
+        : response.DayForecast.Select(day => new OneCallCurrentWeather.DayForecast
         {
           TimeStamp = day.TimeStamp,
           Sunrise = day.Sunrise,
@@ -102,7 +102,7 @@ internal static class ApiOneCallCurrentResponseExtensions
           WeatherDescription = day.Weather.First().Description,
           WeatherIcon = day.Weather.First().Icon
         }),
-      Alerts = response.Alerts.Select(alert => new CurrentWeatherOneCall.Alert
+      Alerts = response.Alerts.Select(alert => new OneCallCurrentWeather.Alert
       {
         Sender = alert.SenderName,
         Event = alert.Event,

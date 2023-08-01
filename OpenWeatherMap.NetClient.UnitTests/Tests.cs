@@ -194,7 +194,7 @@ public class Tests
   }
 
   [Fact]
-  public async Task TestOneCall()
+  public async Task TestOneCallCurrent()
   {
     var client = new OpenWeatherMapClient(ApiKey);
 
@@ -229,5 +229,25 @@ public class Tests
     Assert.NotEmpty(weather.Minutely);
     Assert.Empty(weather.Hourly);
     Assert.Empty(weather.Daily);
+  }
+
+  [Fact]
+  public async Task TestOneCallHistorical()
+  {
+    var client = new OpenWeatherMapClient(ApiKey);
+    var ts = DateTimeOffset.FromUnixTimeSeconds(1672527600); // 2023-01-01 00:00:00
+    var weather = await client.OneCall.QueryHistoricalAsync("Linz,AT", ts);
+    Assert.NotNull(weather);
+    Assert.Equal(48.3059, weather.Latitude, 3);
+    Assert.Equal(14.2862, weather.Longitude, 3);
+    Assert.Equal("Europe/Vienna", weather.TimeZone);
+    Assert.Equal(ts, weather.TimeStamp);
+
+    weather = await client.OneCall.GetHistoricalByCoordinatesAsync(48.3059, 14.2862, ts);
+    Assert.NotNull(weather);
+    Assert.Equal(48.3059, weather.Latitude, 3);
+    Assert.Equal(14.2862, weather.Longitude, 3);
+    Assert.Equal("Europe/Vienna", weather.TimeZone);
+    Assert.Equal(ts, weather.TimeStamp);
   }
 }
