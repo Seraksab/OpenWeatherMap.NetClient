@@ -1,4 +1,5 @@
 using System.Net;
+using OpenWeatherMap.NetClient.Enums;
 using OpenWeatherMap.NetClient.Models;
 using Refit;
 
@@ -190,5 +191,43 @@ public class Tests
     Assert.Equal(48.3059, forecast.Latitude, 3);
     Assert.Equal(14.2862, forecast.Longitude, 3);
     Assert.Equal(5, forecast.Forecast.Count());
+  }
+
+  [Fact]
+  public async Task TestOneCall()
+  {
+    var client = new OpenWeatherMapClient(ApiKey);
+
+    // no exclude by city name
+    var weather = await client.OneCall.QueryAsync("Linz,AT");
+    Assert.NotNull(weather);
+    Assert.Equal(48.3059, weather.Latitude, 3);
+    Assert.Equal(14.2862, weather.Longitude, 3);
+    Assert.Equal("Europe/Vienna", weather.TimeZone);
+    Assert.NotNull(weather.Current);
+    Assert.NotEmpty(weather.Minutely);
+    Assert.NotEmpty(weather.Hourly);
+    Assert.NotEmpty(weather.Daily);
+
+    // no exclude by coordinates
+    weather = await client.OneCall.GetByCoordinatesAsync(48.3059, 14.2862);
+    Assert.NotNull(weather);
+    Assert.Equal(48.3059, weather.Latitude, 3);
+    Assert.Equal(14.2862, weather.Longitude, 3);
+    Assert.Equal("Europe/Vienna", weather.TimeZone);
+    Assert.NotNull(weather.Current);
+    Assert.NotEmpty(weather.Minutely);
+    Assert.NotEmpty(weather.Hourly);
+    Assert.NotEmpty(weather.Daily); 
+
+    // with exclude
+    weather = await client.OneCall.QueryAsync(
+      "Linz,AT", new[] { OneCallCategory.Daily, OneCallCategory.Current, OneCallCategory.Hourly }
+    );
+    Assert.NotNull(weather);
+    Assert.Null(weather.Current);
+    Assert.NotEmpty(weather.Minutely);
+    Assert.Empty(weather.Hourly);
+    Assert.Empty(weather.Daily);
   }
 }

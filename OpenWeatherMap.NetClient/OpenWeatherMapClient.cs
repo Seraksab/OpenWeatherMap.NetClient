@@ -16,6 +16,7 @@ public sealed class OpenWeatherMapClient : IOpenWeatherMap
   private readonly Lazy<ICurrentWeatherApi> _currentWeather;
   private readonly Lazy<IBasicWeatherMapsApi> _basicWeatherMaps;
   private readonly Lazy<IForecast5DaysApi> _forecast5Days;
+  private readonly Lazy<IOneCallApi> _oneCall;
 
   /// <summary>
   /// Creates a new OpenWeatherMap instance
@@ -35,6 +36,7 @@ public sealed class OpenWeatherMapClient : IOpenWeatherMap
     _currentWeather = new Lazy<ICurrentWeatherApi>(() => new CurrentWeatherApi(apiKey, options));
     _basicWeatherMaps = new Lazy<IBasicWeatherMapsApi>(() => new BasicWeatherMapsApi(apiKey, options));
     _forecast5Days = new Lazy<IForecast5DaysApi>(() => new Forecast5DaysApi(apiKey, options));
+    _oneCall = new Lazy<IOneCallApi>(() => new OneCallApi(apiKey, options));
   }
 
   /// <inheritdoc />
@@ -51,4 +53,7 @@ public sealed class OpenWeatherMapClient : IOpenWeatherMap
 
   /// <inheritdoc />
   public IForecast5DaysApi Forecast5Days => _forecast5Days.Value;
+
+  /// <inheritdoc />
+  public IOneCallApi OneCall => _oneCall.Value;
 }

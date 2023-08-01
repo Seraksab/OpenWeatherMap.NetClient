@@ -41,4 +41,11 @@ public interface IOpenWeatherMap
   /// The 5 day forecast includes weather data with 3-hour steps.
   /// </summary>
   IForecast5DaysApi Forecast5Days { get; }
+
+  /// <summary>
+  /// Access to the OneCall 3.0 API.
+  /// Provides current weather, minute forecast for 1 hour, hourly forecast for 48 hours, daily forecast for 8 days and
+  /// government weather alerts
+  /// </summary>
+  IOneCallApi OneCall { get; }
 }

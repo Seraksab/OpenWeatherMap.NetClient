@@ -89,7 +89,7 @@ internal sealed class ApiWeatherResponse
     public Ratio All { get; set; }
   }
 
-  internal class PrecipitationResponse
+  internal sealed class PrecipitationResponse
   {
     [JsonPropertyName("1h"), JsonConverter(typeof(LengthMilliMeterConverter))]
     public Length OneHour { get; set; }
@@ -98,7 +98,7 @@ internal sealed class ApiWeatherResponse
     public Length ThreeHours { get; set; }
   }
 
-  internal class SysResponse
+  internal sealed class SysResponse
   {
     [JsonPropertyName("country")] public string Country { get; set; } = null!;
 
