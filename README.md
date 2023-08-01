@@ -11,18 +11,23 @@ Support for response caching and retries is built in.
 Numerical values are parsed to and returned as units from [Units.NET](https://github.com/angularsen/UnitsNet)
 (where applicable) to ease the conversion between different measurement systems and avoid unit confusion.
 
-**Supported APIs:**
+## Supported APIs
 
-* [Current Weather](https://openweathermap.org/current) - Current weather data for any location on Earth including over
-  200,000 cities.
-* [Geocoding](https://openweathermap.org/api/geocoding-api) - Tool to ease the search for locations while working with
-  geographic names and coordinates.
-* [Air Pollution](https://openweathermap.org/api/air-pollution) - Provides current, forecast and historical air
-  pollution data for any coordinates on the globe.
-* [Basic weather maps](https://openweathermap.org/api/weathermaps) - Provides many kinds of weather maps including
-  Precipitation, Clouds, Pressure, Temperature, Wind.
-* [3-hour Forecast 5 days](https://openweathermap.org/forecast5) - Provides 5 days weather forecast data with 3-hour
-  steps.
+* [Current Weather](https://openweathermap.org/current)  
+  Current weather data for any location on Earth including over 200,000 cities.
+* [Geocoding](https://openweathermap.org/api/geocoding-api)  
+  Tool to ease the search for locations while working with geographic names and coordinates.
+* [Air Pollution](https://openweathermap.org/api/air-pollution)  
+  Provides current, forecast and historical air pollution data for any coordinates on the globe.
+* [Basic weather maps](https://openweathermap.org/api/weathermaps)  
+  Provides many kinds of weather maps including Precipitation, Clouds, Pressure, Temperature, Wind.
+* [3-hour Forecast 5 days](https://openweathermap.org/forecast5)  
+  Provides 5 days weather forecast data with 3-hour steps.
+* [One Call 3.0](https://openweathermap.org/api/one-call-3)  
+  Contains 3 endpoints and provides access to various data:
+    * Current weather, minute forecast for 1 hour, hourly forecast for 48 hours, daily forecast for 8 days
+    * Historical weather data for any timestamp from 1st January 1979 till now
+    * Aggregated historical weather data for a particular date from 2nd January 1979
 
 ## Installation
 
@@ -58,7 +63,7 @@ Console.Out.WriteLine($"At {forecast[1].ForecastTimeStamp.ToShortTimeString()} "
 ## Exception Handling
 
 This client uses [Refit](https://github.com/reactiveui/refit) to handle the actual HTTP requests.
-Exceptions thrown by Refit are not caught, wrapped or altered in any form.  
+Exceptions thrown by Refit are not caught, wrapped or altered in any form.
 
 ```csharp
 // ...
@@ -72,8 +77,8 @@ catch (ApiException exception)
 }
 ```
 
-For more details refer to the [Refit documentation on handling exceptions](https://github.com/reactiveui/refit#handling-exceptions).
-
+For more details refer to
+the [Refit documentation on handling exceptions](https://github.com/reactiveui/refit#handling-exceptions).
 
 ## Configuration
 
@@ -98,7 +103,8 @@ var client = new OpenWeatherMapClient("[API_KEY]", new OpenWeatherMapOptions
 
 ### HttpClient
 
-Each individual API exposes the `HttpClient` instance being used should you need or want to configure it.  
+Each individual API exposes the `HttpClient` instance being used should you need or want to configure it.
+
 ```csharp
 var client = new OpenWeatherMapClient("[API_KEY]");
 var currentWeatherApi = client.CurrentWeather;
