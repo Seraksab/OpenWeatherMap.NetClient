@@ -7,8 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ### Added
 
-* Support for current and forecasts weather data of the OneCall API
-* Support for historical weather data of the OneCall API
+* Support for OneCall API
 * Upgraded to Refit 7
 
 ## 1.3.1 - 2023-06-26

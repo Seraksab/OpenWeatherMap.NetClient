@@ -88,7 +88,7 @@ public sealed class OneCallApi : IOneCallApi
         );
         return weather.ToWeather();
       },
-      () => $"CurrentWeatherByName_{query}_{date.ToUnixTimeSeconds()}"
+      () => $"HistoricalWeatherByName_{query}_{date.ToUnixTimeSeconds()}"
     );
   }
 
@@ -102,6 +102,41 @@ public sealed class OneCallApi : IOneCallApi
         return weather.ToWeather();
       },
       () => $"HistoricalWeatherByCoordinates_{lat}_{lon}_{date.ToUnixTimeSeconds()}"
+    );
+  }
+
+  /// <inheritdoc />
+  public async Task<OneCallHistoricalDayWeather?> QueryHistoricalDayAsync(string query, DateTimeOffset date)
+  {
+    if (query == null) throw new ArgumentNullException(nameof(query));
+
+    var geoResponse = await GeoQuery(query);
+    if (!geoResponse.Any()) return null;
+
+    var geoCode = geoResponse.First();
+    var dateString = date.ToString("yyyy-MM-dd");
+    return await _weatherApi.Call(async api =>
+      {
+        var weather = await api.HistoricalDay(
+          _apiKey, geoCode.Latitude, geoCode.Longitude, _language, dateString
+        );
+        return weather.ToWeather();
+      },
+      () => $"HistoricalDayWeatherByName_{query}_{dateString}"
+    );
+  }
+
+  /// <inheritdoc />
+  public async Task<OneCallHistoricalDayWeather?> GetHistoricalDayByCoordinatesAsync(double lat, double lon,
+    DateTimeOffset date)
+  {
+    var dateString = date.ToString("yyyy-MM-dd");
+    return await _weatherApi.Call(async api =>
+      {
+        var weather = await api.HistoricalDay(_apiKey, lat, lon, _language, dateString);
+        return weather.ToWeather();
+      },
+      () => $"HistoricalDayWeatherByCoordinates_{lat}_{lon}_{dateString}"
     );
   }
 

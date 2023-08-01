@@ -218,7 +218,7 @@ public class Tests
     Assert.NotNull(weather.Current);
     Assert.NotEmpty(weather.Minutely);
     Assert.NotEmpty(weather.Hourly);
-    Assert.NotEmpty(weather.Daily); 
+    Assert.NotEmpty(weather.Daily);
 
     // with exclude
     weather = await client.OneCall.QueryAsync(
@@ -235,7 +235,7 @@ public class Tests
   public async Task TestOneCallHistorical()
   {
     var client = new OpenWeatherMapClient(ApiKey);
-    var ts = DateTimeOffset.FromUnixTimeSeconds(1672527600); // 2023-01-01 00:00:00
+    var ts = DateTimeOffset.FromUnixTimeSeconds(1672531200); // 2023-01-01 00:00:00
     var weather = await client.OneCall.QueryHistoricalAsync("Linz,AT", ts);
     Assert.NotNull(weather);
     Assert.Equal(48.3059, weather.Latitude, 3);
@@ -249,5 +249,25 @@ public class Tests
     Assert.Equal(14.2862, weather.Longitude, 3);
     Assert.Equal("Europe/Vienna", weather.TimeZone);
     Assert.Equal(ts, weather.TimeStamp);
+  }
+
+  [Fact]
+  public async Task TestOneCallHistoricalDay()
+  {
+    var client = new OpenWeatherMapClient(ApiKey);
+    var ts = DateTimeOffset.FromUnixTimeSeconds(1672531200); // 2023-01-01 00:00:00
+    var weather = await client.OneCall.QueryHistoricalDayAsync("Linz,AT", ts);
+    Assert.NotNull(weather);
+    Assert.Equal(48.3059, weather.Latitude, 3);
+    Assert.Equal(14.2862, weather.Longitude, 3);
+    Assert.Equal("+01:00", weather.TimeZone);
+    Assert.Equal("2023-01-01", weather.Date);
+
+    weather = await client.OneCall.GetHistoricalDayByCoordinatesAsync(48.3059, 14.2862, ts);
+    Assert.NotNull(weather);
+    Assert.Equal(48.3059, weather.Latitude, 3);
+    Assert.Equal(14.2862, weather.Longitude, 3);
+    Assert.Equal("+01:00", weather.TimeZone);
+    Assert.Equal("2023-01-01", weather.Date);
   }
 }

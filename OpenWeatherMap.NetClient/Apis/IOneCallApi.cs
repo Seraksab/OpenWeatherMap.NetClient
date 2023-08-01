@@ -60,4 +60,25 @@ public interface IOneCallApi
   /// <param name="date">The date and time to get weather data for</param>
   /// <returns>The current weather data</returns>
   Task<OneCallHistoricalWeather?> GetHistoricalByCoordinatesAsync(double lat, double lon, DateTimeOffset date);
+
+  /// <summary>
+  /// Query aggregated historical weather data by location name
+  /// </summary>
+  /// <remarks>
+  /// This function is the same as manually calling <see cref="IGeocodingApi.QueryAsync"/> of the <see cref="IGeocodingApi"/>
+  /// and then using the coordinates of the first location in the result set to call <see cref="GetHistoricalDayByCoordinatesAsync"/>
+  /// </remarks>
+  /// <param name="query">City name, state code (only for the US) and country code divided by comma (ISO 3166 country codes)</param>
+  /// <param name="date">The date of the day to get weather data for</param>
+  /// <returns>The current weather data</returns>
+  Task<OneCallHistoricalDayWeather?> QueryHistoricalDayAsync(string query, DateTimeOffset date);
+
+  /// <summary>
+  /// Get aggregated historical weather data by geographical coordinates (latitude, longitude).
+  /// </summary>
+  /// <param name="lat">Latitude</param>
+  /// <param name="lon">Longitude</param>
+  /// <param name="date">The date of the day to get weather data for</param>
+  /// <returns>The current weather data</returns>
+  Task<OneCallHistoricalDayWeather?> GetHistoricalDayByCoordinatesAsync(double lat, double lon, DateTimeOffset date);
 }
