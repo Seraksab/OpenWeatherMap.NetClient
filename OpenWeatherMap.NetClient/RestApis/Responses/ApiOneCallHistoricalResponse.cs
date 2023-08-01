@@ -15,7 +15,7 @@ internal sealed class ApiOneCallHistoricalResponse
   [JsonPropertyName("timezone_offset"), JsonConverter(typeof(TimeSpanConverter))]
   public TimeSpan TimeZoneOffset { get; set; }
 
-  [JsonPropertyName("data")] public IEnumerable<DataResponse> Data { get; set; }
+  [JsonPropertyName("data")] public IEnumerable<DataResponse> Data { get; set; } = null!;
 
   internal sealed class DataResponse
   {
